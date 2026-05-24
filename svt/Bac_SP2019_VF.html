@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Synapris — SVT Bac 2019 | Session Principale | Corrigé officiel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    :root {
+      --purple: #700143;
+      --purple-light: #8f1a5c;
+      --banana: #F8EDAD;
+      --banana-dark: #e0d494;
+      --cream: #FDF8E7;
+      --white: #FFFFFF;
+      --text-dark: #1e1a2a;
+      --text-light: rgba(255,255,255,0.85);
+      --text-muted: rgba(255,255,255,0.5);
+      --ok: #C5E384;
+      --ko: #ff6b6b;
+      --mid: #E8A736;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.15);
+      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      --font-ui: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-a4: 'Times New Roman', Times, serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); font-size: 1.05rem; background: var(--cream); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+    #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, var(--cream), #fff5e8); padding: 20px; }
+    .login-header { text-align: center; max-width: 450px; margin-bottom: 24px; }
+    .logo-placeholder-img { width: 120px; height: 120px; background: #e0e0e0; border-radius: 20px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #999; box-shadow: var(--shadow); }
+    .login-video { width: 100%; max-width: 400px; border-radius: 16px; background: #1a1a2e; margin: 0 auto 24px; box-shadow: var(--shadow); }
+    .login-video video { width: 100%; border-radius: 16px; display: block; }
+    .login-card { background: var(--white); padding: 32px 28px; border-radius: var(--radius-lg); max-width: 380px; width: 100%; box-shadow: var(--shadow-lg); text-align: center; margin-bottom: 24px; }
+    .login-card .logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.8rem; color: var(--purple); margin-bottom: 2px; }
+    .login-card .slogan { font-size: 0.85rem; color: var(--purple); font-style: italic; margin-bottom: 20px; }
+    .login-card input { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: var(--radius); font-family: var(--font-body); font-size: 0.9rem; margin-bottom: 12px; outline: none; transition: var(--transition); }
+    .login-card input:focus { border-color: var(--purple); box-shadow: 0 0 0 2px rgba(112,1,67,0.15); }
+    .login-card .btn-login { width: 100%; padding: 12px; background: var(--purple); color: var(--banana); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+    .login-card .btn-login:hover { background: var(--purple-light); transform: translateY(-2px); }
+    .login-card .links { display: flex; justify-content: center; gap: 16px; margin-top: 14px; font-size: 0.75rem; }
+    .login-card .links a { color: rgba(30,26,42,0.5); text-decoration: none; transition: var(--transition); }
+    .login-card .links a:hover { color: var(--purple); }
+    .login-blocks { max-width: 450px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .login-block { background: var(--white); border-radius: var(--radius); padding: 14px 10px; text-align: center; box-shadow: var(--shadow); transition: var(--transition); }
+    .login-block:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .login-block .icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .login-block .arabic { font-size: 0.8rem; font-weight: 600; color: var(--purple); margin-bottom: 4px; }
+    .login-block .french { font-size: 0.7rem; color: rgba(30,26,42,0.6); }
+    .border-draw { position: relative; background: transparent; border: 2px solid transparent; transition: all 0.3s ease; overflow: hidden; }
+    .border-draw::before, .border-draw::after { content: ''; position: absolute; background: var(--purple); transition: transform 0.4s ease; }
+    .border-draw::before { top: 0; left: 0; width: 2px; height: 100%; transform: scaleY(0); transform-origin: top; }
+    .border-draw::after { bottom: 0; left: 0; width: 100%; height: 2px; transform: scaleX(0); transform-origin: left; }
+    .border-draw:hover::before { transform: scaleY(1); }
+    .border-draw:hover::after { transform: scaleX(1); }
+    .border-draw:hover { border-color: var(--purple); box-shadow: 0 0 0 1px var(--purple); }
+    .navbar { position: sticky; top: 0; z-index: 1000; background: #200F07; padding: 0 20px; height: 60px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .navbar-logo { font-family: var(--font-ui); font-weight: 800; font-size: 1rem; color: #C5E384; display: flex; align-items: center; gap: 6px; }
+    .navbar-steps { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; max-width: 500px; }
+    .nav-step { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 8px 12px; border-radius: var(--radius); transition: var(--transition); font-size: 0.7rem; color: rgba(255,255,255,0.5); font-family: var(--font-body); }
+    .nav-step .icon { font-size: 1.3rem; }
+    .nav-step .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .nav-step.active { color: #C5E384; background: rgba(197,227,132,0.12); }
+    .nav-step:hover { color: #C5E384; }
+    .navbar-score { font-family: var(--font-mono); font-size: 0.8rem; color: #C5E384; white-space: nowrap; }
+    .navbar-avatar { width: 34px; height: 34px; border-radius: 50%; background: #C5E384; color: #200F07; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; margin-left: 8px; }
+    .main-wrap { padding-top: 0; min-height: calc(100vh - 60px); }
+    .screen-full { display: none; max-width: 900px; margin: 0 auto; padding: 24px 16px 80px; background: linear-gradient(135deg, var(--cream), #fff5e8); animation: fadeUp 0.4s ease-out; }
+    .screen-full.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .split-layout { display: none; flex-direction: column; min-height: calc(100vh - 60px); animation: fadeUp 0.4s ease-out; position: relative; padding-bottom: 90px; }
+    .split-layout.active { display: flex; }
+    .a4-panel { flex: 1; background: var(--white); overflow-y: auto; padding: 0; }
+    .a4-pages-wrap { max-width: 980px; margin: 0 auto; padding: 20px 20px 40px; }
+    .nav-a4 { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #200F07; border: 2px solid #C5E384; border-radius: 60px; padding: 10px 20px; display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.3); backdrop-filter: blur(4px); width: auto; min-width: 280px; }
+    .nav-a4-btn { padding: 10px 24px; border: none; background: #C5E384; color: #200F07; font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; border-radius: 40px; cursor: pointer; transition: var(--transition); }
+    .nav-a4-btn:hover { background: #200F07; color: #C5E384; border: 1px solid #C5E384; }
+    .nav-a4-indicator { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: #C5E384; min-width: 80px; text-align: center; }
+    .entete-officiel { background: var(--cream); border: 2px solid var(--purple); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-a4); font-size: 12px; flex-wrap: wrap; gap: 12px; box-shadow: 0 2px 8px rgba(112,1,67,0.08); }
+    .entete-gauche { font-weight: 700; line-height: 1.5; font-size: 11px; color: var(--purple); }
+    .entete-centre { text-align: center; flex: 1; }
+    .entete-centre h1 { font-size: 16px; font-weight: 800; margin-bottom: 2px; color: var(--purple); }
+    .entete-centre .sous-titre { font-size: 12px; font-weight: 700; color: var(--purple); }
+    .entete-centre .details { font-size: 11px; margin-top: 4px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .entete-droit { text-align: right; font-size: 11px; }
+    .entete-droit .section-badge { background: var(--purple); color: var(--banana); padding: 3px 8px; font-weight: 700; font-size: 10px; margin-top: 4px; display: inline-block; border-radius: 20px; }
+    .a4-page { display: none; font-family: var(--font-a4); }
+    .a4-page.active { display: block; }
+    .titre-partie { font-weight: 700; font-size: 15px; border-bottom: 2px solid var(--purple); padding-bottom: 4px; margin: 16px 0 10px; color: var(--purple); }
+    .titre-section { font-weight: 700; font-size: 14px; margin: 14px 0 6px; }
+    .pts { font-weight: 400; font-size: 13px; }
+    .qcm-block { margin-bottom: 14px; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: var(--radius); background: #fafbff; transition: var(--transition); }
+    .qcm-block .q-num { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .qcm-block .q-text { font-size: 14px; margin-bottom: 8px; line-height: 1.5; }
+    .qcm-options { display: flex; flex-direction: column; gap: 4px; }
+    .qcm-opt { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: var(--transition); }
+    .qcm-opt input[type="checkbox"] { accent-color: var(--purple); width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+    .qcm-opt.correct { background: rgba(197,227,132,0.2); color: #1a4a00; }
+    .qcm-opt.wrong { background: rgba(255,107,107,0.1); color: #800; }
+    .qcm-feedback { display: none; padding: 12px 14px; border-radius: var(--radius); font-size: 13px; line-height: 1.6; margin-top: 8px; }
+    .qcm-feedback.show { display: block; }
+    .qcm-feedback.ok { background: rgba(197,227,132,0.15); border-left: 3px solid var(--ok); }
+    .qcm-feedback.ko { background: rgba(255,107,107,0.08); border-left: 3px solid var(--ko); }
+    .qcm-feedback.mid { background: rgba(232,167,54,0.08); border-left: 3px solid var(--mid); }
+    .qcm-feedback .fb-title { font-weight: 700; margin-bottom: 4px; }
+    .qcm-feedback .fb-body { color: rgba(30,26,42,0.7); }
+    .qcm-feedback .fb-piege { margin-top: 8px; padding: 6px 10px; background: rgba(255,107,107,0.06); border-radius: 4px; font-size: 0.9em; }
+    .qcm-feedback .fb-piege strong { color: var(--ko); }
+    .qcm-feedback .fb-cours { margin-top: 8px; padding: 6px 10px; background: rgba(112,1,67,0.04); border-radius: 4px; font-size: 0.9em; }
+    .qcm-feedback .fb-cours strong { color: var(--purple); }
+    .qcm-feedback .fb-bareme { margin-top: 6px; font-weight: 600; color: var(--purple); }
+    .valider-btn { margin-top: 10px; padding: 6px 16px; background: var(--purple); color: var(--banana); border: none; border-radius: 6px; font-family: var(--font-ui); font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: var(--transition); display: none; }
+    .valider-btn.show { display: inline-flex; align-items: center; gap: 6px; }
+    .valider-btn:hover { background: var(--purple-light); transform: translateY(-1px); }
+    .q-item { margin-bottom: 16px; }
+    .q-item .q-num { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .q-item .q-consigne { font-size: 14px; line-height: 1.6; margin-bottom: 6px; }
+    .q-item .q-sub { padding-left: 18px; font-size: 14px; line-height: 1.7; }
+    .lignes-reponse { width: 100%; border: none; border-bottom: 1px dashed #999; padding: 6px 2px; font-family: var(--font-a4); font-size: 13px; background: transparent; resize: vertical; outline: none; min-height: 40px; margin: 6px 0 8px; color: var(--text-dark); }
+    .tableau-off { width: 100%; border-collapse: collapse; margin: 10px 0; font-family: var(--font-a4); font-size: 13px; }
+    .tableau-off th, .tableau-off td { border: 1px solid var(--text-dark); padding: 6px 8px; text-align: center; vertical-align: top; }
+    .tableau-off th { background: #f0f0f0; font-weight: 700; }
+    .tableau-off input[type="text"] { width: 100%; border: none; border-bottom: 1px dashed #aaa; background: transparent; font-family: var(--font-a4); font-size: 12px; padding: 2px 0; outline: none; text-align: center; color: var(--text-dark); }
+    .doc-figure { border: 1px solid #ddd; border-radius: 4px; margin: 10px 0; overflow: hidden; text-align: center; }
+    .doc-figure-header { background: #f0f0f0; border-bottom: 1px solid #ddd; padding: 4px 10px; font-size: 12px; font-weight: 700; text-align: center; }
+    .doc-figure-body { padding: 16px; background: #fafafa; min-height: 60px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #666; flex-direction: column; gap: 4px; }
+    .doc-figure-body { flex-direction: column; gap: 8px; padding: 10px; }
+    .doc-imgs-row { flex-direction: row !important; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+    .doc-img-wrap { position: relative; cursor: zoom-in; border-radius: 8px; overflow: hidden; border: 1px solid rgba(112,1,67,0.1); flex: 1; min-width: 120px; background: #f0f0f0; }
+    .doc-img-wrap:hover .zoom-hint { opacity: 1; }
+    .doc-img { width: 100%; display: block; border-radius: 8px; }
+    .zoom-hint { position: absolute; bottom: 6px; right: 6px; background: rgba(112,1,67,0.8); color: #fff; font-size: 0.65rem; padding: 3px 7px; border-radius: 10px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+    .img-fallback { display: none; text-align: center; padding: 20px 10px; font-size: 1.4rem; color: #aaa; line-height: 1.4; }
+    .img-missing .img-fallback { display: block; }
+    #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 100%; max-height: 85vh; border-radius: 8px; touch-action: pinch-zoom; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+    #lightbox-caption { color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-top: 10px; }
+    #lightbox-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.15); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .bar-fill.green { background: #C5E384; }
+    .bar-fill.orange { background: #E8A736; }
+    .bar-fill.red { background: #ff6b6b; }
+    .page-num { text-align: center; font-size: 12px; color: #666; margin-top: 24px; padding-top: 10px; border-top: 1px solid #ddd; }
+    .coach-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+    .coach-modal.open { display: flex; }
+    .coach-modal-content { background: var(--purple); max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); color: var(--text-light); font-family: var(--font-body); box-shadow: var(--shadow-lg); border: 1px solid rgba(248,237,173,0.2); }
+    .coach-modal-content .close-modal { float: right; background: none; border: none; color: rgba(255,255,255,0.4); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+    .coach-modal-content .close-modal:hover { color: var(--white); }
+    .coach-modal-content .coach-title { font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; color: var(--banana); margin-bottom: 12px; }
+    .coach-modal-content .coach-msg { font-size: 0.88rem; line-height: 1.6; margin-bottom: 12px; }
+    .coach-modal-content .coach-msg strong { color: var(--banana); }
+    .coach-modal-content .coach-schema-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .coach-modal-content .coach-step { display: flex; gap: 10px; padding: 4px 0; font-size: 0.85rem; line-height: 1.5; }
+    .coach-modal-content .coach-step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(248,237,173,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: var(--banana); flex-shrink: 0; }
+    .coach-modal-content .coach-piege { background: rgba(255,107,107,0.08); border-left: 3px solid var(--ko); padding: 8px 12px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; line-height: 1.5; margin: 10px 0; }
+    .coach-modal-content .coach-piege strong { color: var(--ko); }
+    .coach-modal-content .coach-bareme { padding: 8px 12px; background: rgba(197,227,132,0.1); border-left: 3px solid var(--ok); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; font-weight: 600; color: var(--ok); margin-top: 10px; }
+    .coach-btn { margin-top: 8px; padding: 4px 12px; background: transparent; border: 1px solid var(--purple); color: var(--purple); border-radius: 100px; font-family: var(--font-body); font-size: 0.7rem; cursor: pointer; transition: var(--transition); }
+    .coach-btn:hover { background: rgba(112,1,67,0.1); }
+    .tt-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .tt-modal.open { display: flex; }
+    .tt-modal-content { background: var(--white); max-width: 400px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+    .tt-modal-content .tt-img { font-size: 2.5rem; text-align: center; margin-bottom: 8px; }
+    .tt-modal-content .tt-def { font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
+    .tt-modal-content .tt-def strong { color: var(--purple); }
+    .tt-modal-content .tt-audio { background: var(--purple); color: var(--banana); border: none; padding: 5px 14px; border-radius: 100px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: var(--transition); font-family: var(--font-body); }
+    .tt-modal-content .tt-audio:hover { background: var(--purple-light); }
+    .tt-modal-content .tt-rappel { margin-top: 10px; padding: 8px 12px; background: rgba(112,1,67,0.05); border-radius: var(--radius); font-size: 0.85rem; color: rgba(30,26,42,0.7); }
+    .tt-modal-content .tt-rappel strong { color: var(--purple); }
+    .tt-modal-content .close-tt { float: right; background: none; border: none; color: rgba(30,26,42,0.3); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+    .tt-modal-content .close-tt:hover { color: var(--purple); }
+    .tt-trigger { display: inline; color: var(--purple); border-bottom: 1px dashed var(--purple); cursor: pointer; font-weight: 600; transition: var(--transition); }
+    .tt-trigger:hover { color: var(--purple-light); border-color: var(--purple-light); }
+    .ui-card { background: var(--white); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .ui-card-title { font-family: var(--font-ui); font-weight: 700; font-size: 1rem; color: var(--purple); margin-bottom: 10px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-2 .item { background: rgba(112,1,67,0.02); padding: 14px; border-radius: var(--radius); border: 1px solid rgba(112,1,67,0.06); transition: var(--transition); cursor: pointer; }
+    .grid-2 .item:hover { border-color: var(--purple); transform: translateY(-2px); }
+    .item .label { font-size: 0.65rem; text-transform: uppercase; color: var(--purple); font-weight: 700; }
+    .item .value { font-size: 1.2rem; font-weight: 700; color: var(--purple); }
+    .item .desc { font-size: 0.75rem; color: rgba(30,26,42,0.5); }
+    .verbes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin: 10px 0; }
+    .verbe-card { background: var(--white); border: 1px solid rgba(112,1,67,0.08); border-radius: var(--radius); padding: 12px; text-align: center; cursor: pointer; transition: var(--transition); }
+    .verbe-card:hover { border-color: var(--purple); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .verbe-card .emoji { font-size: 1.3rem; margin-bottom: 4px; }
+    .verbe-card .name { font-family: var(--font-ui); font-weight: 700; font-size: 0.75rem; }
+    .verbe-detail { display: none; padding: 12px; background: rgba(112,1,67,0.03); border-radius: var(--radius); margin-top: 10px; font-size: 0.85rem; line-height: 1.6; border-left: 3px solid var(--purple); }
+    .verbe-detail.show { display: block; }
+    .galerie-card { background: var(--white); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 12px; box-shadow: var(--shadow); cursor: pointer; transition: var(--transition); display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .galerie-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .galerie-card .g-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(112,1,67,0.06); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .galerie-card .g-content { flex: 1; }
+    .galerie-card .g-content .g-title { font-family: var(--font-ui); font-weight: 700; color: var(--purple); }
+    .galerie-card .g-content .g-sub { font-size: 0.8rem; color: rgba(30,26,42,0.5); }
+    .galerie-card .g-arrow { color: var(--purple); font-size: 0.8rem; }
+    .galerie-card .g-detail { display: none; flex-basis: 100%; width: 100%; margin-top: 4px; padding-top: 12px; border-top: 1px solid rgba(112,1,67,0.06); font-size: 0.88rem; line-height: 1.7; color: rgba(30,26,42,0.7); }
+    .galerie-card.open .g-detail { display: block; }
+    .galerie-card.open .g-arrow { transform: rotate(180deg); }
+    .examen-badge { display: inline-block; background: var(--ko); color: var(--white); padding: 3px 12px; border-radius: 100px; font-family: var(--font-ui); font-weight: 700; font-size: 0.7rem; margin-bottom: 10px; }
+    .examen-timer-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .examen-timer-box { flex: 1; min-width: 100px; background: var(--white); border-radius: var(--radius); padding: 10px 14px; box-shadow: var(--shadow); text-align: center; }
+    .examen-timer-box .label { font-size: 0.6rem; text-transform: uppercase; color: rgba(30,26,42,0.4); letter-spacing: 0.04em; }
+    .examen-timer-box .time { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 600; color: var(--purple); }
+    .examen-timer-box .time.warning { color: var(--ko); }
+    .examen-controls { text-align: center; margin-bottom: 16px; }
+    .examen-controls button { padding: 8px 24px; background: var(--purple); color: var(--banana); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: var(--transition); }
+    .examen-controls button:hover { background: var(--purple-light); transform: translateY(-2px); }
+    .score-big { font-family: var(--font-ui); font-weight: 800; font-size: clamp(2.5rem, 5vw, 4rem); background: linear-gradient(135deg, var(--purple), var(--banana-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+    .comp-bar { margin: 8px 0; }
+    .comp-head { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px; }
+    .comp-name { color: rgba(30,26,42,0.6); }
+    .comp-pct { font-family: var(--font-mono); color: var(--purple); }
+    .bar-track { height: 4px; background: rgba(112,1,67,0.08); border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--purple), var(--banana-dark)); width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+    .badge-wrap { text-align: center; padding: 16px; }
+    .badge-icon { width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--banana-dark)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 10px; box-shadow: 0 0 24px rgba(112,1,67,0.2); animation: badgePop 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes badgePop { from { transform: scale(0) rotate(-20deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+    #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; display: none; }
+    .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: #200F07; padding: 8px 0 env(safe-area-inset-bottom, 8px) 0; border-top: 1px solid rgba(197,227,132,0.2); justify-content: space-around; align-items: center; }
+    .bottom-nav .nav-step { flex: 1; padding: 6px 0; text-align: center; font-size: 0.6rem; color: rgba(197,227,132,0.5); cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bottom-nav .nav-step .icon { font-size: 1.3rem; }
+    .bottom-nav .nav-step span:not(.icon) { font-size: 0.65rem; }
+    .bottom-nav .nav-step.active { color: #C5E384; }
+    @media (max-width: 900px) { .split-layout { flex-direction: column; } .a4-panel { flex: none; border-right: none; } .navbar-steps .nav-step .label { display: none; } .navbar-steps .nav-step { padding: 4px 6px; } .navbar-steps .nav-step .icon { font-size: 1.1rem; } .bottom-nav { display: flex; } .main-wrap { padding-bottom: 60px; } }
+    @media (max-width: 640px) { .navbar { padding: 0 10px; height: 50px; } .navbar-logo { font-size: 0.85rem; } .navbar-score { font-size: 0.7rem; } .navbar-avatar { width: 28px; height: 28px; font-size: 0.7rem; } .navbar-steps { display: none; } .a4-pages-wrap { padding: 12px 12px 40px; } .grid-2 { grid-template-columns: 1fr; } .login-blocks { grid-template-columns: 1fr; gap: 8px; } .verbes-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; } .verbe-card { padding: 6px; } .verbe-card .emoji { font-size: 1rem; } .verbe-card .name { font-size: 0.65rem; } .login-card { padding: 24px 16px; } .entete-officiel { flex-direction: column; align-items: center; text-align: center; padding: 12px; border-radius: 12px; } .entete-centre h1 { font-size: 14px; } .entete-centre .sous-titre { font-size: 10px; } .entete-centre .details { font-size: 9px; background: rgba(112,1,67,0.04); padding: 6px 10px; border-radius: 20px; margin-top: 8px; } .entete-droit .section-badge { font-size: 9px; padding: 2px 8px; } .qcm-block { padding: 8px 10px; } .coach-modal-content { max-width: 95%; padding: 16px; } .tt-modal-content { max-width: 95%; padding: 16px; } .examen-timer-container { flex-direction: column; } .nav-a4 { bottom: 70px; padding: 6px 12px; gap: 10px; min-width: 240px; } .nav-a4-btn { padding: 6px 16px; font-size: 0.75rem; } .split-layout { padding-bottom: 80px; } }
+    .text-center { text-align: center; }
+    .mt-8 { margin-top: 8px; }
+    .mb-8 { margin-bottom: 8px; }
+    .hidden { display: none !important; }
+    @media print { .navbar, .bottom-nav, .nav-a4, .coach-btn, .valider-btn, .examen-controls, .login-screen, #login-screen { display: none !important; } .split-layout { display: block !important; padding-bottom: 0 !important; } .a4-pages-wrap { padding: 0 !important; max-width: 100% !important; } .entete-officiel { background: white !important; border: 1px solid #ccc !important; } .qcm-feedback { break-inside: avoid; page-break-inside: avoid; } .a4-page { page-break-after: always; } }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div id="lightbox">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="" />
+  <div id="lightbox-caption"></div>
+</div>
+
+<div id="login-screen">
+  <div class="login-header">
+    <div class="logo-placeholder-img">
+      <img src="assets/logo.png" alt="Synapris" onerror="this.style.display='none';this.parentElement.innerHTML='🧠';" style="width:100%;height:100%;object-fit:contain;border-radius:16px;" />
+    </div>
+    <div class="login-video">
+      <video loop muted autoplay playsinline>
+        <source src="assets/intro.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="login-card">
+    <div class="logo">⚡ Synapris</div>
+    <div class="slogan">Éclairer l'intelligence</div>
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Mot de passe" />
+    <button class="btn-login border-draw" onclick="handleLogin()">Se connecter</button>
+    <div class="links">
+      <a href="#" onclick="alert('Inscription — bientôt disponible')">Créer un compte</a>
+      <a href="#" onclick="alert('Mot de passe oublié — bientôt disponible')">Mot de passe oublié</a>
+    </div>
+  </div>
+  <div class="login-blocks">
+    <div class="login-block"><div class="icon">🎯</div><div class="arabic">محاكاة الامتحان الرسمي</div><div class="french">Simulation officielle du bac – comme le jour J</div></div>
+    <div class="login-block"><div class="icon">🧑‍🏫</div><div class="arabic">الوضع الموجّه</div><div class="french">Mode guidé – correction officielle pas à pas</div></div>
+    <div class="login-block"><div class="icon">⏱️</div><div class="arabic">وضع الامتحان</div><div class="french">Mode examen – chrono et conditions réelles</div></div>
+    <div class="login-block"><div class="icon">💾</div><div class="arabic">حفظ التقدّم</div><div class="french">Sauvegarde automatique – reprends où tu t’es arrêté</div></div>
+  </div>
+</div>
+
+<nav class="navbar" id="navbar" style="display:none;">
+  <div class="navbar-logo">🧠 Synapris</div>
+  <div class="navbar-steps">
+    <div class="nav-step active" onclick="goTo(0)"><span class="icon">📋</span><span class="label">Brief</span></div>
+    <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span class="label">Cours</span></div>
+    <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span class="label">Guidé</span></div>
+    <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span class="label">Examen</span></div>
+    <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span class="label">Bilan</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="navbar-score" id="hdr-score">0 / 20</span>
+    <div class="navbar-avatar" id="avatar">👤</div>
+  </div>
+</nav>
+
+<main class="main-wrap" id="main-wrap" style="display:none;">
+
+  <!-- Brief -->
+  <div class="screen-full active" id="s0">
+    <div style="text-align:center;padding:4px 0 16px;">
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">📅 Jour 1 / 10</div>
+      <h1 style="font-family:var(--font-ui);font-weight:800;font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--purple);line-height:1.1;">Sciences de la Vie<br><span style="color:var(--purple-light);">et de la Terre</span></h1>
+      <p style="font-size:0.85rem;color:rgba(30,26,42,0.5);margin-top:4px;">Session Principale 2019 — Épreuve officielle simulée</p>
+    </div>
+    <div class="ui-card">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🧑‍🏫</div>
+        <div>
+          <div style="font-family:var(--font-ui);font-weight:700;font-size:0.7rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Ton Coach Synapris</div>
+          <div style="font-size:0.85rem;line-height:1.6;color:rgba(30,26,42,0.7);">Tu vas simuler l'épreuve officielle du baccalauréat 2019 (Session Principale). Le layout que tu vois est <strong style="color:var(--purple);">identique à l'épreuve réelle</strong>. Je suis là pour t'aider à <strong style="color:var(--purple);">construire ton raisonnement</strong> — jamais te donner la réponse.</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="item"><div class="label">Partie 1</div><div class="value">8 pts</div><div class="desc">QCM + Reproduction humaine</div></div>
+      <div class="item"><div class="label">Partie 2</div><div class="value">12 pts</div><div class="desc">Immunité + Génétique humaine</div></div>
+      <div class="item"><div class="label">Durée</div><div class="value">3h00</div><div class="desc">Coefficient 4</div></div>
+      <div class="item"><div class="label">Format</div><div class="value">4 pages</div><div class="desc">Navigation ← → par page</div></div>
+    </div>
+    <div class="ui-card">
+      <div class="ui-card-title">🎯 Verbes d'action</div>
+      <p style="font-size:0.8rem;color:rgba(30,26,42,0.5);margin-bottom:10px;">Clique sur chaque verbe pour comprendre ce qu'attend le correcteur.</p>
+      <div class="verbes-grid">
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-analyser')"><div class="emoji">🔍</div><div class="name">ANALYSER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-expliquer')"><div class="emoji">💡</div><div class="name">EXPLIQUER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-deduire')"><div class="emoji">⚡</div><div class="name">DÉDUIRE</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-preciser')"><div class="emoji">🎯</div><div class="name">PRÉCISER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-exploiter')"><div class="emoji">📊</div><div class="name">EXPLOITER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-representer')"><div class="emoji">✏️</div><div class="name">REPRÉSENTER</div></div>
+      </div>
+      <div id="v-analyser" class="verbe-detail"><strong>ANALYSER</strong> = Décomposer chaque élément du document + interpréter ce que chacun signifie. <br><span style="color:var(--ko);">⚠️</span> Décrire sans interpréter = 0 pt.</div>
+      <div id="v-expliquer" class="verbe-detail"><strong>EXPLIQUER</strong> = Données du document + mécanisme + connaissances antérieures. <br><span style="color:var(--ko);">⚠️</span> Nommer sans expliquer = incomplet.</div>
+      <div id="v-deduire" class="verbe-detail"><strong>DÉDUIRE</strong> = Observation → raisonnement logique → conclusion argumentée. <br><span style="color:var(--ko);">⚠️</span> Affirmer sans justifier = non recevable.</div>
+      <div id="v-preciser" class="verbe-detail"><strong>PRÉCISER</strong> = Réponse courte, ciblée, sans développement inutile. <br><span style="color:var(--ko);">⚠️</span> Rédiger un paragraphe entier = perte de temps.</div>
+      <div id="v-exploiter" class="verbe-detail"><strong>EXPLOITER</strong> = Extraire les données du document + mettre en relation + conclure. <br><span style="color:var(--ko);">⚠️</span> Ignorer les documents = hors sujet.</div>
+      <div id="v-representer" class="verbe-detail"><strong>REPRÉSENTER</strong> = Schéma propre, légendé, tracé à la règle. <br><span style="color:var(--ko);">⚠️</span> Pas de légende = 0 pt.</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+      <button class="valider-btn show border-draw" style="background:var(--purple);color:var(--banana);padding:10px 28px;font-size:0.85rem;" onclick="goTo(1)">Commencer →</button>
+    </div>
+  </div>
+
+  <!-- Cours -->
+  <div class="screen-full" id="s1">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 2 — Rappel cours</div>
+    <h2 style="font-family:var(--font-ui);font-weight:800;font-size:1.4rem;color:var(--purple);margin-bottom:4px;">Ce que tu dois savoir</h2>
+    <p style="font-size:0.85rem;color:rgba(30,26,42,0.5);margin-bottom:16px;">Notions ciblées pour <em>cette</em> épreuve uniquement</p>
+    
+    <!-- Reproduction humaine -->
+    <div class="galerie-card" onclick="toggleGalerie(this)">
+      <div class="g-icon">🧬</div>
+      <div class="g-content"><div class="g-title">Reproduction humaine</div><div class="g-sub">Ovulation, nidation, régulation hormonale</div></div>
+      <span class="g-arrow">▼</span>
+      <div class="g-detail">
+        <p><strong>Ovulation (événement A) :</strong> Le <span class="tt-trigger" onclick="openTT('follicule-mur')">follicule mûr</span> sécrète un pic d'<span class="tt-trigger" onclick="openTT('oestrogenes')">œstrogènes</span> qui exerce un <strong>rétrocontrôle positif</strong> sur l'axe hypothalamo-hypophysaire, entraînant un pic de <span class="tt-trigger" onclick="openTT('lh')">LH</span> et de <span class="tt-trigger" onclick="openTT('fsh')">FSH</span>. Ce pic déclenche l'éclatement du follicule et la libération de l'<span class="tt-trigger" onclick="openTT('ovocyte-ii')">ovocyte II</span>.</p>
+        <p><strong>Nidation (événement B) :</strong> Après la fécondation, le blastocyste se fixe dans la <span class="tt-trigger" onclick="openTT('muqueuse-uterine')">muqueuse utérine</span>. Le <span class="tt-trigger" onclick="openTT('trophoblaste')">trophoblaste</span> sécrète l'<span class="tt-trigger" onclick="openTT('hcg')">HCG</span> qui maintient le fonctionnement du <span class="tt-trigger" onclick="openTT('corps-jaune')">corps jaune</span>. Celui-ci sécrète les œstrogènes et la <span class="tt-trigger" onclick="openTT('progesterone')">progestérone</span> nécessaires au maintien de la muqueuse utérine.</p>
+        <div style="background:rgba(255,107,107,0.06);border-left:3px solid var(--ko);padding:6px 10px;margin:6px 0;font-size:0.85rem;">
+          <strong>⚠️ Piège :</strong> Ne confonds pas le rétrocontrôle positif (pic d'œstrogènes → pic de LH) et le rétrocontrôle négatif (inhibine → FSH). L'HCG est une hormone <strong>chorionique</strong>, pas hypophysaire.
+        </div>
+        <div style="margin-top:10px;padding:8px;background:rgba(112,1,67,0.04);border-radius:var(--radius);font-size:0.85rem;">
+          <strong>🇹🇳 Résumé en arabe :</strong><br>
+          <em>التبويض (الحدث A) : يُفرز الجريب الناضج ذروة من الإستروجين التي تمارس تغذية راجعة إيجابية على المحور الوطائي-النخامي، مما يؤدي إلى ذروة LH و FSH التي تحفز التبويض.<br>
+          الانغراس (الحدث B) : بعد الإخصاب، تثبت الأرومة الغاذية في بطانة الرحم وتفرز HCG التي تحافظ على عمل الجسم الأصفر الذي يفرز الإستروجين والبروجسترون الضروريين لبقاء بطانة الرحم.</em>
+        </div>
+      </div>
+    </div>
+
+    <!-- Immunité -->
+    <div class="galerie-card" onclick="toggleGalerie(this)">
+      <div class="g-icon">🛡️</div>
+      <div class="g-content"><div class="g-title">Immunité – RIMH et RIMC</div><div class="g-sub">LB, plasmocytes, LT4, LTc, spécificité</div></div>
+      <span class="g-arrow">▼</span>
+      <div class="g-detail">
+        <p><strong>Réponse immunitaire à médiation humorale (RIMH) :</strong> Cette réponse fait intervenir les <span class="tt-trigger" onclick="openTT('lb')">lymphocytes B (LB)</span> qui maturent dans la <span class="tt-trigger" onclick="openTT('moelle-osseuse')">moelle osseuse</span>. Lors de l'infection, ils se différencient en <span class="tt-trigger" onclick="openTT('plasmocyte')">plasmocytes</span> qui sécrètent des <span class="tt-trigger" onclick="openTT('anticorps')">anticorps</span> spécifiques au virus.</p>
+        <p><strong>Réponse immunitaire à médiation cellulaire (RIMC) :</strong> Cette réponse fait intervenir les <span class="tt-trigger" onclick="openTT('ltc')">lymphocytes T cytotoxiques (LTc)</span>. Ils reconnaissent les cellules infectées grâce au <span class="tt-trigger" onclick="openTT('cmh1')">CMH I</span> associé aux peptides viraux, puis libèrent des <span class="tt-trigger" onclick="openTT('perforine')">perforines</span> qui créent des pores dans la membrane de la cellule cible → <strong>lyse cellulaire</strong>.</p>
+        <p><strong>Spécificité :</strong> Chaque lymphocyte ne reconnaît qu'un seul antigène (via son <span class="tt-trigger" onclick="openTT('tcr')">TCR</span> ou ses immunoglobulines de surface). Cette propriété est démontrée par l'expérience 3 où des lymphocytes spécifiques à un virus ne réagissent pas à un autre virus.</p>
+        <div style="background:rgba(255,107,107,0.06);border-left:3px solid var(--ko);padding:6px 10px;margin:6px 0;font-size:0.85rem;">
+          <strong>⚠️ Piège :</strong> Ne confonds pas les rôles des <span class="tt-trigger" onclick="openTT('lt4')">LT4</span> (auxiliaires, sécrètent l'<span class="tt-trigger" onclick="openTT('il2')">IL2</span> qui active les LB et les LTc) et des LTc (effecteurs, tuent directement les cellules infectées).
+        </div>
+        <div style="margin-top:10px;padding:8px;background:rgba(112,1,67,0.04);border-radius:var(--radius);font-size:0.85rem;">
+          <strong>🇹🇳 Résumé en arabe :</strong><br>
+          <em>الاستجابة المناعية الخلطية (RIMH) تشمل الخلايا الليمفاوية B التي تنضج في نخاع العظم وتتحول إلى بلازميات تفرز أجساماً مضادة. الاستجابة المناعية الخلوية (RIMC) تشمل الخلايا الليمفاوية T السامة (LTc) التي تقتل الخلايا المصابة عبر البيرفورين. تتميز الاستجابتان بالنوعية (كل خلية تتعرف على مستضد واحد).</em>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIH -->
+    <div class="galerie-card" onclick="toggleGalerie(this)">
+      <div class="g-icon">🧫</div>
+      <div class="g-content"><div class="g-title">VIH – Cycle de multiplication</div><div class="g-sub">Fixation, transcription inverse, intégration</div></div>
+      <span class="g-arrow">▼</span>
+      <div class="g-detail">
+        <p><strong>Étapes du cycle du VIH :</strong></p>
+        <ol>
+          <li><strong>Fixation :</strong> Le <span class="tt-trigger" onclick="openTT('vih')">VIH</span> se fixe sur le <span class="tt-trigger" onclick="openTT('lt4')">LT4</span> via ses protéines d'enveloppe.</li>
+          <li><strong>Entrée :</strong> Le virus introduit son <span class="tt-trigger" onclick="openTT('arn-viral')">ARN viral</span> et sa <span class="tt-trigger" onclick="openTT('transcriptase-reverse')">transcriptase réverse</span> dans le cytoplasme.</li>
+          <li><strong>Transcription inverse :</strong> L'ARN viral est transcrit en <span class="tt-trigger" onclick="openTT('adn-c')">ADNc</span> (simple brin) puis en <span class="tt-trigger" onclick="openTT('provirus')">ADN double brin (provirus)</span>.</li>
+          <li><strong>Intégration :</strong> Le provirus s'intègre dans l'ADN du LT4 (action du <span class="tt-trigger" onclick="openTT('integrase')">raltégravir</span> → M3).</li>
+          <li><strong>Multiplication :</strong> L'ADN viral est transcrit en ARNm, traduit en protéines virales → assemblage → bourgeonnement.</li>
+        </ol>
+        <div style="background:rgba(255,107,107,0.06);border-left:3px solid var(--ko);padding:6px 10px;margin:6px 0;font-size:0.85rem;">
+          <strong>⚠️ Piège :</strong> Ne confonds pas les cibles des trois molécules : M1 bloque la <strong>fixation</strong>, M2 bloque la <strong>transcription inverse</strong>, M3 bloque l'<strong>intégration</strong>.
+        </div>
+        <div style="margin-top:10px;padding:8px;background:rgba(112,1,67,0.04);border-radius:var(--radius);font-size:0.85rem;">
+          <strong>🇹🇳 Résumé en arabe :</strong><br>
+          <em>دورة فيروس نقص المناعة البشرية (VIH) تشمل : التثبيت على الخلايا الليمفاوية T4، إدخال ARN الفيروسي والنسخ العكسي، تحويل ARN إلى ADN (النسخ العكسي)، اندماج ADN الفيروسي في ADN الخلية المضيفة (M3 يثبط هذه المرحلة)، ثم التكاثر والتحرير.</em>
+        </div>
+      </div>
+    </div>
+
+    <!-- Génétique humaine -->
+    <div class="galerie-card" onclick="toggleGalerie(this)">
+      <div class="g-icon">🧬</div>
+      <div class="g-content"><div class="g-title">Génétique humaine – Anomalies</div><div class="g-sub">Trisomie 21, transmission liée à l'X</div></div>
+      <span class="g-arrow">▼</span>
+      <div class="g-detail">
+        <p><strong>Trisomie 21 :</strong> Anomalie chromosomique due à la présence de trois exemplaires du <span class="tt-trigger" onclick="openTT('chromosome-21')">chromosome 21</span> (au lieu de deux). Dans le document 6, la non-disjonction des <span class="tt-trigger" onclick="openTT('chromatides')">chromatides</span> du chromosome 21 au cours de l'<span class="tt-trigger" onclick="openTT('anaphase-ii')">anaphase II</span> de l'<span class="tt-trigger" onclick="openTT('ovogenese')">ovogenèse</span> est à l'origine de cette anomalie.</p>
+        <p><strong>Transmission liée à l'X :</strong> Le gène responsable de l'anomalie génique est porté par le <span class="tt-trigger" onclick="openTT('chromosome-x')">chromosome X</span>. Le fœtus (sexe féminin) a un génotype Xa1Xa2 où a1 est l'allèle muté et a2 l'allèle sain. La maladie est <strong>récessive</strong> : elle ne s'exprime que si les deux allèles sont mutés (Xa1Xa1).</p>
+        <div style="background:rgba(255,107,107,0.06);border-left:3px solid var(--ko);padding:6px 10px;margin:6px 0;font-size:0.85rem;">
+          <strong>⚠️ Piège :</strong> Ne confonds pas l'anomalie chromosomique (trisomie 21) avec l'anomalie génique (mutation). La trisomie est détectée par <span class="tt-trigger" onclick="openTT('caryotype')">caryotype</span>, la mutation par <span class="tt-trigger" onclick="openTT('electrophorese')">électrophorèse</span> ou séquençage.
+        </div>
+        <div style="margin-top:10px;padding:8px;background:rgba(112,1,67,0.04);border-radius:var(--radius);font-size:0.85rem;">
+          <strong>🇹🇳 Résumé en arabe :</strong><br>
+          <em>متلازمة داون (تثلث الصبغي 21) هي اضطراب صبغي ناتج عن وجود ثلاث نسخ من الصبغي 21، وينتج عن عدم انفصال الكروماتيدات في الطور الانفصالي الثاني من انقسام البويضة. المرض الجيني المرتبط بالصبغي X ينتقل بشكل متنحي، ولا يظهر إلا إذا كان الأليلان متحورين (Xa1Xa1).</em>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(112,1,67,0.06);">
+      <button class="valider-btn show border-draw" style="background:transparent;color:var(--purple);border:1px solid var(--purple);padding:8px 20px;font-size:0.8rem;" onclick="goTo(0)">← Brief</button>
+      <button class="valider-btn show border-draw" style="background:var(--purple);color:var(--banana);padding:10px 28px;font-size:0.85rem;" onclick="goTo(2)">Mode Guidé →</button>
+    </div>
+  </div>
+
+  <!-- Guidé -->
+  <div class="split-layout" id="s2">
+    <div class="a4-panel">
+      <div class="a4-pages-wrap">
+        <div class="entete-officiel">
+          <div class="entete-gauche">République Tunisienne<br>Ministère de l'Éducation</div>
+          <div class="entete-centre">
+            <h1>EXAMEN DU BACCALAURÉAT</h1>
+            <div class="sous-titre">SESSION 2019 — Session principale</div>
+            <div class="details"><span>Épreuve : <strong>Sciences de la vie et de la terre</strong></span><span>Durée : <strong>3h</strong></span><span>Coefficient : <strong>4</strong></span></div>
+          </div>
+          <div class="entete-droit"><div>Section :</div><div class="section-badge">Sciences expérimentales</div></div>
+        </div>
+
+        <!-- PAGE 1 – QCM -->
+        <div class="a4-page active" id="pg1">
+          <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(8 points)</span></div>
+          <div class="titre-section">I- QCM : <span class="pts">(4 points)</span></div>
+          <p style="font-size:13px;margin-bottom:10px;line-height:1.5;">Pour chacun des items suivants (de 1 à 8), il peut y avoir une (ou deux) réponse(s) correcte(s). Reportez sur votre copie le numéro de chaque item et indiquez dans chaque cas la (ou les deux) lettre(s) correspondant à la (ou aux deux) réponse(s) correcte(s).<br><strong>NB : toute réponse fausse annule la note attribuée à l'item.</strong></p>
+
+          <div class="qcm-block" id="qb1"><div class="q-num">1. <span class="q-text">Un sperme ne contenant pas de spermatozoïdes caractérise un sujet :</span></div>
+            <div class="qcm-options" id="qo1"><label class="qcm-opt"><input type="checkbox" data-q="1" value="a"> a- fertile.</label><label class="qcm-opt"><input type="checkbox" data-q="1" value="b"> b- <span class="tt-trigger" onclick="openTT('cryptorchide')">cryptorchide</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="1" value="c"> c- présentant une <span class="tt-trigger" onclick="openTT('oligospermie')">oligospermie</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="1" value="d"> d- présentant une <span class="tt-trigger" onclick="openTT('azoospermie')">azoospermie</span>.</label></div>
+            <button class="coach-btn" onclick="openCoach('coach-qcm-1')">🧑‍🏫 Coach</button><div class="qcm-feedback" id="fb1"></div></div>
+
+          <div class="qcm-block" id="qb2"><div class="q-num">2. <span class="q-text">Parmi les évènements qui se déroulent dans la <span class="tt-trigger" onclick="openTT('trompe')">trompe</span>, on cite :</span></div>
+            <div class="qcm-options" id="qo2"><label class="qcm-opt"><input type="checkbox" data-q="2" value="a"> a- la <span class="tt-trigger" onclick="openTT('reaction-corticale')">réaction corticale</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="2" value="b"> b- la division du <span class="tt-trigger" onclick="openTT('zygote')">zygote</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="2" value="c"> c- la <span class="tt-trigger" onclick="openTT('capacitation')">capacitation</span> des spermatozoïdes.</label><label class="qcm-opt"><input type="checkbox" data-q="2" value="d"> d- la transformation de la <span class="tt-trigger" onclick="openTT('morula')">morula</span> en <span class="tt-trigger" onclick="openTT('blastocyste')">blastocyste</span>.</label></div>
+            <button class="coach-btn" onclick="openCoach('coach-qcm-2')">🧑‍🏫 Coach</button><div class="qcm-feedback" id="fb2"></div></div>
+
+          <div class="qcm-block" id="qb3"><div class="q-num">3. <span class="q-text">L’étude de la transmission de deux couples d’allèles (A, a) et (B, b) montre un pourcentage de <span class="tt-trigger" onclick="openTT('recombinaison')">recombinaison</span> de 12%. Sachant que les parents sont de phénotypes [AB] et [ab], les résultats du <span class="tt-trigger" onclick="openTT('test-cross')">test cross</span> sont :</span></div>
+            <div class="qcm-options" id="qo3"><label class="qcm-opt"><input type="checkbox" data-q="3" value="a"> a- 50% [AB] 50% [ab]</label><label class="qcm-opt"><input type="checkbox" data-q="3" value="b"> b- 44% [AB] 6% [Ab] 6% [aB] 44% [ab]</label><label class="qcm-opt"><input type="checkbox" data-q="3" value="c"> c- 38% [AB] 12% [Ab] 12% [aB] 38% [ab]</label><label class="qcm-opt"><input type="checkbox" data-q="3" value="d"> d- 25% [AB] 25% [Ab] 25% [aB] 25% [ab]</label></div>
+            <button class="coach-btn" onclick="openCoach('coach-qcm-3')">🧑‍🏫 Coach</button><div class="qcm-feedback" id="fb3"></div></div>
+
+          <div class="qcm-block" id="qb4"><div class="q-num">4. <span class="q-text">La régulation de l’<span class="tt-trigger" onclick="openTT('hypotension')">hypotension</span> artérielle est marquée par :</span></div>
+            <div class="qcm-options" id="qo4"><label class="qcm-opt"><input type="checkbox" data-q="4" value="a"> a- l’inhibition du <span class="tt-trigger" onclick="openTT('centre-vasomoteur')">centre vasomoteur</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="4" value="b"> b- la libération de la <span class="tt-trigger" onclick="openTT('noradrenaline')">noradrénaline</span> par les fibres sympathiques.</label><label class="qcm-opt"><input type="checkbox" data-q="4" value="c"> c- la diminution de la fréquence des potentiels d’action au niveau des <span class="tt-trigger" onclick="openTT('nerfs-de-hering')">nerfs de Hering</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="4" value="d"> d- la diminution de la fréquence des potentiels d’action au niveau des nerfs sympathiques.</label></div>
+            <button class="coach-btn" onclick="openCoach('coach-qcm-4')">🧑‍🏫 Coach</button><div class="qcm-feedback" id="fb4"></div></div>
+
+          <div class="qcm-block" id="qb5"><div class="q-num">5. <span class="q-text">La stimulation efficace du <span class="tt-trigger" onclick="openTT('bout-peripherique')">bout périphérique</span> du <span class="tt-trigger" onclick="openTT('nerf-x')">nerf X</span> sectionné entraîne :</span></div>
+            <div class="qcm-options" id="qo5"><label class="qcm-opt"><input type="checkbox" data-q="5" value="a"> a- une <span class="tt-trigger" onclick="openTT('hypertension')">hypertension</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="5" value="b"> b- une <span class="tt-trigger" onclick="openTT('cardioacceleration')">cardioaccélération</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="5" value="c"> c- une sécrétion d’<span class="tt-trigger" onclick="openTT('acetylcholine')">acétylcholine</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="5" value="d"> d- une <span class="tt-trigger" onclick="openTT('vasoconstriction')">vasoconstriction</span> des artérioles.</label></div>
+            <button class="coach-btn" onclick="openCoach('coach-qcm-5')">🧑‍🏫 Coach</button><div class="qcm-feedback" id="fb5"></div></div>
+
+          <div class="qcm-block" id="qb6"><div class="q-num">6. <span class="q-text">L’<span class="tt-trigger" onclick="openTT('aldosterone')">aldostérone</span> est une hormone qui :</span></div>
+            <div class="qcm-options" id="qo6"><label class="qcm-opt"><input type="checkbox" data-q="6" value="a"> a- est sécrétée par les <span class="tt-trigger" onclick="openTT('medullosurrenales')">médullosurrénales</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="6" value="b"> b- est sécrétée par les <span class="tt-trigger" onclick="openTT('neurones-hypothalamiques')">neurones hypothalamiques</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="6" value="c"> c- intervient dans la régulation de l’hypertension.</label><label class="qcm-opt"><input type="checkbox" data-q="6" value="d"> d- augmente la <span class="tt-trigger" onclick="openTT('reabsorption-sodium')">réabsorption</span> des ions Na⁺ au niveau des reins.</label></div>
+            <button class="coach-btn" onclick="openCoach('coach-qcm-6')">🧑‍🏫 Coach</button><div class="qcm-feedback" id="fb6"></div></div>
+
+          <div class="qcm-block" id="qb7"><div class="q-num">7. <span class="q-text">Les canaux ioniques <span class="tt-trigger" onclick="openTT('canaux-chimio-dependants')">chimio-dépendants</span> sont localisés au niveau :</span></div>
+            <div class="qcm-options" id="qo7"><label class="qcm-opt"><input type="checkbox" data-q="7" value="a"> a- du <span class="tt-trigger" onclick="openTT('cone-axonique')">cône axonique</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="7" value="b"> b- du <span class="tt-trigger" onclick="openTT('bouton-synaptique')">bouton synaptique</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="7" value="c"> c- de la <span class="tt-trigger" onclick="openTT('membrane-post-synaptique')">membrane post synaptique</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="7" value="d"> d- du <span class="tt-trigger" onclick="openTT('site-transducteur')">site transducteur</span> d’un récepteur sensoriel.</label></div>
+            <button class="coach-btn" onclick="openCoach('coach-qcm-7')">🧑‍🏫 Coach</button><div class="qcm-feedback" id="fb7"></div></div>
+
+          <div class="qcm-block" id="qb8"><div class="q-num">8. <span class="q-text">La molécule d’<span class="tt-trigger" onclick="openTT('ige')">immunoglobuline E (IgE)</span> est capable de se fixer sur :</span></div>
+            <div class="qcm-options" id="qo8"><label class="qcm-opt"><input type="checkbox" data-q="8" value="a"> a- un <span class="tt-trigger" onclick="openTT('mastocyte')">mastocyte</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="8" value="b"> b- un <span class="tt-trigger" onclick="openTT('lymphocyte')">lymphocyte</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="8" value="c"> c- un <span class="tt-trigger" onclick="openTT('macrophage')">macrophage</span>.</label><label class="qcm-opt"><input type="checkbox" data-q="8" value="d"> d- une cellule infectée.</label></div>
+            <button class="coach-btn" onclick="openCoach('coach-qcm-8')">🧑‍🏫 Coach</button><div class="qcm-feedback" id="fb8"></div></div>
+
+          <div style="margin-top:20px;text-align:center;padding:16px;border-top:1px solid rgba(112,1,67,0.08);">
+            <button class="valider-btn show border-draw" id="btn-valider-qcm" style="background:var(--purple);color:var(--banana);padding:12px 32px;font-size:0.9rem;border:none;" onclick="validateAllQCM()">✅ Valider la Partie I — QCM</button>
+            <div id="qcm-bilan-lot" style="display:none;margin-top:12px;padding:12px;background:rgba(197,227,132,0.12);border-radius:var(--radius);border-left:3px solid var(--ok);font-size:0.85rem;text-align:left;"></div>
+          </div>
+          <div class="page-num">1 / 4</div>
+        </div>
+
+        <!-- PAGE 2 – Reproduction humaine -->
+        <div class="a4-page" id="pg2">
+          <div class="titre-partie" style="margin-top:0;">II- Reproduction humaine <span class="pts">(4 points)</span></div>
+          <div style="font-size:13px;margin-bottom:10px;">Le document 1 représente schématiquement des structures impliquées dans la fonction reproductrice humaine.</div>
+          <div class="doc-figure"><div class="doc-figure-header">Document 1 — Structures de la reproduction</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc1_reproduction.png','Document 1 — Reproduction humaine')"><img src="assets/doc1_reproduction.png" alt="Document 1" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🧬<br><small>doc1_reproduction.png</small></div><div class="zoom-hint">🔍 Agrandir</div></div></div></div>
+          
+          <div class="q-item"><div class="q-num">1. Nommez les structures désignées par les flèches de 1 à 5 en reportant les numéros sur votre copie.</div>
+            <textarea class="lignes-reponse" rows="3" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-repro-1')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-repro-1')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-repro-1" style="display:none;"></div>
+          </div>
+
+          <div class="q-item"><div class="q-num">2. Identifiez, en justifiant la réponse, les évènements désignés par les lettres A et B.</div>
+            <textarea class="lignes-reponse" rows="4" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-repro-2')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-repro-2')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-repro-2" style="display:none;"></div>
+          </div>
+
+          <div class="q-item"><div class="q-num">3. Expliquez les interactions hormonales entre les structures du document 1 :<br>- qui sont responsables du déclenchement de l'évènement A.<br>- qui maintiennent l'évènement B.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-repro-3')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-repro-3')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-repro-3" style="display:none;"></div>
+          </div>
+          <div class="page-num">2 / 4</div>
+        </div>
+
+        <!-- PAGE 3 – Immunité -->
+        <div class="a4-page" id="pg3">
+          <div class="titre-partie" style="margin-top:0;">DEUXIEME PARTIE <span class="pts">(12 points)</span></div>
+          <div class="titre-section">I- Immunité de l'organisme <span class="pts">(8 points)</span></div>
+          <div style="font-size:13px;margin-bottom:8px;">On se propose de préciser les mécanismes de la réponse immunitaire dans le cas d'une infection virale.</div>
+          
+          <div style="font-size:13px;margin-bottom:8px;"><strong>Expérience 1</strong> – Document 2</div>
+          <div class="doc-figure"><div class="doc-figure-header">Document 2 — Schémas d'interprétation (microscope électronique)</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc2_immunite_cellules.png','Document 2 — Cellules immunitaires')"><img src="assets/doc2_immunite_cellules.png" alt="Document 2" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🛡️<br><small>doc2_immunite_cellules.png</small></div><div class="zoom-hint">🔍 Agrandir</div></div></div></div>
+
+          <div class="q-item"><div class="q-num">1. Exploitez le document 2 en vue :<br>- d'identifier les cellules X, Y et Z.<br>- de dégager la (ou les) nature(s) de la (ou des) réaction(s) immunitaire(s) dirigée(s) contre le virus V.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-immunite-1')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-immunite-1')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-immunite-1" style="display:none;"></div>
+          </div>
+
+          <div style="font-size:13px;margin-bottom:8px;"><strong>Expérience 3</strong> – Document 4 (implicite dans le sujet – résultats de spécificité)</div>
+          <div class="doc-figure"><div class="doc-figure-header">Document 4 — Résultats de l'expérience 3</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc4_cultures_immunite.png','Document 4 — Cultures')"><img src="assets/doc4_cultures_immunite.png" alt="Document 4" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🧫<br><small>doc4_cultures_immunite.png</small></div><div class="zoom-hint">🔍 Agrandir</div></div></div></div>
+
+          <div class="q-item"><div class="q-num">3. Exploitez les résultats de l'expérience 3 en vue :<br>- d'identifier les lymphocytes libres dans les cultures 2 et 3.<br>- de déduire une propriété de la réponse immunitaire.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-immunite-3')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-immunite-3')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-immunite-3" style="display:none;"></div>
+          </div>
+
+          <div class="q-item"><div class="q-num">4. À partir des informations tirées précédemment et de vos connaissances, expliquez, à l'aide d'un schéma fonctionnel, le mécanisme du déroulement de la réponse immunitaire dirigée contre un virus.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-immunite-4')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-immunite-4')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-immunite-4" style="display:none;"></div>
+          </div>
+
+          <div style="font-size:13px;margin-bottom:8px;"><strong>B – VIH</strong> – Document 5</div>
+          <div class="doc-figure"><div class="doc-figure-header">Document 5 — Expériences avec M1, M2, M3</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc5_vih_molecules.png','Document 5 — VIH')"><img src="assets/doc5_vih_molecules.png" alt="Document 5" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🧫<br><small>doc5_vih_molecules.png</small></div><div class="zoom-hint">🔍 Agrandir</div></div></div></div>
+
+          <div class="q-item"><div class="q-num">a. À partir de l'analyse des résultats obtenus et en faisant appel à vos connaissances, dégagez l'effet de chaque molécule utilisée sur le mode d'action du VIH sur le LT4.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-vih-a')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-vih-a')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-vih-a" style="display:none;"></div>
+          </div>
+
+          <div class="q-item"><div class="q-num">b. Expliquez le mode d'action du VIH sur le LT4.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-vih-b')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-vih-b')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-vih-b" style="display:none;"></div>
+          </div>
+
+          <div class="page-num">3 / 4</div>
+        </div>
+
+        <!-- PAGE 4 – Génétique humaine -->
+        <div class="a4-page" id="pg4">
+          <div class="titre-section" style="margin-top:0;">II- Procréation et génétique humaine <span class="pts">(4 points)</span></div>
+          <div style="font-size:13px;margin-bottom:8px;">On se propose de déterminer deux anomalies : une chromosome unique et une génique chez un fœtus humain. Le document 6 illustre schématiquement une des étapes de la fécondation humaine. Le nombre de chromosomes est réduit à 2n = 4. Le couple d’allèles (a₁, a₂) est celui du gène qui contrôle une anomalie héréditaire.</div>
+          <div class="doc-figure"><div class="doc-figure-header">Document 6 — Étape de la fécondation</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc6_fécondation.png','Document 6 — Fécondation')"><img src="assets/doc6_fécondation.png" alt="Document 6" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🧬<br><small>doc6_fécondation.png</small></div><div class="zoom-hint">🔍 Agrandir</div></div></div></div>
+
+          <div class="q-item"><div class="q-num">1. Exploitez le document 6 en vue d'identifier les éléments désignés par les numéros 1, 2, 3 et 4.</div>
+            <textarea class="lignes-reponse" rows="4" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-genetique-1')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-genetique-1')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-genetique-1" style="display:none;"></div>
+          </div>
+
+          <div class="q-item"><div class="q-num">2. La cellule C serait à l'origine d'un fœtus présentant une anomalie chromosome. Exploitez le document 6 en vue de préciser cette anomalie et d'expliquer son origine.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-genetique-2')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-genetique-2')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-genetique-2" style="display:none;"></div>
+          </div>
+
+          <div class="q-item"><div class="q-num">3. Exploitez le document 6 en vue de préciser le sexe du fœtus, la localisation du gène qui contrôle l'anomalie génique, le génotype du fœtus et les génotypes de ses parents.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-genetique-3')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-genetique-3')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-genetique-3" style="display:none;"></div>
+          </div>
+
+          <div class="q-item"><div class="q-num">4. En considérant uniquement l'anomalie génique, précisez en justifiant votre réponse, le phénotype du fœtus dans les deux cas suivants :<br>a- premier cas : la mère est atteinte.<br>b- deuxième cas : la mère est saine.</div>
+            <textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea>
+            <button class="valider-btn show border-draw" onclick="revealCorrection(event,'corr-genetique-4')">Voir correction →</button>
+            <button class="coach-btn" onclick="openCoach('coach-genetique-4')">🧑‍🏫 Coach</button>
+            <div class="qcm-feedback" id="corr-genetique-4" style="display:none;"></div>
+          </div>
+          <div class="page-num">4 / 4</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-a4">
+      <button class="nav-a4-btn border-draw" onclick="pgPrev()">← Précédent</button>
+      <span class="nav-a4-indicator" id="pg-indicator">Page 1 / 4</span>
+      <button class="nav-a4-btn border-draw" onclick="pgNext()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- Examen -->
+  <div class="screen-full" id="s3">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div class="examen-badge">🔒 Mode Examen</div>
+      <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ko);">Conditions réelles — Zéro aide</span>
+    </div>
+    <div class="examen-timer-container">
+      <div class="examen-timer-box"><div class="label">Partie I (QCM + Reproduc.)</div><div class="time" id="ex-timer-1">45:00</div></div>
+      <div class="examen-timer-box"><div class="label">Immunité (8 pts)</div><div class="time" id="ex-timer-2">60:00</div></div>
+      <div class="examen-timer-box"><div class="label">Génétique (4 pts)</div><div class="time" id="ex-timer-3">45:00</div></div>
+    </div>
+    <div class="examen-controls"><button onclick="startExamen()">▶ Lancer l'examen</button></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;background:rgba(255,255,255,0.6);border-radius:var(--radius);">
+      <button class="nav-a4-btn border-draw" onclick="showExamPage(examPage-1)">← Précédent</button>
+      <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--purple);" id="epg-indicator">Page 1 / 4</span>
+      <button class="nav-a4-btn border-draw" onclick="showExamPage(examPage+1)">Suivant →</button>
+    </div>
+    
+    <!-- PAGE EXAMEN 1 – QCM -->
+    <div class="exam-page active" id="epg1" style="background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+      <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(8 points)</span></div>
+      <div class="titre-section">I- QCM : <span class="pts">(4 points)</span></div>
+      <p style="font-size:12px;margin-bottom:10px;line-height:1.5;color:rgba(30,26,42,0.6);">Pour chacun des items suivants (de 1 à 8), il peut y avoir une ou deux réponse(s) correcte(s). Reportez sur votre copie le numéro de chaque item et indiquez dans chaque cas la (ou les deux) lettre(s) correspondant à la (ou aux deux) réponse(s) correcte(s).<br><strong>NB : toute réponse fausse annule la note attribuée à l'item.</strong></p>
+      
+      <div class="qcm-block" style="padding:10px;"><div class="q-num">1. Un sperme ne contenant pas de spermatozoïdes caractérise un sujet :</div>
+        <div class="qcm-options" id="eqo1"><label class="qcm-opt"><input type="checkbox" name="eq1" value="a"> a- fertile.</label><label class="qcm-opt"><input type="checkbox" name="eq1" value="b"> b- cryptorchide.</label><label class="qcm-opt"><input type="checkbox" name="eq1" value="c"> c- présentant une oligospermie.</label><label class="qcm-opt"><input type="checkbox" name="eq1" value="d"> d- présentant une azoospermie.</label></div></div>
+      
+      <div class="qcm-block" style="padding:10px;"><div class="q-num">2. Parmi les évènements qui se déroulent dans la trompe, on cite :</div>
+        <div class="qcm-options" id="eqo2"><label class="qcm-opt"><input type="checkbox" name="eq2" value="a"> a- la réaction corticale.</label><label class="qcm-opt"><input type="checkbox" name="eq2" value="b"> b- la division du zygote.</label><label class="qcm-opt"><input type="checkbox" name="eq2" value="c"> c- la capacitation des spermatozoïdes.</label><label class="qcm-opt"><input type="checkbox" name="eq2" value="d"> d- la transformation de la morula en blastocyste.</label></div></div>
+      
+      <div class="qcm-block" style="padding:10px;"><div class="q-num">3. L’étude de la transmission de deux couples d’allèles (A, a) et (B, b) montre un pourcentage de recombinaison de 12%. Sachant que les parents sont de phénotypes [AB] et [ab], les résultats du test cross sont :</div>
+        <div class="qcm-options" id="eqo3"><label class="qcm-opt"><input type="checkbox" name="eq3" value="a"> a- 50% [AB] 50% [ab]</label><label class="qcm-opt"><input type="checkbox" name="eq3" value="b"> b- 44% [AB] 6% [Ab] 6% [aB] 44% [ab]</label><label class="qcm-opt"><input type="checkbox" name="eq3" value="c"> c- 38% [AB] 12% [Ab] 12% [aB] 38% [ab]</label><label class="qcm-opt"><input type="checkbox" name="eq3" value="d"> d- 25% [AB] 25% [Ab] 25% [aB] 25% [ab]</label></div></div>
+      
+      <div class="qcm-block" style="padding:10px;"><div class="q-num">4. La régulation de l’hypotension artérielle est marquée par :</div>
+        <div class="qcm-options" id="eqo4"><label class="qcm-opt"><input type="checkbox" name="eq4" value="a"> a- l’inhibition du centre vasomoteur.</label><label class="qcm-opt"><input type="checkbox" name="eq4" value="b"> b- la libération de la noradrénaline par les fibres sympathiques.</label><label class="qcm-opt"><input type="checkbox" name="eq4" value="c"> c- la diminution de la fréquence des potentiels d’action au niveau des nerfs de Hering.</label><label class="qcm-opt"><input type="checkbox" name="eq4" value="d"> d- la diminution de la fréquence des potentiels d’action au niveau des nerfs sympathiques.</label></div></div>
+      
+      <div class="qcm-block" style="padding:10px;"><div class="q-num">5. La stimulation efficace du bout périphérique du nerf X sectionné entraîne :</div>
+        <div class="qcm-options" id="eqo5"><label class="qcm-opt"><input type="checkbox" name="eq5" value="a"> a- une hypertension.</label><label class="qcm-opt"><input type="checkbox" name="eq5" value="b"> b- une cardioaccélération.</label><label class="qcm-opt"><input type="checkbox" name="eq5" value="c"> c- une sécrétion d’acétylcholine.</label><label class="qcm-opt"><input type="checkbox" name="eq5" value="d"> d- une vasoconstriction des artérioles.</label></div></div>
+      
+      <div class="qcm-block" style="padding:10px;"><div class="q-num">6. L’aldostérone est une hormone qui :</div>
+        <div class="qcm-options" id="eqo6"><label class="qcm-opt"><input type="checkbox" name="eq6" value="a"> a- est sécrétée par les médullosurrénales.</label><label class="qcm-opt"><input type="checkbox" name="eq6" value="b"> b- est sécrétée par les neurones hypothalamiques.</label><label class="qcm-opt"><input type="checkbox" name="eq6" value="c"> c- intervient dans la régulation de l’hypertension.</label><label class="qcm-opt"><input type="checkbox" name="eq6" value="d"> d- augmente la réabsorption des ions Na⁺ au niveau des reins.</label></div></div>
+      
+      <div class="qcm-block" style="padding:10px;"><div class="q-num">7. Les canaux ioniques chimio-dépendants sont localisés au niveau :</div>
+        <div class="qcm-options" id="eqo7"><label class="qcm-opt"><input type="checkbox" name="eq7" value="a"> a- du cône axonique.</label><label class="qcm-opt"><input type="checkbox" name="eq7" value="b"> b- du bouton synaptique.</label><label class="qcm-opt"><input type="checkbox" name="eq7" value="c"> c- de la membrane post synaptique.</label><label class="qcm-opt"><input type="checkbox" name="eq7" value="d"> d- du site transducteur d’un récepteur sensoriel.</label></div></div>
+      
+      <div class="qcm-block" style="padding:10px;"><div class="q-num">8. La molécule d’immunoglobuline E (IgE) est capable de se fixer sur :</div>
+        <div class="qcm-options" id="eqo8"><label class="qcm-opt"><input type="checkbox" name="eq8" value="a"> a- un mastocyte.</label><label class="qcm-opt"><input type="checkbox" name="eq8" value="b"> b- un lymphocyte.</label><label class="qcm-opt"><input type="checkbox" name="eq8" value="c"> c- un macrophage.</label><label class="qcm-opt"><input type="checkbox" name="eq8" value="d"> d- une cellule infectée.</label></div></div>
+      
+      <div style="text-align:right;color:rgba(30,26,42,0.3);font-size:11px;margin-top:12px;">Page 1 / 4</div>
+    </div>
+
+    <!-- PAGE EXAMEN 2 – Reproduction humaine -->
+    <div class="exam-page" id="epg2" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+      <div class="titre-partie" style="margin-top:0;">II- Reproduction humaine <span class="pts">(4 points)</span></div>
+      <p style="font-size:12px;margin-bottom:10px;line-height:1.5;color:rgba(30,26,42,0.6);">Le document 1 représente schématiquement des structures impliquées dans la fonction reproductrice humaine.</p>
+      <div class="doc-figure"><div class="doc-figure-header">Document 1 — Structures de la reproduction</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc1_reproduction.png','Document 1')"><img src="assets/doc1_reproduction.png" alt="Document 1" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🧬<br><small>doc1_reproduction.png</small></div><div class="zoom-hint">🔍</div></div></div></div>
+      <div class="q-item"><div class="q-num">1. Nommez les structures désignées par les flèches de 1 à 5 en reportant les numéros sur votre copie.</div><textarea class="lignes-reponse" rows="3" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="q-item"><div class="q-num">2. Identifiez, en justifiant la réponse, les évènements désignés par les lettres A et B.</div><textarea class="lignes-reponse" rows="4" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="q-item"><div class="q-num">3. Expliquez les interactions hormonales entre les structures du document 1 :<br>- qui sont responsables du déclenchement de l'évènement A.<br>- qui maintiennent l'évènement B.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div style="text-align:right;color:rgba(30,26,42,0.3);font-size:11px;margin-top:12px;">Page 2 / 4</div>
+    </div>
+
+    <!-- PAGE EXAMEN 3 – Immunité -->
+    <div class="exam-page" id="epg3" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+      <div class="titre-partie" style="margin-top:0;">DEUXIEME PARTIE <span class="pts">(12 points)</span></div>
+      <div class="titre-section">I- Immunité de l'organisme <span class="pts">(8 points)</span></div>
+      <p style="font-size:12px;margin-bottom:8px;">On se propose de préciser les mécanismes de la réponse immunitaire dans le cas d'une infection virale.</p>
+      <div class="doc-figure"><div class="doc-figure-header">Document 2 — Schémas d'interprétation</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc2_immunite_cellules.png','Document 2')"><img src="assets/doc2_immunite_cellules.png" alt="Document 2" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🛡️<br><small>doc2_immunite_cellules.png</small></div><div class="zoom-hint">🔍</div></div></div></div>
+      <div class="q-item"><div class="q-num">1. Exploitez le document 2 en vue :<br>- d'identifier les cellules X, Y et Z.<br>- de dégager la (ou les) nature(s) de la (ou des) réaction(s) immunitaire(s) dirigée(s) contre le virus V.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="doc-figure"><div class="doc-figure-header">Document 4 — Résultats de l'expérience 3</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc4_cultures_immunite.png','Document 4')"><img src="assets/doc4_cultures_immunite.png" alt="Document 4" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🧫<br><small>doc4_cultures_immunite.png</small></div><div class="zoom-hint">🔍</div></div></div></div>
+      <div class="q-item"><div class="q-num">3. Exploitez les résultats de l'expérience 3 en vue :<br>- d'identifier les lymphocytes libres dans les cultures 2 et 3.<br>- de déduire une propriété de la réponse immunitaire.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="q-item"><div class="q-num">4. À partir des informations tirées précédemment et de vos connaissances, expliquez, à l'aide d'un schéma fonctionnel, le mécanisme du déroulement de la réponse immunitaire dirigée contre un virus.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="doc-figure"><div class="doc-figure-header">Document 5 — Expériences avec M1, M2, M3</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc5_vih_molecules.png','Document 5')"><img src="assets/doc5_vih_molecules.png" alt="Document 5" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🧫<br><small>doc5_vih_molecules.png</small></div><div class="zoom-hint">🔍</div></div></div></div>
+      <div class="q-item"><div class="q-num">a. À partir de l'analyse des résultats obtenus et en faisant appel à vos connaissances, dégagez l'effet de chaque molécule utilisée sur le mode d'action du VIH sur le LT4.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="q-item"><div class="q-num">b. Expliquez le mode d'action du VIH sur le LT4.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div style="text-align:right;color:rgba(30,26,42,0.3);font-size:11px;margin-top:12px;">Page 3 / 4</div>
+    </div>
+
+    <!-- PAGE EXAMEN 4 – Génétique humaine -->
+    <div class="exam-page" id="epg4" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+      <div class="titre-section" style="margin-top:0;">II- Procréation et génétique humaine <span class="pts">(4 points)</span></div>
+      <p style="font-size:12px;margin-bottom:8px;">On se propose de déterminer deux anomalies : une chromosome unique et une génique chez un fœtus humain. Le document 6 illustre schématiquement une des étapes de la fécondation humaine. Le nombre de chromosomes est réduit à 2n = 4. Le couple d’allèles (a₁, a₂) est celui du gène qui contrôle une anomalie héréditaire.</p>
+      <div class="doc-figure"><div class="doc-figure-header">Document 6 — Étape de la fécondation</div><div class="doc-figure-body"><div class="doc-img-wrap" onclick="openLightbox('assets/doc6_fécondation.png','Document 6')"><img src="assets/doc6_fécondation.png" alt="Document 6" class="doc-img" onerror="this.parentElement.classList.add('img-missing');this.style.display='none';"/><div class="img-fallback">🧬<br><small>doc6_fécondation.png</small></div><div class="zoom-hint">🔍</div></div></div></div>
+      <div class="q-item"><div class="q-num">1. Exploitez le document 6 en vue d'identifier les éléments désignés par les numéros 1, 2, 3 et 4.</div><textarea class="lignes-reponse" rows="4" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="q-item"><div class="q-num">2. La cellule C serait à l'origine d'un fœtus présentant une anomalie chromosome. Exploitez le document 6 en vue de préciser cette anomalie et d'expliquer son origine.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="q-item"><div class="q-num">3. Exploitez le document 6 en vue de préciser le sexe du fœtus, la localisation du gène qui contrôle l'anomalie génique, le génotype du fœtus et les génotypes de ses parents.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div class="q-item"><div class="q-num">4. En considérant uniquement l'anomalie génique, précisez en justifiant votre réponse, le phénotype du fœtus dans les deux cas suivants :<br>a- premier cas : la mère est atteinte.<br>b- deuxième cas : la mère est saine.</div><textarea class="lignes-reponse" rows="5" placeholder="Rédigez votre réponse..."></textarea></div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(112,1,67,0.08);text-align:center;"><button class="valider-btn show border-draw" style="background:var(--ko);color:var(--white);padding:12px 28px;font-size:0.9rem;border:none;" onclick="validerExamenComplet()">📋 Remettre la copie</button></div>
+      <div style="text-align:right;color:rgba(30,26,42,0.3);font-size:11px;margin-top:12px;">Page 4 / 4</div>
+    </div>
+  </div>
+
+  <!-- Bilan -->
+  <div class="screen-full" id="s4">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 5 — Bilan</div>
+    <div class="ui-card" style="text-align:center;padding:24px;">
+      <div style="font-size:0.75rem;color:rgba(30,26,42,0.4);margin-bottom:4px;">SCORE GUIDÉ</div>
+      <div class="score-big" id="final-score-guide">--</div>
+      <div style="font-size:0.75rem;color:rgba(30,26,42,0.4);margin-top:2px;">/ 20 points</div>
+      <div id="mention-badge" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(112,1,67,0.08);color:var(--purple);">--</div>
+    </div>
+    <div class="ui-card"><div class="ui-card-title">📊 Résultats par partie</div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📋 QCM — Partie I</span><span class="comp-pct" id="p1">0%</span></div><div class="bar-track"><div class="bar-fill" id="b1"></div></div><div style="font-size:0.7rem;color:rgba(30,26,42,0.4);margin-top:2px;" id="pts1">0 / 4 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">🧬 Reproduction humaine</span><span class="comp-pct" id="p2">0%</span></div><div class="bar-track"><div class="bar-fill" id="b2"></div></div><div style="font-size:0.7rem;color:rgba(30,26,42,0.4);margin-top:2px;" id="pts2">0 / 4 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">🛡️ Immunité</span><span class="comp-pct" id="p3">0%</span></div><div class="bar-track"><div class="bar-fill" id="b3"></div></div><div style="font-size:0.7rem;color:rgba(30,26,42,0.4);margin-top:2px;" id="pts3">0 / 8 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">🧬 Génétique humaine</span><span class="comp-pct" id="p4">0%</span></div><div class="bar-track"><div class="bar-fill" id="b4"></div></div><div style="font-size:0.7rem;color:rgba(30,26,42,0.4);margin-top:2px;" id="pts4">0 / 4 pts</div></div>
+    </div>
+    <div class="ui-card" style="border-color:rgba(197,227,132,0.2);"><div class="badge-wrap"><div class="badge-icon">🔬</div><div style="font-family:var(--font-ui);font-weight:800;font-size:1.1rem;color:var(--purple);margin-bottom:4px;">Badge débloqué !</div><div style="font-size:0.8rem;color:rgba(30,26,42,0.5);">Observateur Scientifique — Jour 1 complété</div></div></div>
+    <div class="ui-card" style="border-color:rgba(112,1,67,0.15);"><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:36px;height:36px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">🧑‍🏫</div><div><div style="font-family:var(--font-ui);font-size:0.65rem;color:var(--purple);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Message Coach</div><div style="font-size:0.85rem;line-height:1.6;color:rgba(30,26,42,0.6);" id="coach-bilan-msg">Excellent travail aujourd'hui ! Demain : <strong style="color:var(--purple);">Épreuve 2020 Rattrapage</strong>. Continue sur cette lancée ! 🔥 Série : 1 jour</div></div></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(112,1,67,0.06);"><button class="valider-btn show border-draw" style="background:transparent;color:var(--purple);border:1px solid var(--purple);padding:8px 20px;font-size:0.8rem;" onclick="resetAll()">↺ Recommencer</button><button class="valider-btn show border-draw" id="btn-print" style="background:var(--purple);color:var(--banana);padding:10px 28px;font-size:0.85rem;" onclick="imprimerSujetEtCorrections()">🖨️ Imprimer (sujet + corrections)</button></div>
+  </div>
+</main>
+
+<div class="coach-modal" id="coach-modal"><div class="coach-modal-content"><button class="close-modal" onclick="closeCoach()">✕</button><div class="coach-title">🧑‍🏫 Coach Synapris</div><div id="coach-modal-body"></div></div></div>
+<div class="tt-modal" id="tt-modal"><div class="tt-modal-content"><button class="close-tt" onclick="closeTT()">✕</button><div class="tt-img" id="tt-img">🧠</div><div class="tt-def" id="tt-def"><strong>Terme</strong> — Définition courte.</div><button class="tt-audio" id="tt-audio-btn" onclick="speak(document.getElementById('tt-def').textContent.split('—')[0].trim())">🔊 Écouter</button><div class="tt-rappel" id="tt-rappel"><strong>📖 Rappel cours :</strong> Notion à réviser.</div></div></div>
+
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="nav-step active" onclick="goTo(0)"><span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><span>Brief</span></div>
+  <div class="nav-step" onclick="goTo(1)"><span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span>Cours</span></div>
+  <div class="nav-step" onclick="goTo(2)"><span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/><circle cx="12" cy="12" r="4"/></svg></span><span>Guidé</span></div>
+  <div class="nav-step" onclick="goTo(3)"><span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="19" x2="12" y2="19"/></svg></span><span>Examen</span></div>
+  <div class="nav-step" onclick="goTo(4)"><span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span>Bilan</span></div>
+</nav>
+
+<script>
+  let currentStep = 0, currentPage = 1, totalPages = 4, score = 0, examenTimers = [], examenStarted = false, examenSeconds = [2700,2700,5400], qcmValidated = false, examPage = 1;
+  const examTotalPages = 4;
+  let themeScores = { qcm: 0, repro: 0, immunite: 0, genetique: 0 };
+  const themeMax = { qcm: 4, repro: 4, immunite: 8, genetique: 4 };
+  const qcmConfig = {
+    1:{correct:['b','d'],pts:0.50},
+    2:{correct:['b','c'],pts:0.50},
+    3:{correct:['b'],pts:0.50}, // 44% [AB] 6% [Ab] 6% [aB] 44% [ab] → seule b correspond à 12% de recombinaison
+    4:{correct:['a','c'],pts:0.50},
+    5:{correct:['c'],pts:0.25},
+    6:{correct:['c','d'],pts:0.50},
+    7:{correct:['c'],pts:0.25},
+    8:{correct:['a','d'],pts:0.50}
+  };
+  const examQcmConfig = {
+    1:{correct:['b','d'],pts:0.50},
+    2:{correct:['b','c'],pts:0.50},
+    3:{correct:['b'],pts:0.50},
+    4:{correct:['a','c'],pts:0.50},
+    5:{correct:['c'],pts:0.25},
+    6:{correct:['c','d'],pts:0.50},
+    7:{correct:['c'],pts:0.25},
+    8:{correct:['a','d'],pts:0.50}
+  };
+
+  const correctionData = {
+    // Reproduction humaine
+    'corr-repro-1': {
+      theme: 'repro',
+      pts: 1.25,
+      html: `
+        <div class="fb-title">📋 Correction – Structures 1 à 5</div>
+        <div class="fb-body">
+          <p><strong>1 :</strong> Hypophyse</p>
+          <p><strong>2 :</strong> Follicule mûr (ou follicule de De Graaf)</p>
+          <p><strong>3 :</strong> Trophoblaste</p>
+          <p><strong>4 :</strong> Muqueuse utérine (endomètre)</p>
+          <p><strong>5 :</strong> Corps jaune</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit connaître et nommer correctement les structures de l'appareil reproducteur.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1,25 pt (0,25 pt par structure)</div>
+      `
+    },
+    'corr-repro-2': {
+      theme: 'repro',
+      pts: 1,
+      html: `
+        <div class="fb-title">📋 Correction – Évènements A et B</div>
+        <div class="fb-body">
+          <p><strong>Évènement A :</strong> Ovulation.<br>
+          <strong>Justification :</strong> Éclatement du follicule mûr et libération de l'ovocyte II.</p>
+          <p><strong>Évènement B :</strong> Nidation.<br>
+          <strong>Justification :</strong> Fixation du blastocyste dans la muqueuse utérine.</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit identifier les évènements et fournir une justification claire.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1 point (0,5 pt par évènement)</div>
+      `
+    },
+    'corr-repro-3': {
+      theme: 'repro',
+      pts: 1.75,
+      html: `
+        <div class="fb-title">📋 Correction – Interactions hormonales</div>
+        <div class="fb-body">
+          <p><strong>Déclenchement de A (ovulation) :</strong><br>
+          Le follicule mûr sécrète un pic d'œstrogènes → rétrocontrôle positif sur l'axe hypothalamo-hypophysaire → pic de LH et de FSH → déclenche l'ovulation.</p>
+          <p><strong>Maintien de B (nidation) :</strong><br>
+          Le trophoblaste sécrète l'HCG → maintient le fonctionnement du corps jaune → sécrétion d'œstrogènes et de progestérone → maintien de la muqueuse utérine.</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit expliquer les interactions hormonales avec précision.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1,75 point (1 pt pour A, 0,75 pt pour B)</div>
+      `
+    },
+    // Immunité
+    'corr-immunite-1': {
+      theme: 'immunite',
+      pts: 2,
+      html: `
+        <div class="fb-title">📋 Correction – Cellules X, Y, Z et nature de la réponse</div>
+        <div class="fb-body">
+          <p><strong>Cellule X :</strong> Lymphocyte B (LB) – REG peu développé.</p>
+          <p><strong>Cellule Y :</strong> Plasmocyte – REG très développé (sécrétion d'anticorps).</p>
+          <p><strong>Cellule Z :</strong> Lymphocyte T cytotoxique (LTc) – reconnaît et lyse la cellule infectée.</p>
+          <p><strong>Nature de la réponse :</strong> RIMH (humorale) + RIMC (cellulaire).</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit identifier les cellules et indiquer les deux types de réponse immunitaire.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 2 points (0,5 pt par cellule + 0,5 pt pour les natures)</div>
+      `
+    },
+    'corr-immunite-3': {
+      theme: 'immunite',
+      pts: 1.75,
+      html: `
+        <div class="fb-title">📋 Correction – Expérience 3</div>
+        <div class="fb-body">
+          <p><strong>Culture 2 :</strong> Les lymphocytes libres sont les LB, LT4 et LT8 spécifiques à V2.</p>
+          <p><strong>Culture 3 :</strong> Les lymphocytes libres sont les LB, LT4 et LT8 spécifiques à V1.</p>
+          <p><strong>Propriété déduite :</strong> La réponse immunitaire est <strong>spécifique</strong> (chaque lymphocyte ne reconnaît qu'un seul virus).</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit exploiter les résultats pour identifier les cellules et déduire la spécificité.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1,75 point (1 pt pour l'identification, 0,75 pt pour la propriété)</div>
+      `
+    },
+    'corr-immunite-4': {
+      theme: 'immunite',
+      pts: 1.25,
+      html: `
+        <div class="fb-title">📋 Correction – Schéma fonctionnel</div>
+        <div class="fb-body">
+          <p><strong>Phase d'induction :</strong> Présentation de l'antigène viral par les cellules présentatrices d'antigène (CPA) → activation des LT4 et LB.</p>
+          <p><strong>Phase d'amplification :</strong> LT4 sécrètent l'IL2 → multiplication des LB et des LTc.</p>
+          <p><strong>Phase effectrice :</strong> LB → plasmocytes → anticorps anti-virus (RIMH). LTc → perforine → lyse des cellules infectées (RIMC).</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit réaliser un schéma fonctionnel clair avec les trois phases.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1,25 point (0,5 pt pour RIMH, 0,5 pt pour RIMC, 0,25 pt pour le schéma)</div>
+      `
+    },
+    // VIH
+    'corr-vih-a': {
+      theme: 'immunite',
+      pts: 1.75,
+      html: `
+        <div class="fb-title">📋 Correction – Effet des molécules</div>
+        <div class="fb-body">
+          <p><strong>M1 (T-20) :</strong> Diminue la fixation du VIH sur les LT4 → bloque l'entrée.</p>
+          <p><strong>M2 (inhibiteur nucléosidique) :</strong> Absence d'ADN viral → bloque la transcription inverse.</p>
+          <p><strong>M3 (raltégravir) :</strong> Absence de provirus → bloque l'intégration.</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit analyser les résultats et dégager l'effet de chaque molécule.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1,75 point (0,5 pt par molécule + 0,25 pt pour la précision)</div>
+      `
+    },
+    'corr-vih-b': {
+      theme: 'immunite',
+      pts: 1,
+      html: `
+        <div class="fb-title">📋 Correction – Mode d'action du VIH</div>
+        <div class="fb-body">
+          <p>Le VIH se fixe sur le LT4 → introduit son ARN et sa transcriptase réverse → transcription inverse (ARN → ADNc) → intégration (ADNc → provirus) → transcription → traduction → assemblage → bourgeonnement.</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit expliquer les étapes du cycle du VIH de manière structurée.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1 point</div>
+      `
+    },
+    // Génétique
+    'corr-genetique-1': {
+      theme: 'genetique',
+      pts: 1.25,
+      html: `
+        <div class="fb-title">📋 Correction – Éléments 1 à 4</div>
+        <div class="fb-body">
+          <p><strong>1 :</strong> Premier globule polaire (haploïde, 2 chromosomes dupliqués).</p>
+          <p><strong>2 :</strong> Pronucléus ♀ (ovocyte II).</p>
+          <p><strong>3 :</strong> Pronucléus ♂ (spermatozoïde, avec centriole).</p>
+          <p><strong>4 :</strong> Deuxième globule polaire (haploïde, 1 chromosome simple).</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit identifier les structures de la fécondation.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1,25 pt (0,25 pt par élément)</div>
+      `
+    },
+    'corr-genetique-2': {
+      theme: 'genetique',
+      pts: 1.25,
+      html: `
+        <div class="fb-title">📋 Correction – Anomalie chromosomique</div>
+        <div class="fb-body">
+          <p><strong>Anomalie :</strong> Trisomie 21 (présence de trois exemplaires du chromosome 21).</p>
+          <p><strong>Origine :</strong> Non-disjonction des chromatides du chromosome 21 au cours de l'anaphase II de l'ovogenèse (1er globule polaire a un chromosome 21, 2ème globule n'en a pas).</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit préciser l'anomalie et expliquer son origine.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1,25 point (0,5 pt pour l'anomalie, 0,75 pt pour l'origine)</div>
+      `
+    },
+    'corr-genetique-3': {
+      theme: 'genetique',
+      pts: 1.25,
+      html: `
+        <div class="fb-title">📋 Correction – Sexe, localisation, génotypes</div>
+        <div class="fb-body">
+          <p><strong>Sexe du fœtus :</strong> Fille (présence de deux chromosomes X).</p>
+          <p><strong>Localisation du gène :</strong> Chromosome X (gène lié à l'X).</p>
+          <p><strong>Génotype du fœtus :</strong> Xa1Xa2.</p>
+          <p><strong>Génotypes des parents :</strong> Père : Xa2Y / Mère : Xa1Xa2.</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit exploiter le document 6 pour répondre.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 1,25 point (0,25 pt par élément)</div>
+      `
+    },
+    'corr-genetique-4': {
+      theme: 'genetique',
+      pts: 0.5,
+      html: `
+        <div class="fb-title">📋 Correction – Phénotype du fœtus</div>
+        <div class="fb-body">
+          <p><strong>a) Mère atteinte :</strong> Le fœtus est atteint (car hétérozygote comme la mère).</p>
+          <p><strong>b) Mère saine :</strong> Le fœtus est sain (car hétérozygote mais mère saine).</p>
+          <div style="margin-top:8px;background:rgba(112,1,67,0.04);padding:6px;border-radius:4px;">
+            <strong>🧑‍🏫 Attente du correcteur :</strong> Le candidat doit justifier sa réponse.
+          </div>
+        </div>
+        <div class="fb-bareme">📊 Barème : 0,5 point (0,25 pt par cas)</div>
+      `
+    }
+  };
+
+  // --- Fonctions inchangées ---
+  function sauvegarderTout() { let data={themeScores, qcm:{}, textes:{}}; for(let i=1;i<=8;i++){let cbs=document.querySelectorAll(`#qo${i} input`);data.qcm[i]=Array.from(cbs).map(cb=>cb.checked);} document.querySelectorAll('.lignes-reponse').forEach((ta,idx)=>{data.textes[ta.id||'ta_'+idx]=ta.value;}); localStorage.setItem('synapris_bac2019',JSON.stringify(data));}
+  function restaurerTout() { let saved=localStorage.getItem('synapris_bac2019'); if(!saved) return; try{ let data=JSON.parse(saved); if(data.themeScores) Object.assign(themeScores,data.themeScores); score=Object.values(themeScores).reduce((a,b)=>a+b,0); document.getElementById('hdr-score').textContent=score.toFixed(2)+' / 20'; if(data.qcm){for(let i=1;i<=8;i++){let checks=data.qcm[i];if(checks){let cbs=document.querySelectorAll(`#qo${i} input`);cbs.forEach((cb,idx)=>{if(checks[idx])cb.checked=true;});}}} }catch(e){} }
+  function handleLogin(){ let email=document.getElementById('login-email').value; let password=document.getElementById('login-password').value; if(email&&password){ document.getElementById('login-screen').style.display='none'; document.getElementById('navbar').style.display='flex'; document.getElementById('main-wrap').style.display='block'; document.getElementById('bottom-nav').style.display='flex'; document.getElementById('avatar').textContent=email.charAt(0).toUpperCase(); restaurerTout(); gsap.from('#navbar',{y:-50,duration:0.4,ease:'power2.out'}); } else alert('Veuillez remplir tous les champs.'); }
+  function goTo(step){ let screens=['s0','s1','s2','s3','s4']; document.querySelectorAll('.screen-full, .split-layout').forEach(el=>el.classList.remove('active')); document.getElementById(screens[step]).classList.add('active'); currentStep=step; document.querySelectorAll('.navbar-steps .nav-step, .bottom-nav .nav-step').forEach(el=>el.classList.remove('active')); document.querySelectorAll('.navbar-steps .nav-step, .bottom-nav .nav-step')[step].classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); if(step===4) setTimeout(showBilan,400); }
+  function showPage(n){ for(let i=1;i<=totalPages;i++){let p=document.getElementById('pg'+i);if(p)p.classList.remove('active');} document.getElementById('pg'+n).classList.add('active'); document.getElementById('pg-indicator').textContent='Page '+n+' / '+totalPages; currentPage=n; }
+  function pgNext(){ if(currentPage<totalPages) showPage(currentPage+1); }
+  function pgPrev(){ if(currentPage>1) showPage(currentPage-1); }
+  function toggleVerbe(card,id){ document.querySelectorAll('.verbe-card').forEach(c=>c.classList.remove('on')); document.querySelectorAll('.verbe-detail').forEach(d=>d.classList.remove('show')); card.classList.add('on'); document.getElementById(id).classList.add('show'); gsap.from('#'+id,{opacity:0,y:10,duration:0.3,ease:'power2.out'}); }
+  function toggleGalerie(card){ card.classList.toggle('open'); gsap.from(card.querySelector('.g-detail'),{opacity:0,y:8,duration:0.2,ease:'power2.out'}); }
+  function getFeedbackText(num,status){ let texts={'1':{correct:'✅ b et d',wrong:'❌ b et d'},'2':{correct:'✅ b et c',wrong:'❌ b et c'},'3':{correct:'✅ b',wrong:'❌ b'},'4':{correct:'✅ a et c',wrong:'❌ a et c'},'5':{correct:'✅ c',wrong:'❌ c'},'6':{correct:'✅ c et d',wrong:'❌ c et d'},'7':{correct:'✅ c',wrong:'❌ c'},'8':{correct:'✅ a et d',wrong:'❌ a et d'}}; return texts[num]?.[status]||''; }
+  function validateAllQCM(){ if(qcmValidated) return; qcmValidated=true; document.getElementById('btn-valider-qcm').style.display='none'; let totalGained=0; for(let num=1;num<=8;num++){ let cfg=qcmConfig[num]; let checkboxes=document.querySelectorAll('#qo'+num+' input'); let selected=[]; checkboxes.forEach(cb=>{if(cb.checked)selected.push(cb.value);cb.disabled=true;}); let hasFalse=selected.some(s=>!cfg.correct.includes(s)); let isCorrect=!hasFalse&&cfg.correct.every(c=>selected.includes(c)); let fb=document.getElementById('fb'+num); if(isCorrect){fb.className='qcm-feedback show ok';fb.innerHTML='<div class="fb-title">✅ Bonne réponse</div><div class="fb-body">'+getFeedbackText(num,'correct')+'</div>';totalGained+=cfg.pts;} else{fb.className='qcm-feedback show ko';fb.innerHTML='<div class="fb-title">❌ Réponse incorrecte</div><div class="fb-body">'+getFeedbackText(num,'wrong')+'</div>';} } themeScores.qcm=Math.min(themeMax.qcm,totalGained); score=Object.values(themeScores).reduce((a,b)=>a+b,0); document.getElementById('hdr-score').textContent=score.toFixed(2)+' / 20'; sauvegarderTout(); }
+  function revealCorrection(e,corrId){ e.stopPropagation(); let corr=document.getElementById(corrId); if(!corr) return; let data=correctionData[corrId]; if(data){ corr.className='qcm-feedback show ok'; corr.innerHTML=data.html; if(!corr.dataset.scored){ corr.dataset.scored='1'; themeScores[data.theme]=Math.min(themeMax[data.theme],(themeScores[data.theme]||0)+data.pts); score=Object.values(themeScores).reduce((a,b)=>a+b,0); document.getElementById('hdr-score').textContent=score.toFixed(2)+' / 20'; sauvegarderTout(); } } corr.style.display='block'; e.target.style.display='none'; gsap.from(corr,{opacity:0,y:6,duration:0.2,ease:'power2.out'}); }
+
+  const coachData={
+    'coach-qcm-1':{title:'QCM 1 – Sperme',msg:'Un sperme sans spermatozoïdes peut être dû à une absence de production ou à un blocage.',schema:['Cryptorchidie → spermatogenèse perturbée','Azoospermie → absence totale de spermatozoïdes'],piege:'Ne confonds pas oligospermie (peu de spermatozoïdes) et azoospermie (aucun).',bareme:'0,5 pt',arabe:'الحيوانات المنوية غائبة تماماً (azoospermie) أو ضعيفة التكوين بسبب الخصية الهاجرة (cryptorchidie).'},
+    'coach-qcm-2':{title:'QCM 2 – Trompe',msg:'Quels évènements ont lieu dans la trompe ?',schema:['Capacitation des spermatozoïdes','Division du zygote'],piege:'La réaction corticale se produit dans l\'ovocyte, pas dans la trompe.',bareme:'0,5 pt',arabe:'الحدثان في قناة فالوب هما : تنشيط الحيوانات المنوية (capacitation) وانقسام اللاقحة (zygote).'},
+    'coach-qcm-3':{title:'QCM 3 – Recombinaison',msg:'Le pourcentage de recombinaison est de 12%. Quels sont les pourcentages des gamètes ?',schema:['Gamètes parentaux : 44% chacun','Gamètes recombinés : 6% chacun'],piege:'La somme des recombinés doit être égale au % de recombinaison (12%).',bareme:'0,5 pt',arabe:'نسبة إعادة التركيب 12% تعني أن 6% من الأمشاج هي من النوع Ab و 6% aB. الباقي (44% لكل نوع) هو من النوع AB و ab.'},
+    'coach-qcm-4':{title:'QCM 4 – Hypotension',msg:'L\'hypotension déclenche des mécanismes pour augmenter la pression.',schema:['Inhibition du centre vasomoteur → moins de vasoconstriction','Diminution des PA des nerfs de Hering → moins de frein baroréflexe'],piege:'La noradrénaline est libérée lors de l\'hypertension, pas l\'hypotension.',bareme:'0,5 pt',arabe:'انخفاض ضغط الدم يؤدي إلى تثبيط المركز الوعائي الحركي وتقليل تواتر جهد الأعصاب المستقبلة للضغط (nerfs de Hering).'},
+    'coach-qcm-5':{title:'QCM 5 – Nerf X',msg:'Le nerf X (vague) est parasympathique. Sa stimulation ralentit le cœur.',schema:['Libération d\'acétylcholine','Cardioaccélération ? Non, l\'inverse'],piege:'Le nerf X ralentit le cœur, l\'accélération est sympathique.',bareme:'0,25 pt',arabe:'تحفيز العصب X (المبهم) يفرز الأستيل كولين ويبطئ القلب، وليس العكس.'},
+    'coach-qcm-6':{title:'QCM 6 – Aldostérone',msg:'L\'aldostérone est une hormone stéroïde du cortex surrénalien.',schema:['Régule l\'hypertension','Augmente la réabsorption de Na⁺'],piege:'Les médullosurrénales sécrètent l\'adrénaline, pas l\'aldostérone.',bareme:'0,5 pt',arabe:'الألدوستيرون يفرز من قشر الغدة الكظرية ويزيد إعادة امتصاص الصوديوم في الكلى، مما يرفع ضغط الدم.'},
+    'coach-qcm-7':{title:'QCM 7 – Canaux chimio-dépendants',msg:'Ces canaux s\'ouvrent en réponse à un neurotransmetteur.',schema:['Membrane post-synaptique'],piege:'Les canaux voltage-dépendants sont au cône axonique.',bareme:'0,25 pt',arabe:'القنوات المعتمدة كيميائياً توجد على الغشاء بعد المشبكي (post-synaptique).'},
+    'coach-qcm-8':{title:'QCM 8 – IgE',msg:'Les IgE sont des anticorps associés aux réactions allergiques.',schema:['Se fixent sur les mastocytes','Se fixent aussi sur les cellules infectées'],piege:'Les IgE ne se fixent pas sur les lymphocytes ou macrophages.',bareme:'0,5 pt',arabe:'IgE يرتبط بالخلايا البدينة (mastocytes) والخلايا المصابة (pour la défense).'},
+    'coach-repro-1':{title:'Reproduction – 1 à 5',msg:'Observe le schéma : des structures de l\'appareil reproducteur.',schema:['1 = Hypophyse','2 = Follicule mûr','3 = Trophoblaste','4 = Muqueuse utérine','5 = Corps jaune'],piege:'Ne confonds pas follicule mûr et corps jaune.',bareme:'1,25 pt',arabe:'حدد الهياكل من 1 إلى 5 باستخدام معرفتك بالتشريح.'},
+    'coach-repro-2':{title:'Reproduction – A et B',msg:'Que représente chaque évènement ?',schema:['A : Ovulation (éclatement du follicule)','B : Nidation (fixation du blastocyste)'],piege:'L\'ovulation n\'est pas la fécondation.',bareme:'1 pt',arabe:'الحدث A هو الإباضة، والحدث B هو الانغراس.'},
+    'coach-repro-3':{title:'Reproduction – Hormones',msg:'Quelles hormones déclenchent l\'ovulation et maintiennent la nidation ?',schema:['Pic d\'œstrogènes → pic de LH → ovulation','HCG → maintien corps jaune → progestérone'],piege:'L\'HCG est chorionique, pas hypophysaire.',bareme:'1,75 pt',arabe:'التفاعلات الهرمونية لـ A (الإباضة) و B (الانغراس).'},
+    'coach-immunite-1':{title:'Immunité – Cellules X, Y, Z',msg:'Que révèlent les observations au microscope ?',schema:['X : LB (peu de REG)','Y : Plasmocyte (REG développé)','Z : LTc (lyse cellule infectée)'],piege:'Le plasmocyte a un REG très développé car il sécrète des anticorps.',bareme:'2 pts',arabe:'تحديد الخلايا X و Y و Z من خلال بنيتها المجهرية.'},
+    'coach-immunite-3':{title:'Immunité – Expérience 3',msg:'Compare les trois cultures. Que se passe-t-il ?',schema:['Culture 2 : lymphocytes spécifiques à V2','Culture 3 : lymphocytes spécifiques à V1','Propriété = spécificité'],piege:'Un lymphocyte ne reconnaît qu\'un seul antigène.',bareme:'1,75 pt',arabe:'الخلايا الليمفاوية الحرة في المزارع 2 و 3 تختلف حسب الفيروس، مما يبرز النوعية.'},
+    'coach-immunite-4':{title:'Immunité – Schéma fonctionnel',msg:'Décris les trois phases de la réponse immunitaire.',schema:['Induction','Amplification','Effectrice'],piege:'N\'oublie pas les deux voies : humorale et cellulaire.',bareme:'1,25 pt',arabe:'مراحل الاستجابة المناعية : التحريض، التضخيم، المرحلة الفعالة.'},
+    'coach-vih-a':{title:'VIH – Effet des molécules',msg:'Chaque molécule bloque une étape spécifique.',schema:['M1 : fixation','M2 : transcription inverse','M3 : intégration'],piege:'Ne confonds pas les trois cibles.',bareme:'1,75 pt',arabe:'تأثير كل جزيء على دورة فيروس VIH.'},
+    'coach-vih-b':{title:'VIH – Mode d\'action',msg:'Décris les étapes du cycle du VIH.',schema:['Fixation → entrée → transcription inverse → intégration → multiplication'],piege:'La transcription inverse est une étape clé.',bareme:'1 pt',arabe:'دورة فيروس نقص المناعة البشرية في الخلايا الليمفاوية T4.'},
+    'coach-genetique-1':{title:'Génétique – 1 à 4',msg:'Identifie les éléments de la fécondation.',schema:['1 : Premier globule polaire','2 : Pronucléus ♀','3 : Pronucléus ♂','4 : Deuxième globule polaire'],piege:'Le globule polaire 1 a 2 chromosomes dupliqués.',bareme:'1,25 pt',arabe:'تعرف على الأرقام 1 إلى 4 في عملية الإخصاب.'},
+    'coach-genetique-2':{title:'Génétique – Anomalie',msg:'Le fœtus a une anomalie chromosomique. Laquelle ?',schema:['Trisomie 21','Non-disjonction en anaphase II'],piege:'L\'anomalie est d\'origine maternelle.',bareme:'1,25 pt',arabe:'اضطراب صبغي (تثلث الصبغي 21) وأصله.'},
+    'coach-genetique-3':{title:'Génétique – Sexe, localisation, génotypes',msg:'Utilise le document 6 pour répondre.',schema:['Sexe : Fille (XX)','Gène sur X','Génotype fœtus Xa1Xa2','Parents : Père Xa2Y, Mère Xa1Xa2'],piege:'Le gène est lié à l\'X.',bareme:'1,25 pt',arabe:'تحديد الجنس، موقع الجين، الأنماط الجينية.'},
+    'coach-genetique-4':{title:'Génétique – Phénotype',msg:'La maladie est récessive liée à l\'X.',schema:['Si mère atteinte (Xa1Xa1) → fœtus atteint','Si mère saine (Xa1Xa2) → fœtus sain'],piege:'Le fœtus est hétérozygote, donc non exprimé si mère saine.',bareme:'0,5 pt',arabe:'حالة الجنين حسب حالة الأم (مصابة أو سليمة).'}
+  };
+
+  function openCoach(id){ let data=coachData[id]; if(!data) return; let body=document.getElementById('coach-modal-body'); let html='<div class="coach-msg">'+data.msg+'</div>'; if(data.schema){ html+='<div class="coach-schema-title">🎯 Schéma</div>'; data.schema.forEach((step,i)=>{html+='<div class="coach-step"><div class="coach-step-num">'+(i+1)+'</div><div>'+step+'</div></div>';}); } if(data.piege) html+='<div class="coach-piege"><strong>⚠️</strong> '+data.piege+'</div>'; if(data.bareme) html+='<div class="coach-bareme">📊 Barème : '+data.bareme+'</div>'; if(data.arabe) html+='<div style="margin-top:10px;padding:8px;background:rgba(112,1,67,0.04);border-radius:4px;text-align:right;" dir="rtl"><strong>🇹🇳 Aide en arabe :</strong><br>'+data.arabe+'</div>'; body.innerHTML=html; document.getElementById('coach-modal').classList.add('open'); }
+  function closeCoach(){ document.getElementById('coach-modal').classList.remove('open'); }
+
+  const ttData={
+    'cryptorchide':{img:'🧬',def:'Anomalie de développement où un ou deux testicules ne descendent pas dans le scrotum. Cela peut altérer la spermatogenèse.',rappel:'Reproduction masculine',audio:'cryptorchide',arabe:{terme:'الخصية الهاجرة',def:'اضطراب في النمو حيث لا تنزل الخصية أو الخصيتان إلى كيس الصفن، مما قد يؤثر على عملية تكوين الحيوانات المنوية.'}},
+    'oligospermie':{img:'🧬',def:'Diminution du nombre de spermatozoïdes dans le sperme (moins de 15 millions par mL).',rappel:'Reproduction masculine',audio:'oligospermie',arabe:{terme:'قلة النطف',def:'انخفاض عدد الحيوانات المنوية في السائل المنوي (أقل من 15 مليون لكل مل).'}},
+    'azoospermie':{img:'🧬',def:'Absence totale de spermatozoïdes dans le sperme.',rappel:'Reproduction masculine',audio:'azoospermie',arabe:{terme:'انعدام النطف',def:'غياب تام للحيوانات المنوية في السائل المنوي.'}},
+    'trompe':{img:'🧬',def:'Conduit qui relie l\'ovaire à l\'utérus, lieu de la fécondation et des premières divisions du zygote.',rappel:'Reproduction humaine',audio:'trompe',arabe:{terme:'قناة فالوب',def:'قناة تربط المبيض بالرحم، مكان الإخصاب والانقسامات الأولى للاقحة.'}},
+    'reaction-corticale':{img:'🧬',def:'Phénomène qui se produit dans l\'ovocyte après la pénétration du spermatozoïde : les granules corticaux libèrent des enzymes qui modifient la zone pellucide pour empêcher la polyspermie.',rappel:'Reproduction',audio:'reaction-corticale',arabe:{terme:'رد فعل قشري',def:'ظاهرة تحدث في البويضة بعد دخول الحيوان المنوي، حيث تطلق الحبيبات القشرية إنزيمات تغير المنطقة الشفافة لمنع دخول حيوانات منوية إضافية.'}},
+    'zygote':{img:'🧬',def:'Cellule-œuf résultant de la fusion du spermatozoïde et de l\'ovocyte (fécondation). Elle contient 2n chromosomes.',rappel:'Reproduction',audio:'zygote',arabe:{terme:'اللاقحة',def:'البويضة المخصبة الناتجة عن اندماج الحيوان المنوي والبويضة، تحتوي على 2n كروموسوم.'}},
+    'capacitation':{img:'🧬',def:'Processus par lequel les spermatozoïdes acquièrent la capacité de féconder l\'ovocyte, en perdant leur gaine de protéines et en modifiant leur membrane.',rappel:'Reproduction',audio:'capacitation',arabe:{terme:'تنشيط النطف',def:'عملية تكتسب فيها الحيوانات المنوية القدرة على تخصيب البويضة، عن طريق فقدان غلافها البروتيني وتعديل غشائها.'}},
+    'morula':{img:'🧬',def:'Stade du développement embryonnaire précoce, formé d\'une masse de cellules (blastomères) après les premières divisions du zygote.',rappel:'Reproduction',audio:'morula',arabe:{terme:'التوتية',def:'مرحلة مبكرة من التطور الجنيني، تتكون من كتلة من الخلايا (القسيمات الأرومية) بعد الانقسامات الأولى للاقحة.'}},
+    'blastocyste':{img:'🧬',def:'Stade du développement embryonnaire où l\'embryon est constitué d\'une cavité (blastocèle) et de deux masses cellulaires : le trophoblaste (enveloppe) et le bouton embryonnaire.',rappel:'Reproduction',audio:'blastocyste',arabe:{terme:'الكيسة الأرومية',def:'مرحلة من التطور الجنيني حيث يتكون الجنين من تجويف (القسمة الأرومية) وكتلتين خلوييتين : الأرومة الغاذية (الغلاف) والعقدة الجنينية.'}},
+    'recombinaison':{img:'🧬',def:'Échange de segments entre chromatides non-sœurs au cours de la prophase I de méiose, générant de nouvelles combinaisons alléliques.',rappel:'Génétique',audio:'recombinaison',arabe:{terme:'إعادة التركيب',def:'تبادل أجزاء بين الكروماتيدات غير الشقيقة خلال الطور التمهيدي الأول من الانقسام الاختزالي، مما ينتج توليفات أليلية جديدة.'}},
+    'test-cross':{img:'🧬',def:'Croisement entre un individu de génotype inconnu et un individu homozygote récessif pour déterminer le génotype du premier.',rappel:'Génétique',audio:'test-cross',arabe:{terme:'التهجين الاختباري',def:'تهجين بين فرد ذي نمط وراثي غير معروف وفرد متماثل الزيجوت متنحي لتحديد النمط الوراثي للأول.'}},
+    'hypotension':{img:'🧠',def:'Baisse anormale de la pression artérielle, déclenchant des mécanismes de régulation (baroréflexe, système rénine-angiotensine-aldostérone).',rappel:'Régulation nerveuse',audio:'hypotension',arabe:{terme:'انخفاض ضغط الدم',def:'انخفاض غير طبيعي في ضغط الدم، مما يؤدي إلى آليات تنظيمية (مثل المنعكس الضغطي، نظام الرينين-أنجيوتنسين-ألدوستيرون).'}},
+    'centre-vasomoteur':{img:'🧠',def:'Centre nerveux bulbaire qui contrôle le calibre des vaisseaux sanguins par l\'intermédiaire des nerfs sympathiques et parasympathiques.',rappel:'Régulation nerveuse',audio:'centre-vasomoteur',arabe:{terme:'المركز الوعائي الحركي',def:'مركز عصبي في النخاع المستطيل يتحكم في قطر الأوعية الدموية عبر الأعصاب الودية واللاودية.'}},
+    'noradrenaline':{img:'🧠',def:'Neurotransmetteur et hormone du système sympathique, provoquant une vasoconstriction et une augmentation de la pression artérielle.',rappel:'Régulation nerveuse',audio:'noradrenaline',arabe:{terme:'النورأدرينالين',def:'ناقل عصبي وهرمون في الجهاز الودي، يسبب انقباض الأوعية الدموية وارتفاع ضغط الدم.'}},
+    'nerfs-de-hering':{img:'🧠',def:'Nerfs barorécepteurs situés dans le sinus carotidien qui transmettent des informations au centre vasomoteur sur la pression artérielle.',rappel:'Régulation nerveuse',audio:'nerfs-de-hering',arabe:{terme:'أعصاب هيرينغ',def:'أعصاب مستقبلة للضغط تقع في الجيب السباتي، تنقل معلومات إلى المركز الوعائي الحركي حول ضغط الدم.'}},
+    'bout-peripherique':{img:'🧠',def:'Bout du nerf sectionné qui est dirigé vers l\'organe effecteur (par opposition au bout central dirigé vers le système nerveux central).',rappel:'Neurophysiologie',audio:'bout-peripherique',arabe:{terme:'الطرف المحيطي',def:'طرف العصب المقطوع الموجه نحو العضو الفعال (مقابل الطرف المركزي الموجه نحو الجهاز العصبي المركزي).'}},
+    'nerf-x':{img:'🧠',def:'Dixième paire de nerfs crâniens (nerf vague), principalement parasympathique, innervant le cœur, les poumons et le tube digestif.',rappel:'Neurophysiologie',audio:'nerf-x',arabe:{terme:'العصب العاشر (المبهم)',def:'الزوج العاشر من الأعصاب القحفية، بشكل رئيسي لاودي، يعصب القلب والرئتين والجهاز الهضمي.'}},
+    'hypertension':{img:'🧠',def:'Augmentation anormale de la pression artérielle (>140/90 mmHg).',rappel:'Régulation',audio:'hypertension',arabe:{terme:'ارتفاع ضغط الدم',def:'ارتفاع غير طبيعي في ضغط الدم (>140/90 مم زئبق).'}},
+    'cardioacceleration':{img:'🧠',def:'Augmentation de la fréquence cardiaque, sous l\'effet du système sympathique (noradrénaline) ou d\'autres facteurs.',rappel:'Régulation',audio:'cardioacceleration',arabe:{terme:'تسارع القلب',def:'زيادة معدل ضربات القلب، تحت تأثير الجهاز الودي (النورأدرينالين) أو عوامل أخرى.'}},
+    'acetylcholine':{img:'🧠',def:'Neurotransmetteur du système parasympathique, provoquant un ralentissement du cœur et une vasodilatation.',rappel:'Neurophysiologie',audio:'acetylcholine',arabe:{terme:'الأستيل كولين',def:'ناقل عصبي في الجهاز اللاودي، يسبب تباطؤ القلب وتوسع الأوعية الدموية.'}},
+    'vasoconstriction':{img:'🧠',def:'Diminution du calibre des vaisseaux sanguins (artérioles), augmentant la pression artérielle.',rappel:'Régulation',audio:'vasoconstriction',arabe:{terme:'تضيق الأوعية',def:'انخفاض قطر الأوعية الدموية (الشريينات)، مما يرفع ضغط الدم.'}},
+    'aldosterone':{img:'🧬',def:'Hormone stéroïde sécrétée par la zone glomérulée du cortex surrénalien, augmentant la réabsorption de Na⁺ et l\'excrétion de K⁺ par les reins.',rappel:'Régulation',audio:'aldosterone',arabe:{terme:'الألدوستيرون',def:'هرمون ستيرويدي تفرزه المنطقة الكبيبية من قشر الغدة الكظرية، يزيد إعادة امتصاص الصوديوم وإفراز البوتاسيوم في الكلى.'}},
+    'medullosurrenales':{img:'🧬',def:'Partie interne de la glande surrénale, sécrétant l\'adrénaline et la noradrénaline.',rappel:'Régulation',audio:'medullosurrenales',arabe:{terme:'لب الغدة الكظرية',def:'الجزء الداخلي من الغدة الكظرية، يفرز الأدرينالين والنورأدرينالين.'}},
+    'neurones-hypothalamiques':{img:'🧠',def:'Neurones de l\'hypothalamus qui sécrètent des hormones (ex : GnRH) régulant l\'axe hypothalamo-hypophysaire.',rappel:'Reproduction',audio:'neurones-hypothalamiques',arabe:{terme:'العصبونات الوطائية',def:'عصبونات في الوطاء تفرز هرمونات (مثل GnRH) تنظم المحور الوطائي-النخامي.'}},
+    'reabsorption-sodium':{img:'🧬',def:'Processus par lequel les ions Na⁺ sont réabsorbés par les reins, augmentant le volume sanguin et la pression artérielle.',rappel:'Régulation',audio:'reabsorption-sodium',arabe:{terme:'إعادة امتصاص الصوديوم',def:'عملية إعادة امتصاص أيونات الصوديوم بواسطة الكلى، مما يزيد حجم الدم وضغط الدم.'}},
+    'canaux-chimio-dependants':{img:'🧠',def:'Canaux ioniques qui s\'ouvrent en réponse à la fixation d\'un neurotransmetteur sur un récepteur.',rappel:'Neurophysiologie',audio:'canaux-chimio-dependants',arabe:{terme:'القنوات المعتمدة كيميائياً',def:'قنوات أيونية تفتح استجابةً لارتباط ناقل عصبي بمستقبل.'}},
+    'cone-axonique':{img:'🧠',def:'Partie du neurone où le potentiel d\'action est initié, riche en canaux voltage-dépendants.',rappel:'Neurophysiologie',audio:'cone-axonique',arabe:{terme:'مخروط المحور',def:'جزء من العصبون حيث يبدأ جهد العمل، غني بالقنوات المعتمدة على الجهد.'}},
+    'bouton-synaptique':{img:'🧠',def:'Extrémité de l\'axone qui contient des vésicules synaptiques remplies de neurotransmetteurs.',rappel:'Neurophysiologie',audio:'bouton-synaptique',arabe:{terme:'الزر المشبكي',def:'نهاية المحور التي تحتوي على حويصلات مشبكية مملوءة بالنواقل العصبية.'}},
+    'membrane-post-synaptique':{img:'🧠',def:'Membrane du neurone postsynaptique contenant des récepteurs pour les neurotransmetteurs.',rappel:'Neurophysiologie',audio:'membrane-post-synaptique',arabe:{terme:'الغشاء بعد المشبكي',def:'غشاء العصبون بعد المشبكي الذي يحتوي على مستقبلات للنواقل العصبية.'}},
+    'site-transducteur':{img:'🧠',def:'Site d\'un récepteur sensoriel où l\'énergie du stimulus est convertie en potentiel de récepteur.',rappel:'Neurophysiologie',audio:'site-transducteur',arabe:{terme:'موقع تحويل الإشارة',def:'موقع في المستقبل الحسي حيث يتم تحويل طاقة المنبه إلى جهد مستقبل.'}},
+    'ige':{img:'🛡️',def:'Immunoglobuline E, associée aux réactions allergiques et à la défense contre les parasites. Elle se fixe sur les mastocytes et les cellules infectées.',rappel:'Immunité',audio:'ige',arabe:{terme:'الغلوبولين المناعي E',def:'جسم مضاد مرتبط بالحساسية والدفاع ضد الطفيليات. يرتبط بالخلايا البدينة (mastocytes) والخلايا المصابة.'}},
+    'mastocyte':{img:'🛡️',def:'Cellule immunitaire résidente dans les tissus, contenant des granules d\'histamine et d\'héparine, jouant un rôle dans les réactions allergiques.',rappel:'Immunité',audio:'mastocyte',arabe:{terme:'الخلايا البدينة',def:'خلايا مناعية مقيمة في الأنسجة، تحتوي على حبيبات الهستامين والهيبارين، وتلعب دوراً في الحساسية.'}},
+    'lymphocyte':{img:'🛡️',def:'Cellule immunitaire essentielle de la réponse adaptative (LB, LT4, LT8).',rappel:'Immunité',audio:'lymphocyte',arabe:{terme:'الخلية الليمفاوية',def:'خلية مناعية أساسية في الاستجابة التكيفية (LB, LT4, LT8).'}},
+    'macrophage':{img:'🛡️',def:'Cellule immunitaire phagocytaire, participant à la présentation de l\'antigène et à la destruction des microbes.',rappel:'Immunité',audio:'macrophage',arabe:{terme:'البلعم',def:'خلية مناعية بلعمية، تشارك في عرض المستضد وتدمير الجراثيم.'}},
+    'vih':{img:'🧫',def:'Virus de l\'immunodéficience humaine, ciblant les LT4 et entraînant une immunodéficience progressive (SIDA).',rappel:'Immunité',audio:'vih',arabe:{terme:'فيروس نقص المناعة البشرية (VIH)',def:'فيروس يستهدف الخلايا الليمفاوية T4 ويؤدي إلى نقص مناعي تدريجي (الإيدز).'}},
+    'arn-viral':{img:'🧫',def:'Acide ribonucléique du VIH, qui servira de matrice pour la synthèse d\'ADN viral par la transcriptase réverse.',rappel:'Immunité',audio:'arn-viral',arabe:{terme:'ARN الفيروسي',def:'الحمض النووي الريبوزي لفيروس VIH، الذي سيكون قالباً لتخليق ADN الفيروسي بواسطة النسخ العكسي.'}},
+    'transcriptase-reverse':{img:'🧫',def:'Enzyme du VIH qui permet de transcrire l\'ARN viral en ADN complémentaire (ADNc).',rappel:'Immunité',audio:'transcriptase-reverse',arabe:{terme:'النسخ العكسي',def:'إنزيم فيروس VIH الذي يسمح بنسخ ARN الفيروسي إلى ADN متمم (ADNc).'}},
+    'adn-c':{img:'🧫',def:'ADN complémentaire synthétisé à partir de l\'ARN viral par la transcriptase réverse.',rappel:'Immunité',audio:'adn-c',arabe:{terme:'ADN متمم',def:'ADN يتم تخليقه من ARN الفيروسي بواسطة الإنزيم العكسي.'}},
+    'provirus':{img:'🧫',def:'ADN viral intégré dans l\'ADN de la cellule hôte (LT4).',rappel:'Immunité',audio:'provirus',arabe:{terme:'الفيروس الطليعي',def:'ADN الفيروسي المندمج في ADN الخلية المضيفة (LT4).'}},
+    'integrase':{img:'🧫',def:'Enzyme du VIH qui permet l\'intégration de l\'ADN viral dans l\'ADN de la cellule hôte. (Cible du raltégravir, M3).',rappel:'Immunité',audio:'integrase',arabe:{terme:'الإنزيم المندمج',def:'إنزيم فيروس VIH يسمح بدمج ADN الفيروسي في ADN الخلية المضيفة (هدف الرالتغرافير، M3).'}},
+    'follicule-mur':{img:'🧬',def:'Follicule ovarien parvenu à maturité, contenant l\'ovocyte II et sécrétant les œstrogènes.',rappel:'Reproduction',audio:'follicule-mur',arabe:{terme:'الجريب الناضج',def:'جريب مبيضي بلغ مرحلة النضج، يحتوي على البويضة II ويفرز الإستروجين.'}},
+    'oestrogenes':{img:'🧬',def:'Hormones sexuelles féminines (œstradiol, œstrone, œstriol) sécrétées par le follicule et le corps jaune.',rappel:'Reproduction',audio:'oestrogenes',arabe:{terme:'الإستروجينات',def:'هرمونات جنسية أنثوية (الإستراديول، الإسترون، الإستريول) يفرزها الجريب والجسم الأصفر.'}},
+    'lh':{img:'🧬',def:'Hormone lutéinisante, sécrétée par l\'hypophyse, déclenche l\'ovulation et la formation du corps jaune.',rappel:'Reproduction',audio:'lh',arabe:{terme:'الهرمون المنشط للجسم الأصفر (LH)',def:'هرمون تفرزه الغدة النخامية، يحفز التبويض وتكوين الجسم الأصفر.'}},
+    'fsh':{img:'🧬',def:'Hormone folliculo-stimulante, sécrétée par l\'hypophyse, stimule la croissance folliculaire et la spermatogenèse.',rappel:'Reproduction',audio:'fsh',arabe:{terme:'الهرمون المنشط للجريب (FSH)',def:'هرمون تفرزه الغدة النخامية، يحفز نمو الجريب وتكوين الحيوانات المنوية.'}},
+    'ovocyte-ii':{img:'🧬',def:'Cellule germinale femelle avant la fécondation (2n chromosomes). Libérée lors de l\'ovulation.',rappel:'Reproduction',audio:'ovocyte-ii',arabe:{terme:'البويضة الثانوية',def:'خلية تناسلية أنثوية قبل الإخصاب (2n كروموسوم). يتم تحريرها أثناء التبويض.'}},
+    'muqueuse-uterine':{img:'🧬',def:'Endomètre, tapissant l\'intérieur de l\'utérus, se préparant à recevoir l\'embryon.',rappel:'Reproduction',audio:'muqueuse-uterine',arabe:{terme:'بطانة الرحم',def:'بطانة الرحم الداخلية، التي تستعد لاستقبال الجنين.'}},
+    'trophoblaste':{img:'🧬',def:'Partie externe du blastocyste, qui sécrète l\'HCG et participe à la formation du placenta.',rappel:'Reproduction',audio:'trophoblaste',arabe:{terme:'الأرومة الغاذية',def:'الجزء الخارجي من الكيسة الأرومية، الذي يفرز HCG ويشارك في تكوين المشيمة.'}},
+    'hcg':{img:'🧬',def:'Gonadotrophine chorionique humaine, sécrétée par le trophoblaste, maintient le corps jaune pendant la grossesse.',rappel:'Reproduction',audio:'hcg',arabe:{terme:'موجهة الغدد التناسلية المشيمائية (HCG)',def:'هرمون تفرزه الأرومة الغاذية، يحافظ على الجسم الأصفر أثناء الحمل.'}},
+    'corps-jaune':{img:'🧬',def:'Structure qui se forme dans l\'ovaire après l\'ovulation, sécrétant de la progestérone et des œstrogènes.',rappel:'Reproduction',audio:'corps-jaune',arabe:{terme:'الجسم الأصفر',def:'هيكل يتشكل في المبيض بعد الإباضة، يفرز البروجسترون والإستروجين.'}},
+    'progesterone':{img:'🧬',def:'Hormone sécrétée par le corps jaune, préparant la muqueuse utérine à la nidation.',rappel:'Reproduction',audio:'progesterone',arabe:{terme:'البروجسترون',def:'هرمون يفرزه الجسم الأصفر، يهيئ بطانة الرحم للانغراس.'}},
+    'lb':{img:'🛡️',def:'Lymphocyte B, cellule immunitaire qui se différencie en plasmocyte sécrétant des anticorps.',rappel:'Immunité',audio:'lb',arabe:{terme:'الخلايا الليمفاوية B',def:'خلايا مناعية تتمايز إلى بلازميات تفرز أجساماً مضادة.'}},
+    'plasmocyte':{img:'🛡️',def:'Cellule dérivée du LB, spécialisée dans la sécrétion d\'anticorps. Son REG est très développé.',rappel:'Immunité',audio:'plasmocyte',arabe:{terme:'البلازمية',def:'خلية مشتقة من الخلايا الليمفاوية B، متخصصة في إفراز الأجسام المضادة. لديها شبكة إندوبلازمية متطورة جداً.'}},
+    'anticorps':{img:'🛡️',def:'Protéine (immunoglobuline) sécrétée par les plasmocytes, reconnaissant spécifiquement un antigène.',rappel:'Immunité',audio:'anticorps',arabe:{terme:'الأجسام المضادة',def:'بروتين (غلوبولين مناعي) تفرزه البلازميات، يتعرف بشكل محدد على مستضد.'}},
+    'lt4':{img:'🛡️',def:'Lymphocyte T auxiliaire (CD4+), activant les LB et les LTc par sécrétion de cytokines (IL2).',rappel:'Immunité',audio:'lt4',arabe:{terme:'الخلايا الليمفاوية T المساعدة',def:'خلايا T مساعدة (CD4+)، تنشط الخلايا الليمفاوية B و T السامة عبر إفراز السيتوكينات (IL2).'}},
+    'ltc':{img:'🛡️',def:'Lymphocyte T cytotoxique (CD8+), reconnaît les cellules infectées et les détruit via la perforine.',rappel:'Immunité',audio:'ltc',arabe:{terme:'الخلايا الليمفاوية T السامة',def:'خلايا T سامة (CD8+)، تتعرف على الخلايا المصابة وتدمرها عبر البيرفورين.'}},
+    'cmh1':{img:'🛡️',def:'Complexe majeur d\'histocompatibilité de classe I, présent sur toutes les cellules nucléées, présentant des peptides aux LTc.',rappel:'Immunité',audio:'cmh1',arabe:{terme:'مجمع التوافق النسيجي الكبير من الدرجة الأولى',def:'موجود على جميع الخلايا المنواة، يقدم الببتيدات للخلايا الليمفاوية T السامة.'}},
+    'perforine':{img:'🛡️',def:'Protéine libérée par les LTc, formant des pores dans la membrane de la cellule cible, entraînant sa lyse.',rappel:'Immunité',audio:'perforine',arabe:{terme:'البيرفورين',def:'بروتين تفرزه الخلايا الليمفاوية T السامة، يشكل مساماً في غشاء الخلية المستهدفة، مما يؤدي إلى تحللها.'}},
+    'tcr':{img:'🛡️',def:'Récepteur des lymphocytes T (T Cell Receptor), reconnaissant spécifiquement un antigène présenté par le CMH.',rappel:'Immunité',audio:'tcr',arabe:{terme:'مستقبل الخلايا T',def:'مستقبل على سطح الخلايا الليمفاوية T، يتعرف بشكل محدد على مستضد يقدمه معقد التوافق النسيجي الكبير (CMH).'}},
+    'il2':{img:'🛡️',def:'Interleukine 2, cytokine sécrétée par les LT4, stimulant la prolifération des LB et des LTc.',rappel:'Immunité',audio:'il2',arabe:{terme:'إنترلوكين 2 (IL2)',def:'سيتوكين تفرزه الخلايا الليمفاوية T المساعدة، تحفز تكاثر الخلايا الليمفاوية B و T السامة.'}},
+    'chromosome-21':{img:'🧬',def:'Chromosome humain le plus petit, dont la trisomie est la cause de la trisomie 21 (syndrome de Down).',rappel:'Génétique',audio:'chromosome-21',arabe:{terme:'الصبغي 21',def:'أصغر صبغي بشري، تثلثه يسبب متلازمة داون (تثلث الصبغي 21).'}},
+    'chromatides':{img:'🧬',def:'Les deux copies identiques d\'un chromosome dupliqué, réunies par le centromère.',rappel:'Génétique',audio:'chromatides',arabe:{terme:'الكروماتيدات',def:'النسختان المتماثلتان لصبغي مزدوج، متحدتان بالسنترومير.'}},
+    'anaphase-ii':{img:'🧬',def:'Phase de la méiose II où les chromatides sœurs se séparent.',rappel:'Génétique',audio:'anaphase-ii',arabe:{terme:'الطور الانفصالي الثاني',def:'مرحلة من الانقسام الاختزالي II حيث تنفصل الكروماتيدات الشقيقة.'}},
+    'ovogenese':{img:'🧬',def:'Processus de formation des ovocytes (gamètes féminins) par méiose.',rappel:'Reproduction',audio:'ovogenese',arabe:{terme:'تكوين البويضات',def:'عملية تكوين البويضات (الأمشاج الأنثوية) عبر الانقسام الاختزالي.'}},
+    'chromosome-x':{img:'🧬',def:'Chromosome sexuel, deux exemplaires présents chez la femme (XX), un chez l\'homme (XY).',rappel:'Génétique',audio:'chromosome-x',arabe:{terme:'الصبغي X',def:'صبغي جنسي، يوجد نسختان عند الأنثى (XX)، ونسخة واحدة عند الذكر (XY).'}},
+    'caryotype':{img:'🧬',def:'Représentation ordonnée des chromosomes d\'une cellule, permettant de détecter des anomalies chromosomiques.',rappel:'Génétique',audio:'caryotype',arabe:{terme:'النمط النووي',def:'تمثيل منظم للكروموسومات في خلية، يسمح باكتشاف الاضطرابات الصبغية.'}},
+    'electrophorese':{img:'🧬',def:'Technique de séparation des molécules (ADN, protéines) selon leur taille et leur charge électrique.',rappel:'Génétique',audio:'electrophorese',arabe:{terme:'الرحلان الكهربائي',def:'تقنية فصل الجزيئات (ADN، البروتينات) حسب حجمها وشحنتها الكهربائية.'}}
+  };
+
+  function openTT(id){ let data=ttData[id]; if(!data) return; document.getElementById('tt-img').textContent=data.img; let def = data.def; if(data.arabe) def += '<br><br><div dir="rtl" style="text-align:right;"><strong>🇹🇳 Terme arabe :</strong> '+data.arabe.terme+'<br><strong>Définition arabe :</strong> '+data.arabe.def+'</div>'; document.getElementById('tt-def').innerHTML='<strong>'+id.toUpperCase()+'</strong> — '+def; document.getElementById('tt-rappel').innerHTML='<strong>📖 Cours :</strong> '+data.rappel; document.getElementById('tt-audio-btn').onclick = function(){ speak(data.def); }; document.getElementById('tt-modal').classList.add('open'); }
+  function closeTT(){ document.getElementById('tt-modal').classList.remove('open'); }
+  function speak(text){ if(!('speechSynthesis' in window)) return; window.speechSynthesis.cancel(); let u=new SpeechSynthesisUtterance(text); u.lang='fr-FR'; u.rate=0.85; window.speechSynthesis.speak(u); }
+  function showExamPage(n){ if(n<1||n>examTotalPages) return; for(let i=1;i<=examTotalPages;i++){let p=document.getElementById('epg'+i);if(p)p.style.display='none';} document.getElementById('epg'+n).style.display='block'; examPage=n; document.getElementById('epg-indicator').textContent='Page '+n+' / '+examTotalPages; window.scrollTo({top:0,behavior:'smooth'}); }
+  function startExamen(){ if(examenStarted) return; examenStarted=true; for(let i=0;i<3;i++){ examenTimers[i]=setInterval(()=>{ examenSeconds[i]--; let el=document.getElementById('ex-timer-'+(i+1)); if(examenSeconds[i]<=0){ clearInterval(examenTimers[i]); el.textContent='⏰ Terminé !'; return; } let m=Math.floor(examenSeconds[i]/60); let s=examenSeconds[i]%60; el.textContent=m+':'+(s<10?'0':'')+s; },1000); } }
+  function openLightbox(src, caption){ document.getElementById('lightbox-img').src=src; document.getElementById('lightbox-caption').textContent=caption||''; document.getElementById('lightbox').classList.add('open'); }
+  function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+  document.getElementById('lightbox').addEventListener('click', function(e){ if(e.target===this) closeLightbox(); });
+  function getMention(score){ if(score>=16) return {text:'Très Bien 🌟',color:'#C5E384',bg:'rgba(197,227,132,0.2)'}; if(score>=14) return {text:'Bien 👍',color:'#4caf8a',bg:'rgba(76,175,138,0.15)'}; if(score>=12) return {text:'Assez Bien',color:'#E8A736',bg:'rgba(232,167,54,0.15)'}; if(score>=10) return {text:'Passable',color:'#888',bg:'rgba(0,0,0,0.06)'}; return {text:'Insuffisant',color:'#ff6b6b',bg:'rgba(255,107,107,0.1)'}; }
+  function getBarColor(pct){ if(pct>=70) return 'green'; if(pct>=40) return 'orange'; return 'red'; }
+  function showBilan(){ let totalScore=Object.values(themeScores).reduce((a,b)=>a+b,0); let scoreOn20=Math.min(20,totalScore); document.getElementById('final-score-guide').textContent=scoreOn20.toFixed(1)+' / 20'; let mention=getMention(scoreOn20); let badge=document.getElementById('mention-badge'); badge.textContent=mention.text; badge.style.color=mention.color; badge.style.background=mention.bg; let themeOrder=['qcm','repro','immunite','genetique']; let themeMaxLocal={qcm:4,repro:4,immunite:8,genetique:4}; setTimeout(()=>{ themeOrder.forEach((t,i)=>{ let pts=themeScores[t]; let max=themeMaxLocal[t]; let pct=Math.round((pts/max)*100); document.getElementById('p'+(i+1)).textContent=pct+'%'; let bar=document.getElementById('b'+(i+1)); bar.style.width=pct+'%'; bar.className='bar-fill '+getBarColor(pct); let ptsEl=document.getElementById('pts'+(i+1)); if(ptsEl) ptsEl.textContent=pts.toFixed(1)+' / '+max+' pts'; }); setTimeout(launchConfetti,600); },300); }
+  function resetAll(){ if(confirm('Recommencer ?')){ localStorage.removeItem('synapris_bac2019'); location.reload(); } }
+  function launchConfetti(){ let c=document.getElementById('confetti-canvas'); c.style.display='block'; let ctx=c.getContext('2d'); c.width=window.innerWidth; c.height=window.innerHeight; let pieces=[]; let cols=['#700143','#F8EDAD','#C5E384']; for(let i=0;i<70;i++){ pieces.push({x:Math.random()*c.width,y:-20,w:Math.random()*10+4,h:Math.random()*5+2,color:cols[Math.floor(Math.random()*cols.length)],rot:Math.random()*360,vx:(Math.random()-.5)*3,vy:Math.random()*4+2,vr:(Math.random()-.5)*6}); } let fr=0; function draw(){ ctx.clearRect(0,0,c.width,c.height); pieces.forEach(p=>{ ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180); ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore(); p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.vy+=0.05; }); fr++; if(fr<110) requestAnimationFrame(draw); else{ ctx.clearRect(0,0,c.width,c.height); c.style.display='none'; } } draw(); }
+  function imprimerSujetEtCorrections(){ let printContent=document.querySelector('.a4-pages-wrap').cloneNode(true); let printWindow=window.open('','_blank'); printWindow.document.write('<html><head><title>Synapris - Bac SVT 2019</title><style>body{font-family:Times;margin:20px;}.entete-officiel{border:2px solid #000;padding:10px;}.qcm-feedback{background:#f0f0f0;margin:8px 0;padding:8px;}</style></head><body>'+printContent.outerHTML+'</body></html>'); printWindow.document.close(); printWindow.print(); }
+  function validerExamenComplet() {
+    if (examenValide) return;
+    examenValide = true;
+    let totalQCM = 0;
+    for (let num = 1; num <= 8; num++) {
+      let cfg = examQcmConfig[num];
+      let checkboxes = document.querySelectorAll(`#eqo${num} input:checked`);
+      let selected = Array.from(checkboxes).map(cb => cb.value);
+      let hasFalse = selected.some(s => !cfg.correct.includes(s));
+      let isCorrect = !hasFalse && cfg.correct.every(c => selected.includes(c));
+      if (isCorrect) totalQCM += cfg.pts;
+    }
+    themeScores.qcm = Math.min(themeMax.qcm, totalQCM);
+    score = Object.values(themeScores).reduce((a, b) => a + b, 0);
+    document.getElementById('hdr-score').textContent = score.toFixed(2) + ' / 20';
+    sauvegarderTout();
+    goTo(4);
+  }
+  let examenValide = false;
+  showPage(1);
+  document.querySelectorAll('.lignes-reponse, .qcm-opt input').forEach(el=>el.addEventListener('input',sauvegarderTout));
+  document.querySelectorAll('.qcm-opt input').forEach(cb=>cb.addEventListener('change',sauvegarderTout));
+</script>
+</body>
+</html>
