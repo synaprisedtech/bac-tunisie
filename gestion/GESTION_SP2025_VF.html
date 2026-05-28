@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Synapris — Gestion Bac 2025 | Session principale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    :root {
+      --dark: #13243E;
+      --green: #BEDB2B;
+      --yellow: #FFE500;
+      --cream: #FDF8E7;
+      --white: #FFFFFF;
+      --text-dark: #13243E;
+      --text-light: rgba(255,255,255,0.85);
+      --text-muted: rgba(255,255,255,0.5);
+      --ok: #C5E384;
+      --ko: #ff6b6b;
+      --mid: #E8A736;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.15);
+      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      --font-ui: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-arabic: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+      --font-a4: 'Times New Roman', Times, serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); font-size: 1.05rem; background: var(--cream); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+
+    /* ===== LOGIN ===== */
+    #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, var(--cream), #fff5e8); padding: 20px; }
+    .login-header { text-align: center; max-width: 450px; margin-bottom: 24px; }
+    .login-header .epreuve-title { font-family: var(--font-ui); font-weight: 800; font-size: 1.2rem; color: var(--dark); margin-bottom: 12px; line-height: 1.3; }
+    .logo-placeholder-img { width: 120px; height: 120px; background: #e0e0e0; border-radius: 20px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #999; box-shadow: var(--shadow); }
+    .login-video { width: 100%; max-width: 400px; border-radius: 16px; background: #1a1a2e; margin: 0 auto 24px; box-shadow: var(--shadow); }
+    .login-video video { width: 100%; border-radius: 16px; display: block; }
+    .login-card { background: var(--white); padding: 32px 28px; border-radius: var(--radius-lg); max-width: 380px; width: 100%; box-shadow: var(--shadow-lg); text-align: center; margin-bottom: 24px; }
+    .login-card .logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.8rem; color: var(--dark); margin-bottom: 2px; }
+    .login-card .slogan { font-size: 0.85rem; color: var(--dark); font-style: italic; margin-bottom: 20px; }
+    .login-card input { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: var(--radius); font-family: var(--font-body); font-size: 0.9rem; margin-bottom: 12px; outline: none; transition: var(--transition); }
+    .login-card input:focus { border-color: var(--dark); box-shadow: 0 0 0 2px rgba(19,36,62,0.15); }
+    .login-card .btn-login { width: 100%; padding: 12px; background: var(--dark); color: var(--green); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+    .login-card .btn-login:hover { background: #0e1a2a; transform: translateY(-2px); }
+    .login-card .links { display: flex; justify-content: center; gap: 16px; margin-top: 14px; font-size: 0.75rem; }
+    .login-card .links a { color: rgba(30,26,42,0.5); text-decoration: none; transition: var(--transition); }
+    .login-card .links a:hover { color: var(--dark); }
+    .login-blocks { max-width: 450px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .login-block { background: var(--white); border-radius: var(--radius); padding: 14px 10px; text-align: center; box-shadow: var(--shadow); transition: var(--transition); }
+    .login-block:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .login-block .icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .login-block .arabic { font-size: 0.8rem; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+    .login-block .french { font-size: 0.7rem; color: rgba(30,26,42,0.6); }
+
+    /* ===== NAVBAR ===== */
+    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--dark); padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .navbar-logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.2rem; color: var(--green); display: flex; align-items: center; gap: 6px; }
+    .navbar-steps { display: flex; align-items: center; gap: 16px; flex: 1; justify-content: center; max-width: 600px; }
+    .nav-step { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 10px 20px; border-radius: 50px; transition: var(--transition); font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.5); font-family: var(--font-body); }
+    .nav-step .icon { font-size: 1.6rem; }
+    .nav-step .label { font-size: 0.8rem; text-transform: none; letter-spacing: 0.04em; }
+    .nav-step.active { color: var(--green); background: rgba(190,219,43,0.12); border: 1px solid var(--green); box-shadow: 0 0 15px rgba(190,219,43,0.1); }
+    .nav-step:hover { color: var(--green); transform: translateY(-2px); }
+    .navbar-score { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: var(--green); white-space: nowrap; }
+    .navbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: var(--dark); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; margin-left: 8px; }
+
+    /* ===== CALCULATRICE ===== */
+    #calc-wrapper { position: fixed; bottom: 80px; right: 20px; z-index: 1500; }
+    #calc-toggle-btn { background: var(--dark); color: var(--white); border: none; border-radius: var(--radius); padding: 10px 14px; font-size: 0.9rem; cursor: pointer; box-shadow: var(--shadow-lg); transition: var(--transition); display: flex; align-items: center; gap: 6px; animation: clignote 1.5s infinite; }
+    #calc-toggle-btn:hover { transform: scale(1.05); background: #0e1a2a; }
+    @keyframes clignote { 0%, 100% { opacity: 1; background: var(--dark); } 50% { opacity: 0.6; background: var(--green); color: var(--dark); } }
+    #calc-box { display: none; position: absolute; bottom: 60px; right: 0; background: var(--white); border: 2px solid var(--dark); border-radius: var(--radius-lg); padding: 12px; width: 260px; box-shadow: var(--shadow-lg); }
+    #calc-box.open { display: block; }
+    #calc-display { width: 100%; padding: 6px; font-size: 1.2rem; text-align: right; border: 1px solid #ccc; border-radius: var(--radius); margin-bottom: 8px; font-family: var(--font-mono); }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .calc-grid button { padding: 8px 0; border: 1px solid #ccc; border-radius: var(--radius); background: #f9f9f9; font-size: 0.9rem; cursor: pointer; transition: var(--transition); font-weight: 600; min-height: 40px; }
+    .calc-grid button:hover { background: var(--dark); color: var(--white); }
+    .calc-grid button.op { background: var(--green); color: var(--dark); }
+    .calc-grid button.op:hover { background: #8f9e20; }
+    .calc-grid button.fn { background: var(--cream); }
+    .calc-grid button.mem { background: var(--yellow); }
+    .calc-close { position: absolute; top: -10px; right: -10px; background: var(--ko); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: 700; }
+
+    /* ===== MAIN ===== */
+    .main-wrap { display: none; max-width: 1100px; margin: 0 auto; padding: 20px 16px 80px; }
+    .screen-full { display: none; animation: fadeUp 0.4s ease-out; }
+    .screen-full.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .split-layout { display: none; flex-direction: column; min-height: calc(100vh - 60px); animation: fadeUp 0.4s ease-out; }
+    .split-layout.active { display: flex; }
+
+    /* ===== ACCUEIL ===== */
+    #s0 .accueil-coach { background: var(--white); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    #s0 .accueil-coach .coach-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    #s0 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    #s0 .grid-2 .item { background: var(--white); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); }
+    #s0 .grid-2 .item .label { font-size: 0.6rem; text-transform: uppercase; color: var(--dark); font-weight: 700; }
+    #s0 .grid-2 .item .value { font-size: 1.2rem; font-weight: 700; color: var(--dark); }
+    #s0 .grid-2 .item .desc { font-size: 0.75rem; color: rgba(30,26,42,0.5); }
+    #s0 .verbes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin: 10px 0; }
+    #s0 .verbe-card { background: var(--cream); border: 1px solid rgba(19,36,62,0.08); border-radius: var(--radius); padding: 12px; text-align: center; cursor: pointer; transition: var(--transition); }
+    #s0 .verbe-card:hover { border-color: var(--dark); transform: translateY(-2px); }
+    #s0 .verbe-card.on { border-color: var(--dark); background: var(--dark); color: var(--white); }
+    #s0 .verbe-card.on .name { color: var(--green); }
+    #s0 .verbe-card .emoji { font-size: 1.3rem; margin-bottom: 4px; }
+    #s0 .verbe-card .name { font-family: var(--font-ui); font-weight: 700; font-size: 0.75rem; }
+    #s0 .verbe-detail { display: none; padding: 12px; background: rgba(19,36,62,0.03); border-radius: var(--radius); margin-top: 10px; font-size: 0.85rem; line-height: 1.6; border-left: 3px solid var(--dark); }
+    #s0 .verbe-detail.show { display: block; }
+    #s0 .recommandations { background: #f8f9fa; border-left: 5px solid var(--green); padding: 16px 20px; border-radius: var(--radius); margin-top: 8px; }
+
+    /* ===== COURS ===== */
+    #s1 .cours-card { background: var(--white); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 12px; box-shadow: var(--shadow); }
+    #s1 .cours-header { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; cursor: pointer; }
+    #s1 .cours-header .icon-box { width: 40px; height: 40px; border-radius: 10px; background: rgba(19,36,62,0.06); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    #s1 .cours-header .title { font-family: var(--font-ui); font-weight: 700; color: var(--dark); }
+    #s1 .cours-header .sub { font-size: 0.8rem; color: rgba(30,26,42,0.5); }
+    #s1 .cours-header .arrow { color: var(--dark); font-size: 0.8rem; }
+    #s1 .cours-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(19,36,62,0.06); font-size: 0.88rem; line-height: 1.7; color: rgba(30,26,42,0.7); }
+    #s1 .cours-detail.open { display: block; }
+    #s1 .cours-detail .piege { background: rgba(255,107,107,0.06); border-left: 3px solid var(--ko); padding: 6px 10px; margin: 6px 0; font-size: 0.85rem; }
+    #s1 .cours-detail .arabe { font-family: var(--font-arabic); font-size: 0.95rem; line-height: 1.6; margin-top: 8px; }
+    #s1 .cours-detail .formules { margin: 6px 0; padding: 8px; background: rgba(19,36,62,0.03); border-radius: 4px; font-family: var(--font-mono); font-size: 0.85rem; }
+    #s1 .cours-detail .exemple { margin: 6px 0; padding: 8px; background: rgba(190,219,43,0.06); border-left: 3px solid var(--green); border-radius: 4px; }
+
+    /* ===== GUIDÉ ===== */
+    .entete-officiel { background: var(--cream); border: 2px solid var(--dark); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-a4); font-size: 12px; flex-wrap: wrap; gap: 12px; box-shadow: 0 2px 8px rgba(19,36,62,0.08); }
+    .entete-gauche { font-weight: 700; line-height: 1.5; font-size: 11px; color: var(--dark); }
+    .entete-centre { text-align: center; flex: 1; }
+    .entete-centre h1 { font-size: 16px; font-weight: 800; margin-bottom: 2px; color: var(--dark); }
+    .entete-centre .sous-titre { font-size: 12px; font-weight: 700; color: var(--dark); }
+    .entete-centre .details { font-size: 11px; margin-top: 4px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .entete-droit { text-align: right; font-size: 11px; }
+    .a4-page { display: none; font-family: var(--font-a4); padding: 0 0 60px 0; }
+    .a4-page.active { display: block; }
+    .titre-partie { font-weight: 700; font-size: 15px; border-bottom: 2px solid var(--dark); padding-bottom: 4px; margin: 16px 0 10px; color: var(--dark); }
+    .titre-section { font-weight: 700; font-size: 14px; margin: 14px 0 6px; }
+    .pts { font-weight: 400; font-size: 13px; }
+    .tableau-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; }
+    .tableau-off { width: 100%; border-collapse: collapse; font-family: var(--font-a4); font-size: 13px; min-width: 500px; }
+    .tableau-off th, .tableau-off td { border: 1px solid var(--text-dark); padding: 6px 8px; text-align: center; vertical-align: top; }
+    .tableau-off th { background: #f0f0f0; font-weight: 700; }
+    .tableau-off input[type="text"] { width: 100%; border: none; border-bottom: 1px dashed #aaa; background: transparent; font-family: var(--font-a4); font-size: 12px; padding: 2px 0; outline: none; text-align: center; color: var(--text-dark); }
+    .lignes-reponse { width: 100%; border: none; border-bottom: 1px dashed #999; padding: 6px 2px; font-family: var(--font-a4); font-size: 13px; background: transparent; resize: vertical; outline: none; min-height: 40px; margin: 6px 0 8px; color: var(--text-dark); }
+    .q-item { margin-bottom: 16px; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: var(--radius); background: #fafbff; }
+    .q-item .q-num { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .nav-a4 { position: relative; top: 0; transform: none; background: var(--dark); border: 2px solid var(--green); border-radius: 60px; padding: 8px 16px; display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 20px; width: 100%; min-width: 100%; z-index: 500; }
+    .nav-a4-btn { padding: 12px 28px; border: none; background: var(--green); color: var(--dark); font-family: var(--font-ui); font-weight: 700; font-size: 1rem; border-radius: 50px; cursor: pointer; transition: var(--transition); }
+    .nav-a4-btn:hover { transform: scale(1.05); background: var(--dark); color: var(--green); border: 1px solid var(--green); box-shadow: 0 0 0 2px var(--green), 0 0 0 4px rgba(190,219,43,0.15); }
+    .nav-a4-indicator { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--green); min-width: 80px; text-align: center; }
+
+    /* ===== CORRECTION ===== */
+    .correction-box { display: none; margin-top: 12px; border: 2px solid var(--green); border-radius: var(--radius); padding: 0; background: #E8F5E9; overflow: hidden; overflow-x: auto; max-width: 100%; }
+    .correction-box.open { display: block; }
+    .correction-row { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #c8e6c9; padding: 6px 12px; }
+    .correction-row:last-child { border-bottom: none; }
+    .correction-contenu { width: 72%; font-size: 13px; line-height: 1.6; padding-right: 10px; }
+    .correction-bareme { width: 28%; font-size: 13px; font-weight: 700; color: var(--dark); padding-left: 10px; border-left: 1px solid #c8e6c9; text-align: right; }
+    .correction-title { font-weight: 700; font-size: 14px; color: var(--dark); margin-bottom: 6px; padding: 6px 12px; border-bottom: 1px solid #c8e6c9; background: #f0f7f1; }
+    .valider-btn { margin-top: 10px; padding: 6px 16px; background: var(--dark); color: var(--green); border: none; border-radius: 6px; font-family: var(--font-ui); font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: var(--transition); display: none; }
+    .valider-btn.show { display: inline-flex; align-items: center; gap: 6px; }
+    .valider-btn:hover { background: #0e1a2a; transform: translateY(-1px); }
+    .score-display { display: none; margin-top: 8px; padding: 8px; background: rgba(190,219,43,0.12); border-left: 4px solid var(--green); font-weight: 700; font-size: 0.9rem; }
+    .score-display.show { display: block; }
+
+    /* ===== EXAMEN ===== */
+    .examen-mode .correction-box { display: none !important; }
+    .examen-mode .coach-btn { display: none !important; }
+    .examen-mode .valider-btn { display: none !important; }
+    .examen-mode .score-display { display: none !important; }
+    .examen-mode .field-modal { display: none !important; }
+    .examen-mode .tt-modal { display: none !important; }
+    .examen-mode .lignes-reponse { background: transparent; }
+    .examen-timer-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .examen-timer-box { flex: 1; min-width: 100px; background: var(--white); border-radius: var(--radius); padding: 10px 14px; box-shadow: var(--shadow); text-align: center; }
+    .examen-timer-box .label { font-size: 0.6rem; text-transform: uppercase; color: rgba(30,26,42,0.4); letter-spacing: 0.04em; }
+    .examen-timer-box .time { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 600; color: var(--dark); }
+    .examen-controls { text-align: center; margin-bottom: 16px; }
+    .examen-controls button { padding: 8px 24px; background: var(--dark); color: var(--green); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: var(--transition); }
+
+    /* ===== BILAN ===== */
+    .score-big { font-family: var(--font-ui); font-weight: 800; font-size: clamp(2.5rem, 5vw, 4rem); background: linear-gradient(135deg, var(--dark), #0e1a2a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+    .comp-bar { margin: 8px 0; }
+    .comp-head { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px; }
+    .comp-name { color: rgba(30,26,42,0.6); }
+    .comp-pct { font-family: var(--font-mono); color: var(--dark); }
+    .bar-track { height: 4px; background: rgba(19,36,62,0.08); border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--dark), var(--green)); width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+    .conseil-box { padding: 12px; border-radius: var(--radius); margin-top: 8px; font-size: 0.85rem; line-height: 1.5; border-left: 4px solid var(--dark); }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: var(--dark); padding: 8px 0 env(safe-area-inset-bottom, 8px) 0; border-top: 1px solid rgba(190,219,43,0.2); justify-content: space-around; align-items: center; }
+    .bottom-nav .nav-step { flex: 1; padding: 6px 0; text-align: center; font-size: 0.6rem; color: rgba(190,219,43,0.5); cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bottom-nav .nav-step .icon { font-size: 1.3rem; }
+    .bottom-nav .nav-step span:not(.icon) { font-size: 0.65rem; }
+    .bottom-nav .nav-step.active { color: var(--green); }
+
+    /* ===== TT MODAL ===== */
+    .tt-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .tt-modal.open { display: flex; }
+    .tt-modal-content { background: var(--white); max-width: 400px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); position: relative; }
+    .tt-modal-content .close-tt { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: rgba(30,26,42,0.3); }
+    .tt-modal-content .close-tt:hover { color: var(--dark); }
+    .tt-modal-content .tt-img { font-size: 2.5rem; text-align: center; margin-bottom: 8px; }
+    .tt-modal-content .tt-def { font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
+    .tt-modal-content .tt-def strong { color: var(--dark); }
+    .tt-modal-content .tt-audio { background: var(--dark); color: var(--green); border: none; padding: 5px 14px; border-radius: 100px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: var(--transition); font-family: var(--font-body); }
+    .tt-modal-content .tt-audio:hover { background: #0e1a2a; }
+    .tt-modal-content .tt-rappel { margin-top: 10px; padding: 8px 12px; background: rgba(19,36,62,0.05); border-radius: var(--radius); font-size: 0.85rem; color: rgba(30,26,42,0.7); }
+    .tt-modal-content .tt-rappel strong { color: var(--dark); }
+    .tt-trigger { display: inline; color: var(--dark); border-bottom: 1px dashed var(--dark); cursor: pointer; font-weight: 600; transition: var(--transition); }
+    .tt-trigger:hover { color: #0e1a2a; border-color: #0e1a2a; }
+
+    /* ===== FIELD HELP MODAL ===== */
+    .field-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .field-modal.open { display: flex; }
+    .field-modal-content { background: var(--white); max-width: 400px; width: 100%; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); position: relative; }
+    .field-modal-content .close-field-modal { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: rgba(30,26,42,0.3); }
+    .field-modal-content .close-field-modal:hover { color: var(--dark); }
+    .field-modal-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; color: var(--dark); }
+    .field-modal-body { font-size: 0.9rem; line-height: 1.6; color: var(--text-dark); }
+    .field-modal-body .field-fr { font-weight: 600; }
+    .field-modal-body .field-ar { font-family: var(--font-arabic); margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(19,36,62,0.08); }
+
+    /* ===== COACH MODAL ===== */
+    .coach-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+    .coach-modal.open { display: flex; }
+    .coach-modal-content { background: var(--dark); max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); color: var(--text-light); font-family: var(--font-body); box-shadow: var(--shadow-lg); border: 1px solid rgba(190,219,43,0.2); }
+    .coach-modal-content .close-modal { float: right; background: none; border: none; color: rgba(255,255,255,0.4); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+    .coach-modal-content .close-modal:hover { color: var(--white); }
+    .coach-modal-content .coach-title { font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; color: var(--green); margin-bottom: 12px; }
+    .coach-modal-content .coach-msg { font-size: 0.88rem; line-height: 1.6; margin-bottom: 12px; }
+    .coach-modal-content .coach-msg strong { color: var(--green); }
+    .coach-modal-content .coach-schema-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .coach-modal-content .coach-step { display: flex; gap: 10px; padding: 4px 0; font-size: 0.85rem; line-height: 1.5; }
+    .coach-modal-content .coach-step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(190,219,43,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: var(--green); flex-shrink: 0; }
+    .coach-modal-content .coach-piege { background: rgba(255,107,107,0.08); border-left: 3px solid var(--ko); padding: 8px 12px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; line-height: 1.5; margin: 10px 0; }
+    .coach-modal-content .coach-piege strong { color: var(--ko); }
+    .coach-modal-content .coach-bareme { padding: 8px 12px; background: rgba(190,219,43,0.1); border-left: 3px solid var(--green); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; font-weight: 600; color: var(--green); margin-top: 10px; }
+    .coach-btn { margin-top: 8px; padding: 4px 12px; background: transparent; border: 1px solid var(--dark); color: var(--dark); border-radius: 100px; font-family: var(--font-body); font-size: 0.7rem; cursor: pointer; transition: var(--transition); }
+    .coach-btn:hover { background: rgba(19,36,62,0.1); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) { .navbar-steps .nav-step .label { display: none; } .navbar-steps .nav-step { padding: 4px 6px; } .navbar-steps .nav-step .icon { font-size: 1.1rem; } .bottom-nav { display: flex; } .main-wrap { padding-bottom: 60px; } }
+    @media (max-width: 640px) {
+      .navbar { padding: 0 10px; height: 56px; }
+      .navbar-logo { font-size: 0.9rem; }
+      .navbar-score { font-size: 0.7rem; }
+      .navbar-avatar { width: 28px; height: 28px; font-size: 0.7rem; }
+      .navbar-steps { display: none; }
+      .nav-a4-btn { padding: 8px 16px; font-size: 0.8rem; }
+      .entete-officiel { flex-direction: column; align-items: center; text-align: center; padding: 12px; }
+      .correction-row { flex-direction: column; }
+      .correction-contenu { width: 100%; padding-right: 0; border-right: none; }
+      .correction-bareme { width: 100%; padding-left: 0; border-left: none; border-top: 1px solid #c8e6c9; padding-top: 6px; text-align: left; }
+      #calc-wrapper { bottom: 80px; right: 16px; left: auto; }
+      #calc-box { width: 240px; right: 0; left: auto; }
+      .q-item { overflow-x: auto; }
+      .tableau-wrapper { max-width: 100%; overflow-x: auto; }
+      .correction-box .tableau-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+      }
+      .correction-box .tableau-off {
+        min-width: 500px;
+      }
+    }
+    @media print { .navbar, .bottom-nav, .nav-a4, .coach-btn, .valider-btn, .examen-controls, .login-screen, #login-screen, #calc-wrapper, .mode-toggle { display: none !important; } .split-layout { display: block !important; padding-bottom: 0 !important; } .correction-box { border: 1px solid #ccc !important; background: white !important; } }
+
+    /* ===== CORRECTIONS APPLIQUÉES ===== */
+    #s0 .nav-a4, #s1 .nav-a4, #s4 .nav-a4 { display: none !important; }
+    #login-screen #calc-wrapper, #s0 #calc-wrapper { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-header">
+    <div class="logo-placeholder-img">
+      <img src="assets/logo.png" alt="Synapris" onerror="this.style.display='none';this.parentElement.innerHTML='🧠';" style="width:100%;height:100%;object-fit:contain;border-radius:16px;" />
+    </div>
+    <div class="login-video">
+      <video loop muted autoplay playsinline>
+        <source src="assets/intro.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="login-card">
+    <div class="logo">⚡ Synapris</div>
+    <div class="slogan">Éclairer l'intelligence</div>
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Mot de passe" />
+    <button class="btn-login" onclick="handleLogin()">Se connecter</button>
+    <div class="links">
+      <a href="#" onclick="alert('Inscription — bientôt disponible')">Créer un compte</a>
+      <a href="#" onclick="alert('Mot de passe oublié — bientôt disponible')">Mot de passe oublié</a>
+    </div>
+  </div>
+  <div class="login-blocks">
+    <div class="login-block"><div class="icon">🎯</div><div class="arabic">محاكاة الامتحان الرسمي</div><div class="french">Simulation officielle du bac – comme le jour J</div></div>
+    <div class="login-block"><div class="icon">🧑‍🏫</div><div class="arabic">الوضع الموجّه</div><div class="french">Mode guidé – correction officielle pas à pas</div></div>
+    <div class="login-block"><div class="icon">⏱️</div><div class="arabic">الوضع الامتحان</div><div class="french">Mode examen – chrono et conditions réelles</div></div>
+    <div class="login-block"><div class="icon">💾</div><div class="arabic">حفظ التقدّم</div><div class="french">Sauvegarde automatique – reprends où tu t’es arrêté</div></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar" style="display:none;">
+  <div class="navbar-logo">🧠 Synapris</div>
+  <div class="navbar-steps">
+    <div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span class="label">Accueil</span></div>
+    <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span class="label">Cours</span></div>
+    <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span class="label">Guidé</span></div>
+    <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span class="label">Examen</span></div>
+    <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span class="label">Bilan</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="navbar-score" id="hdr-score">0 / 20</span>
+    <div class="navbar-avatar" id="avatar">👤</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main-wrap" id="main-wrap" style="display:none;">
+
+  <!-- ACCUEIL -->
+  <div class="screen-full active" id="s0">
+    <div style="text-align:center;padding:4px 0 16px;">
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">📅 Jour 1 / 10</div>
+      <h1 style="font-family:var(--font-ui);font-weight:800;font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--dark);line-height:1.1;">Gestion<br><span style="color:#0e1a2a;">Bac 2025 – Session principale</span></h1>
+      <p style="font-size:0.85rem;color:rgba(30,26,42,0.5);margin-top:4px;">Épreuve officielle simulée — Section Économie &amp; Gestion</p>
+    </div>
+    <div class="accueil-coach">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div class="coach-avatar">🧑‍🏫</div>
+        <div>
+          <div style="font-family:var(--font-ui);font-weight:700;font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Ton Coach Synapris</div>
+          <div style="font-size:0.85rem;line-height:1.6;color:rgba(30,26,42,0.7);">Tu vas simuler l'épreuve officielle du baccalauréat 2025 (session principale). Le layout que tu vois est <strong style="color:var(--dark);">identique à l'épreuve réelle</strong>. Je suis là pour t'aider à <strong style="color:var(--dark);">construire ton raisonnement</strong> — jamais te donner la réponse.</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="item"><div class="label">Partie 1</div><div class="value">5 pts</div><div class="desc">Exercices (GPEC, Budget)</div></div>
+      <div class="item"><div class="label">Partie 2</div><div class="value">15 pts</div><div class="desc">Dossiers (Stock, Rentabilité, Campagne, Investissement)</div></div>
+      <div class="item"><div class="label">Durée</div><div class="value">3h30</div><div class="desc">Coefficient 3</div></div>
+      <div class="item"><div class="label">Format</div><div class="value">8 pages</div><div class="desc">Navigation ← → par page</div></div>
+    </div>
+    <div style="background:var(--white);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow);">
+      <div style="font-family:var(--font-ui);font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:10px;">🎯 Verbes d'action</div>
+      <p style="font-size:0.8rem;color:rgba(30,26,42,0.5);margin-bottom:10px;">Clique sur chaque verbe pour comprendre ce qu'attend le correcteur.</p>
+      <div class="verbes-grid">
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-analyser')"><div class="emoji">🔍</div><div class="name">ANALYSER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-calculer')"><div class="emoji">🧮</div><div class="name">CALCULER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-deduire')"><div class="emoji">⚡</div><div class="name">DÉDUIRE</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-justifier')"><div class="emoji">✍️</div><div class="name">JUSTIFIER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-interpreter')"><div class="emoji">📊</div><div class="name">INTERPRÉTER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-chiffrer')"><div class="emoji">💰</div><div class="name">CHIFFRER</div></div>
+      </div>
+      <div id="v-analyser" class="verbe-detail"><strong>ANALYSER</strong> = Décomposer chaque élément du document + interpréter ce que chacun signifie. <br><span style="color:var(--ko);">⚠️</span> Décrire sans interpréter = 0 pt.</div>
+      <div id="v-calculer" class="verbe-detail"><strong>CALCULER</strong> = Appliquer une formule et présenter le résultat chiffré. <br><span style="color:var(--ko);">⚠️</span> Réponse sans formule = 0 pt.</div>
+      <div id="v-deduire" class="verbe-detail"><strong>DÉDUIRE</strong> = Observation → raisonnement logique → conclusion argumentée. <br><span style="color:var(--ko);">⚠️</span> Affirmer sans justifier = non recevable.</div>
+      <div id="v-justifier" class="verbe-detail"><strong>JUSTIFIER</strong> = Données du document + calculs + mécanisme. <br><span style="color:var(--ko);">⚠️</span> Nommer sans justifier = incomplet.</div>
+      <div id="v-interpreter" class="verbe-detail"><strong>INTERPRÉTER</strong> = Expliquer la signification d'un résultat. <br><span style="color:var(--ko);">⚠️</span> Donner un chiffre sans l'analyser = 0 pt.</div>
+      <div id="v-chiffrer" class="verbe-detail"><strong>CHIFFRER</strong> = Calculer une valeur économique ou financière. <br><span style="color:var(--ko);">⚠️</span> Sans l'unité, le calcul est incomplet.</div>
+    </div>
+    <div class="recommandations">
+      <h3 style="color:var(--dark);font-weight:800;font-size:0.9rem;">📌 Recommandations officielles – Épreuve de Gestion</h3>
+      <ul style="list-style:none;padding:0;line-height:1.8;font-size:0.85rem;">
+        <li>✅ La révision finale doit porter essentiellement sur les différentes formules et synthèses évoquées par les différents chapitres.</li>
+        <li>✅ Vérifiez bien que votre machine à calculer fonctionne bien.</li>
+        <li>✅ Consacrez 10 à 15 mn environ pour une lecture totale du sujet.</li>
+        <li>✅ Le sujet de Gestion se compose de deux parties : la première partie notée sur 5 points (2 exercices), la deuxième partie notée sur 15 points (quelques dossiers).</li>
+        <li>✅ Pour la première partie : commencez par l’exercice que vous jugez facile, respectez l’ordre des questions, mais passez à la suivante si vous bloquez (les questions ne sont pas toujours liées sur le plan calcul).</li>
+        <li>✅ Pour la deuxième partie (étude de cas) : saisissez le fil conducteur en lisant l’introduction générale du cas et celles de chaque dossier.</li>
+        <li>✅ Traitez les dossiers dans l’ordre. Ne pas réussir un dossier ne bloque pas le suivant (liens sur le plan idée, pas forcément calcul).</li>
+        <li>✅ Vérifiez bien vos calculs et remplissez clairement les annexes (évitez ratures et surcharges).</li>
+        <li>✅ Justifiez vos résultats par les calculs nécessaires.</li>
+      </ul>
+      <div style="margin-top:12px;text-align:right;font-style:italic;color:var(--dark);font-weight:600;">Bon courage ! 🍀</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+      <button class="valider-btn show" style="background:var(--dark);color:var(--green);padding:10px 28px;font-size:0.85rem;" onclick="goTo(1)">Commencer →</button>
+    </div>
+  </div>
+
+  <!-- COURS -->
+  <div class="screen-full" id="s1">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 2 — Rappel cours</div>
+    <h2 style="font-family:var(--font-ui);font-weight:800;font-size:1.4rem;color:var(--dark);margin-bottom:4px;">Ce que tu dois savoir</h2>
+    <p style="font-size:0.85rem;color:rgba(30,26,42,0.5);margin-bottom:16px;">Notions ciblées pour <em>cette</em> épreuve uniquement</p>
+
+    <!-- GPEC -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">👥</div>
+        <div><div class="title">GPEC — Gestion Prévisionnelle des Emplois et Compétences</div><div class="sub">Besoins prévisionnels, effectifs, écarts</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> La GPEC est une démarche qui permet à l'entreprise d'<strong>anticiper ses besoins en ressources humaines</strong> pour atteindre ses objectifs stratégiques, en comparant les besoins futurs aux ressources disponibles.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> GPEC هي مقاربة تمكّن المؤسسة من <strong>استباق احتياجاتها من الموارد البشرية</strong> لتحقيق أهدافها الاستراتيجية.</div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • Besoin en ouvriers = (Production × Temps MOD) / (Temps de travail annuel par ouvrier)<br>
+          • Effectif prévisionnel = Effectif actuel − Départs + Promotions reçues − Promotions accordées<br>
+          • Besoin théorique = Besoin prévisionnel − Effectif prévisionnel<br>
+          • Sureffectif = Besoin théorique − Effectif prévisionnel (négatif)<br>
+          • Sous-effectif = Besoin théorique − Effectif prévisionnel (positif)
+        </div>
+        <div class="exemple"><strong>Exemple chiffré :</strong><br>
+          Production 200 000 plaques, 2 h/plaque, 2 500 h/an → 200 000 × 2 / 2 500 = 160 ouvriers.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Ne pas confondre besoins théoriques et effectifs prévisionnels. Bien identifier les mouvements de personnel (départs, promotions, recrutement).</div>
+      </div>
+    </div>
+
+    <!-- Stocks -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📦</div>
+        <div><div class="title">Gestion des Stocks — CMUP et Rotation</div><div class="sub">Coût moyen unitaire pondéré, stock moyen, rotation</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> La gestion des stocks vise à déterminer <strong>quand commander</strong> et <strong>quelle quantité commander</strong> pour minimiser les coûts tout en évitant la rupture de stock.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> تسيير المخزونات يهدف إلى تحديد <strong>متى نطلب</strong> و <strong>كم نطلب</strong> لتقليص التكاليف وتجنب نفاد المخزون.</div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • CMUP = (Valeur stock initial + Entrées) / (Quantité initiale + Entrées)<br>
+          • Stock moyen = (Stock initial + Stock final) / 2<br>
+          • Coût consommé = CMUP × Quantité sortie<br>
+          • Rotation = Coût consommé / Stock moyen
+        </div>
+        <div class="exemple"><strong>Exemple chiffré :</strong><br>
+          CMUP = 30 D, Rotation = 25 fois.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Inclure les frais d'achat dans le coût unitaire des entrées. Ne pas oublier de calculer le stock moyen avec le stock final.</div>
+      </div>
+    </div>
+
+    <!-- Coûts -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">💰</div>
+        <div><div class="title">Gestion des Coûts — Coûts partiels</div><div class="sub">Marge sur coût variable, seuil de rentabilité, marge de sécurité</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> La méthode des coûts partiels permet d'analyser la rentabilité à court terme en distinguant les charges fixes et les charges variables.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> طريقة التكاليف الجزئية تمكّن من تحليل المردودية على المدى القصير.</div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • MCV = CA − Charges variables<br>
+          • Résultat = MCV − Charges fixes<br>
+          • SR = Charges fixes / Taux MCV<br>
+          • MS = CA − SR<br>
+          • Date du SR = (SR / CA) × 12 mois
+        </div>
+        <div class="exemple"><strong>Exemple chiffré :</strong><br>
+          MCV = 2 400 000 D, CF = 360 000 D → SR = 900 000 D.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Ne pas oublier de convertir le seuil de rentabilité en date (en mois et jours). Vérifier que la marge de sécurité est positive.</div>
+      </div>
+    </div>
+
+    <!-- Investissement -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📈</div>
+        <div><div class="title">Projet d'Investissement</div><div class="sub">CAF, VAN, DRCI — Rentabilité financière</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> L'étude d'un projet d'investissement permet de déterminer si un investissement est <strong>financièrement rentable</strong> en calculant les flux de trésorerie générés et en les comparant au capital investi.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> دراسة مشروع الاستثمار تمكّن من تحديد ما إذا كان الاستثمار <strong>مجديًا ماليًا</strong> بحساب التدفقات المالية ومقارنتها برأس المال المستثمر.</div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • Dotation = Coût / Durée<br>
+          • CAF = Résultat net + Dotation<br>
+          • DRCI = Coût / CAF<br>
+          • VAN = Σ (CAF × coefficient d'actualisation) − Coût
+        </div>
+        <div class="exemple"><strong>Exemple chiffré :</strong><br>
+          CAF = 90 000 + 60 000 = 150 000 D, DRCI = 300 000 / 150 000 = 2 ans.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> La CAF est égale au résultat net plus la dotation aux amortissements. La VAN doit être positive pour accepter le projet.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(19,36,62,0.06);">
+      <button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="goTo(0)">← Accueil</button>
+      <button class="valider-btn show" style="background:var(--dark);color:var(--green);padding:10px 28px;font-size:0.85rem;" onclick="goTo(2)">Mode Guidé →</button>
+    </div>
+  </div>
+
+  <!-- GUIDÉ -->
+  <div class="split-layout" id="s2">
+    <div class="nav-a4">
+      <button class="nav-a4-btn" onclick="pgPrev()">← Précédent</button>
+      <span class="nav-a4-indicator" id="pg-indicator">Page 1 / 8</span>
+      <button class="nav-a4-btn" onclick="pgNext()">Suivant →</button>
+    </div>
+
+    <div style="padding:0 16px 20px; max-width:980px; margin:0 auto; width:100%;">
+      <div class="entete-officiel">
+        <div class="entete-gauche">République Tunisienne<br>Ministère de l'Éducation</div>
+        <div class="entete-centre">
+          <h1>EXAMEN DU BACCALAURÉAT</h1>
+          <div class="sous-titre">SESSION 2025 — Session principale</div>
+          <div class="details"><span>Épreuve : <strong>Gestion</strong></span><span>Section : <strong>Économie &amp; Gestion</strong></span><span>Durée : <strong>3h30</strong></span><span>Coefficient : <strong>3</strong></span></div>
+        </div>
+        <div class="entete-droit">N° d’inscription :<br><span style="font-family:var(--font-mono);">[ ][ ][ ][ ][ ][ ][ ][ ]</span></div>
+      </div>
+
+      <!-- PAGE 1 – GPEC -->
+      <div class="a4-page active" id="pg1">
+        <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(5 points)</span></div>
+        <div class="titre-section">Exercice n°1 : Gestion des ressources humaines (GPEC)</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.6;">
+          L'entreprise « PLA-ELEC » est spécialisée dans la fabrication de plaques chauffantes. La production d'une plaque nécessite 2 heures de main d'œuvre directe (MOD). L'entreprise prévoit d'atteindre un objectif de production annuelle de <strong>200 000 plaques chauffantes</strong> en 2028. Chaque ouvrier travaille <strong>2 500 heures par an</strong>. La composition idéale au 31/12/2028 serait de <strong>70% d'ouvriers non qualifiés</strong> et <strong>30% d'ouvriers qualifiés</strong>.
+        </div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          <strong>Informations complémentaires :</strong><br>
+          - TAM = 25% du besoin en ouvriers non qualifiés au 31/12/2028.<br>
+          - Cadres = 90% de leur effectif au 31/12/2024.
+        </div>
+        <div class="tableau-wrapper">
+          <table class="tableau-off">
+            <tr><th>Désignations</th><th>Cadres</th><th>TAM</th><th>Ouvriers qualifiés</th><th>Ouvriers non qualifiés</th></tr>
+            <tr><td>Effectifs au 31/12/2024</td><td>10</td><td>30</td><td>40</td><td>120</td></tr>
+            <tr><td>Retraites</td><td>1</td><td>4</td><td>3</td><td>8</td></tr>
+            <tr><td>Démissions</td><td>1</td><td>2</td><td>1</td><td>2</td></tr>
+          </table>
+        </div>
+        <div style="font-size:13px; margin:6px 0; line-height:1.5;">
+          Promotions prévues : 6 ouvriers non qualifiés → ouvriers qualifiés ; 4 ouvriers qualifiés → TAM ; 2 TAM → cadres.
+        </div>
+        <div class="q-item">
+          <div class="q-num">1a) Calculez le besoin en nombre d'ouvriers, qu'ils soient qualifiés ou non, pour la production des 200 000 plaques en 2028.</div>
+          <div><label>Besoin total :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="160" data-tolerance="1" data-points="0.5" data-tip="(200 000 × 2) / 2 500 = 160 ouvriers." /></div>
+          <button class="coach-btn" onclick="openCoach('coach-gpec-1a')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('gpec-1a')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-gpec-1a">
+            <div class="correction-title">📋 Correction – Besoin en ouvriers</div>
+            <div class="correction-row">
+              <div class="correction-contenu">(200 000 × 2) / 2 500 = 160 ouvriers.</div>
+              <div class="correction-bareme">0,5 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-gpec-1a"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">1b) Déduisez le nombre d'ouvriers non qualifiés et qualifiés au 31/12/2028.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Ouvriers non qualifiés :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="112" data-tolerance="1" data-points="0.5" data-tip="160 × 0,7 = 112." /></div>
+            <div><label>Ouvriers qualifiés :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="48" data-tolerance="1" data-points="0.5" data-tip="160 × 0,3 = 48." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-gpec-1b')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('gpec-1b')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-gpec-1b">
+            <div class="correction-title">📋 Correction – Ouvriers qualifiés et non qualifiés</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Ouvriers non qualifiés = 160 × 0,7 = 112. Ouvriers qualifiés = 160 × 0,3 = 48.</div>
+              <div class="correction-bareme">1 pt (0,5 x 2)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-gpec-1b"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Déterminez les besoins en TAM et cadres au 31/12/2028.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Besoins en TAM :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="28" data-tolerance="1" data-points="0.25" data-tip="112 × 0,25 = 28." /></div>
+            <div><label>Besoins en Cadres :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="9" data-tolerance="1" data-points="0.25" data-tip="10 × 0,9 = 9." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-gpec-2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('gpec-2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-gpec-2">
+            <div class="correction-title">📋 Correction – Besoins en TAM et Cadres</div>
+            <div class="correction-row">
+              <div class="correction-contenu">TAM = 112 × 0,25 = 28. Cadres = 10 × 0,9 = 9.</div>
+              <div class="correction-bareme">0,5 pt (0,25 x 2)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-gpec-2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) Complétez le tableau des écarts (Annexe n°1).</div>
+          <div class="tableau-wrapper">
+            <table class="tableau-off">
+              <tr><th>Désignations</th><th>Cadres</th><th>TAM</th><th>Ouvriers qualifiés</th><th>Ouvriers non qualifiés</th></tr>
+              <tr><td>Effectif au 31/12/2024</td><td>10</td><td>30</td><td>40</td><td>120</td></tr>
+              <tr><td>Départs : Retraites</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-1" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-4" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-3" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-8" data-points="0.25" /></td></tr>
+              <tr><td>Départs : Démissions</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-1" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-2" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-1" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-2" data-points="0.25" /></td></tr>
+              <tr><td>Promotions : vers catégorie supérieure</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="+2" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-4" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="-4" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="0" data-points="0.25" /></td></tr>
+              <tr><td>Promotions : de catégorie inférieure</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="+4" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="+6" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="+6" data-points="0.25" /></td></tr>
+              <tr><td>Effectif au 31/12/2028</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="10" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="24" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="38" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="116" data-points="0.25" /></td></tr>
+              <tr><td>Besoin théorique au 31/12/2028</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="9" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="28" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="48" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="112" data-points="0.25" /></td></tr>
+              <tr><td>Ecarts : Sous-effectif</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="4" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="10" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="0" data-points="0.25" /></td></tr>
+              <tr><td>Ecarts : Sureffectif</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="1" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="4" data-points="0.25" /></td></tr>
+            </table>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-gpec-3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('gpec-3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-gpec-3">
+            <div class="correction-title">📋 Correction – Tableau des écarts (Annexe 1)</div>
+            <table class="tableau-off" style="font-size:12px;">
+              <tr><th>Désignations</th><th>Cadres</th><th>TAM</th><th>Ouvriers qualifiés</th><th>Ouvriers non qualifiés</th></tr>
+              <tr><td>Effectif au 31/12/2024</td><td>10</td><td>30</td><td>40</td><td>120</td></tr>
+              <tr><td>Départs : Retraites</td><td>-1</td><td>-4</td><td>-3</td><td>-8</td></tr>
+              <tr><td>Départs : Démissions</td><td>-1</td><td>-2</td><td>-1</td><td>-2</td></tr>
+              <tr><td>Promotions : vers catégorie supérieure</td><td>+2</td><td>-4</td><td>-4</td><td>0</td></tr>
+              <tr><td>Promotions : de catégorie inférieure</td><td>0</td><td>+4</td><td>+6</td><td>+6</td></tr>
+              <tr><td>Effectif au 31/12/2028</td><td>10</td><td>24</td><td>38</td><td>116</td></tr>
+              <tr><td>Besoin théorique au 31/12/2028</td><td>9</td><td>28</td><td>48</td><td>112</td></tr>
+              <tr><td>Ecarts : Sous-effectif</td><td>0</td><td>4</td><td>10</td><td>0</td></tr>
+              <tr><td>Ecarts : Sureffectif</td><td>1</td><td>0</td><td>0</td><td>4</td></tr>
+            </table>
+          </div>
+          <div class="score-display" id="score-gpec-3"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">4) Interprétez les écarts et dites quelles actions envisager pour satisfaire les besoins en personnel.</div>
+          <textarea class="lignes-reponse" rows="4" placeholder="Rédigez votre réponse..." data-points="1" data-tip="Pour Cadres : sureffectif → retraite anticipée. Pour les autres : sous-effectif → recrutement interne/externe."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-gpec-4')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('gpec-4')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-gpec-4">
+            <div class="correction-title">📋 Correction – Interprétation et actions</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Pour les Cadres : sureffectif → favoriser la retraite anticipée. Pour les autres catégories : sous-effectif → recrutement externe, interne (promotion), ou combinaison des deux.</div>
+              <div class="correction-bareme">1 pt (0,25 x 4)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-gpec-4"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 2 – Budget de trésorerie -->
+      <div class="a4-page" id="pg2">
+        <div class="titre-section" style="margin-top:0;">Exercice n°2 : Gestion budgétaire</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          L'entreprise « NOVA » souhaite étudier l'évolution de sa trésorerie pour le <strong>4ème trimestre 2025</strong>. Les renseignements sont fournis en Annexe A.
+        </div>
+        <div style="font-size:13px; margin:6px 0; line-height:1.5;">
+          <strong>Annexe A – 4ème trimestre 2025 :</strong>
+        </div>
+        <div class="tableau-wrapper">
+          <table class="tableau-off">
+            <tr><th>Observations</th><th>Octobre</th><th>Novembre</th><th>Décembre</th></tr>
+            <tr><td>Achats TTC</td><td>130 900 D</td><td>164 220 D</td><td>157 675 D</td></tr>
+            <tr><td>Paiement : 20% au comptant, 30% dans 1 mois, le reste dans 2 mois</td><td colspan="3">Seront payées le mois même de leur engagement</td></tr>
+            <tr><td>Salaires nets</td><td>30 000 D</td><td>30 000 D</td><td>30 000 D</td></tr>
+            <tr><td>Charges sociales</td><td>9 900 D</td><td>9 900 D</td><td>9 900 D</td></tr>
+            <tr><td>Autres informations : dettes fournisseurs au 30/09/2025 = 140 896 D, payées 37,5% en octobre et le reste en novembre.</td><td colspan="3"></td></tr>
+          </table>
+        </div>
+        <div class="q-item">
+          <div class="q-num">1a) Complétez le budget des décaissements (Annexe n°2).</div>
+          <div class="tableau-wrapper">
+            <table class="tableau-off">
+              <tr><th>Désignations</th><th>Octobre</th><th>Novembre</th><th>Décembre</th><th>Autres</th></tr>
+              <tr><td>Dettes fournisseurs au 30/09/2025</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="52836" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="88060" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td></tr>
+              <tr><td>Achats TTC : Octobre</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="26180" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="39270" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="65450" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td></tr>
+              <tr><td>Achats TTC : Novembre</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="32844" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="49266" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td></tr>
+              <tr><td>Achats TTC : Décembre</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="23180" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td></tr>
+              <tr><td>Autres charges TTC</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="24990" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="23180" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="23180" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="82110" data-points="0.25" /></td></tr>
+              <tr><td>Salaires nets</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="30000" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="30000" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="30000" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="126140" data-points="0.25" /></td></tr>
+              <tr><td>Charges sociales</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="29700" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="29700" data-points="0.25" /></td></tr>
+              <tr><td>Impôt sur salaires</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="6580" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="6580" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="6580" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="6580" data-points="0.25" /></td></tr>
+              <tr><td>Règlement TVA</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="15200" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="16612" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="24320" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="23180" data-points="0.25" /></td></tr>
+              <tr><td><strong>Total des décaissements</strong></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="185486" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="236546" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="230951" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="0" data-points="0.25" /></td></tr>
+            </table>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-budget-1a')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('budget-1a')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-budget-1a">
+            <div class="correction-title">📋 Correction – Budget des décaissements (Annexe 2)</div>
+            <table class="tableau-off" style="font-size:12px;">
+              <tr><th>Désignations</th><th>Octobre</th><th>Novembre</th><th>Décembre</th><th>Autres</th></tr>
+              <tr><td>Dettes fournisseurs au 30/09/2025</td><td>52 836</td><td>88 060</td><td>0</td><td>0</td></tr>
+              <tr><td>Achats TTC : Octobre</td><td>26 180</td><td>39 270</td><td>65 450</td><td>0</td></tr>
+              <tr><td>Achats TTC : Novembre</td><td>0</td><td>32 844</td><td>49 266</td><td>0</td></tr>
+              <tr><td>Achats TTC : Décembre</td><td>0</td><td>0</td><td>23 180</td><td>0</td></tr>
+              <tr><td>Autres charges TTC</td><td>24 990</td><td>23 180</td><td>23 180</td><td>82 110</td></tr>
+              <tr><td>Salaires nets</td><td>30 000</td><td>30 000</td><td>30 000</td><td>126 140</td></tr>
+              <tr><td>Charges sociales</td><td>29 700</td><td>0</td><td>0</td><td>29 700</td></tr>
+              <tr><td>Impôt sur salaires</td><td>6 580</td><td>6 580</td><td>6 580</td><td>6 580</td></tr>
+              <tr><td>Règlement TVA</td><td>15 200</td><td>16 612</td><td>24 320</td><td>23 180</td></tr>
+              <tr><td><strong>Total des décaissements</strong></td><td><strong>185 486</strong></td><td><strong>236 546</strong></td><td><strong>230 951</strong></td><td></td></tr>
+            </table>
+          </div>
+          <div class="score-display" id="score-budget-1a"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">1b) Complétez le budget de trésorerie (Annexe n°3).</div>
+          <div class="tableau-wrapper">
+            <table class="tableau-off">
+              <tr><th>Désignations</th><th>Octobre</th><th>Novembre</th><th>Décembre</th></tr>
+              <tr><td>Trésorerie initiale</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="8950" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="12000" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="6000" data-points="0.25" /></td></tr>
+              <tr><td>Total des encaissements</td><td>188 536</td><td>230 546</td><td>222 951</td></tr>
+              <tr><td>Total des décaissements</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="185486" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="236546" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="230951" data-points="0.25" /></td></tr>
+              <tr><td><strong>Trésorerie finale</strong></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="12000" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="6000" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="-2000" data-points="0.25" /></td></tr>
+            </table>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-budget-1b')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('budget-1b')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-budget-1b">
+            <div class="correction-title">📋 Correction – Budget de trésorerie (Annexe 3)</div>
+            <table class="tableau-off" style="font-size:12px;">
+              <tr><th>Désignations</th><th>Octobre</th><th>Novembre</th><th>Décembre</th></tr>
+              <tr><td>Trésorerie initiale</td><td>8 950</td><td>12 000</td><td>6 000</td></tr>
+              <tr><td>Total des encaissements</td><td>188 536</td><td>230 546</td><td>222 951</td></tr>
+              <tr><td>Total des décaissements</td><td>185 486</td><td>236 546</td><td>230 951</td></tr>
+              <tr><td><strong>Trésorerie finale</strong></td><td><strong>12 000</strong></td><td><strong>6 000</strong></td><td><strong>(2 000)</strong></td></tr>
+            </table>
+          </div>
+          <div class="score-display" id="score-budget-1b"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Interprétez la situation de la trésorerie et proposez des solutions pour l'équilibrer.</div>
+          <textarea class="lignes-reponse" rows="3" placeholder="Rédigez votre réponse..." data-points="1" data-tip="Octobre et novembre : excédentaire ; décembre : déficitaire. Solutions : escompte, découvert bancaire."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-budget-2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('budget-2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-budget-2">
+            <div class="correction-title">📋 Correction – Interprétation et solutions</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Octobre et novembre : trésorerie excédentaire. Décembre : déficitaire. Solutions : remise à l'escompte, découvert bancaire, révision des délais clients/fournisseurs.</div>
+              <div class="correction-bareme">1 pt (0,5 interprétation + 0,5 solutions)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-budget-2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) Déterminez le besoin de chaque mois en fonds de trésorerie nécessaire, avec une trésorerie nette minimale de 10 000 D.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Besoin Octobre :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="0" data-tolerance="1" data-points="0.5" data-tip="12 000 > 10 000 → 0." /></div>
+            <div><label>Besoin Novembre :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="4000" data-tolerance="1" data-points="0.5" data-tip="10 000 - 6 000 = 4 000 D." /></div>
+            <div><label>Besoin Décembre :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="12000" data-tolerance="1" data-points="0.5" data-tip="10 000 - (-2 000) = 12 000 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-budget-3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('budget-3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-budget-3">
+            <div class="correction-title">📋 Correction – Besoins en fonds de trésorerie</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Octobre : 0 D (12 000 > 10 000). Novembre : 4 000 D (10 000 - 6 000). Décembre : 12 000 D (10 000 - (-2 000)).</div>
+              <div class="correction-bareme">1,5 pt (0,5 x 3)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-budget-3"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 3 – Dossier 1 (Stock) -->
+      <div class="a4-page" id="pg3">
+        <div class="titre-partie" style="margin-top:0;">DEUXIEME PARTIE <span class="pts">(15 points)</span></div>
+        <div class="titre-section">DOSSIER N°1 : Analyse de la situation actuelle</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          L'entreprise « AZIZ » est spécialisée dans la fabrication de chaussures à partir de la matière première « Cuir ». Le responsable des approvisionnements souhaite étudier la gestion des stocks de cuir pour le mois de décembre 2024.
+        </div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          <strong>Informations :</strong><br>
+          - Stock initial au 01/12/2024 : 1 660 m² à 51 460 D.<br>
+          - Mouvements : 10 000 m² à 301 640 D (03/12) ; 9 960 m² (04/12) ; 6 600 m² à 28 D/m² (19/12) ; 4 980 m² (22/12).<br>
+          - Frais d'achat : 1,500 D/m² pour toute quantité ≤ 9 000 m².<br>
+          - Évaluation des sorties : CMUP en fin de période.
+        </div>
+        <div class="q-item">
+          <div class="q-num">1) Calculez le coût moyen unitaire pondéré (CMUP) en fin du mois de décembre 2024.</div>
+          <div><label>CMUP :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="30" data-tolerance="0.5" data-points="1" data-tip="CMUP = (51 460 + 301 640 + (6 600 × (28 + 1,5))) / (1 660 + 10 000 + 6 600) = 30 D." /></div>
+          <button class="coach-btn" onclick="openCoach('coach-stock-1')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('stock-1')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-stock-1">
+            <div class="correction-title">📋 Correction – CMUP</div>
+            <div class="correction-row">
+              <div class="correction-contenu">CMUP = (51 460 + 301 640 + 194 700) / (1 660 + 10 000 + 6 600) = 30 D.</div>
+              <div class="correction-bareme">1 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-stock-1"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Complétez la fiche de stock (Annexe n°4).</div>
+          <div class="tableau-wrapper">
+            <table class="tableau-off">
+              <tr><th>Dates</th><th>Libellés</th><th colspan="3">Entrées</th><th colspan="3">Sorties</th><th colspan="3">Existants</th></tr>
+              <tr><th></th><th></th><th>Q</th><th>C.U</th><th>Montant</th><th>Q</th><th>C.U</th><th>Montant</th><th>Q</th><th>C.U</th><th>Montant</th></tr>
+              <tr><td>01/12/24</td><td>Stock initial</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1 660</td><td>-</td><td>51 460</td></tr>
+              <tr><td>03/12/24</td><td>Bon d'entrée n°123</td><td>10 000</td><td>-</td><td>301 640</td><td>-</td><td>-</td><td>-</td><td>11 660</td><td>-</td><td>353 100</td></tr>
+              <tr><td>04/12/24</td><td>Bon de sortie n°232</td><td>-</td><td>-</td><td>-</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="9960" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="30" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="298800" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="1700" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="30" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="51000" data-points="0.25" /></td></tr>
+              <tr><td>19/12/24</td><td>Bon d'entrée n°124</td><td>6 600</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="29.5" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="194700" data-points="0.25" /></td><td>-</td><td>-</td><td>-</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="8300" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="30" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="249000" data-points="0.25" /></td></tr>
+              <tr><td>22/12/24</td><td>Bon de sortie n°233</td><td>-</td><td>-</td><td>-</td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="4980" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="30" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="149400" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="3320" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="30" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="99600" data-points="0.25" /></td></tr>
+              <tr><td><strong>Totaux</strong></td><td></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="16600" data-points="0.25" /></td><td></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="496340" data-points="0.25" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="14940" data-points="0.25" /></td><td></td><td><input type="text" class="lignes-reponse" style="width:50px;" data-answer="448200" data-points="0.25" /></td><td></td><td></td><td></td></tr>
+            </table>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-stock-2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('stock-2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-stock-2">
+            <div class="correction-title">📋 Correction – Fiche de stock (Annexe 4)</div>
+            <table class="tableau-off" style="font-size:12px;">
+              <tr><th>Dates</th><th>Libellés</th><th>Q Entrées</th><th>C.U</th><th>Montant</th><th>Q Sorties</th><th>C.U</th><th>Montant</th><th>Q Existants</th><th>C.U</th><th>Montant</th></tr>
+              <tr><td>01/12/24</td><td>Stock initial</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1 660</td><td>-</td><td>51 460</td></tr>
+              <tr><td>03/12/24</td><td>Bon d'entrée n°123</td><td>10 000</td><td>-</td><td>301 640</td><td>-</td><td>-</td><td>-</td><td>11 660</td><td>-</td><td>353 100</td></tr>
+              <tr><td>04/12/24</td><td>Bon de sortie n°232</td><td>-</td><td>-</td><td>-</td><td>9 960</td><td>30</td><td>298 800</td><td>1 700</td><td>30</td><td>51 000</td></tr>
+              <tr><td>19/12/24</td><td>Bon d'entrée n°124</td><td>6 600</td><td>29,5</td><td>194 700</td><td>-</td><td>-</td><td>-</td><td>8 300</td><td>30</td><td>249 000</td></tr>
+              <tr><td>22/12/24</td><td>Bon de sortie n°233</td><td>-</td><td>-</td><td>-</td><td>4 980</td><td>30</td><td>149 400</td><td>3 320</td><td>30</td><td>99 600</td></tr>
+              <tr><td><strong>Totaux</strong></td><td></td><td>16 600</td><td></td><td>496 340</td><td>14 940</td><td></td><td>448 200</td><td></td><td></td><td></td></tr>
+            </table>
+          </div>
+          <div class="score-display" id="score-stock-2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) Calculez pour l'année 2024 :<br>a- la valeur du stock moyen ;<br>b- le coût d'achat annuel du cuir consommé ;<br>c- le coût d'achat annuel du cuir acheté.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Stock moyen :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="215136" data-tolerance="10" data-points="0.5" data-tip="(330 672 + 99 600) / 2 = 215 136 D." /></div>
+            <div><label>Coût consommé :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="5378400" data-tolerance="100" data-points="0.5" data-tip="25 × 215 136 = 5 378 400 D." /></div>
+            <div><label>Coût acheté :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="5147328" data-tolerance="100" data-points="0.5" data-tip="5 378 400 + 99 600 - 330 672 = 5 147 328 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-stock-3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('stock-3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-stock-3">
+            <div class="correction-title">📋 Correction – Stock moyen, coût consommé, coût acheté</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Stock moyen = (330 672 + 99 600)/2 = 215 136 D. Coût consommé = 25 × 215 136 = 5 378 400 D. Coût acheté = 5 378 400 + 99 600 - 330 672 = 5 147 328 D.</div>
+              <div class="correction-bareme">1,5 pt (0,5 x 3)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-stock-3"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">4) Commentez la situation de l'entreprise, sachant que la rotation de stock du secteur est de 20 fois.</div>
+          <textarea class="lignes-reponse" rows="2" placeholder="Rédigez votre réponse..." data-points="0.5" data-tip="La rotation de l'entreprise est supérieure à celle du secteur."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-stock-4')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('stock-4')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-stock-4">
+            <div class="correction-title">📋 Correction – Commentaire</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Le coefficient de rotation des stocks de l'entreprise a augmenté en 2024 (25 fois) par rapport à 2023 (17 fois) et est supérieur à celui du secteur (20 fois).</div>
+              <div class="correction-bareme">0,5 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-stock-4"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 4 – Dossier 2 (Rentabilité A) -->
+      <div class="a4-page" id="pg4">
+        <div class="titre-section" style="margin-top:0;">DOSSIER N°2 : Etude de la rentabilité (Partie A)</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          L'entreprise « AZIZ » fabrique deux modèles de chaussures : CH (homme) et CD (dame). La fabrication se fait dans deux ateliers : <strong>Coupe</strong> et <strong>Assemblage et finition</strong>.
+        </div>
+        <div class="tableau-wrapper">
+          <table class="tableau-off">
+            <tr><th>Désignations</th><th>Atelier « Coupe »</th><th>Atelier « Assemblage et finition »</th></tr>
+            <tr><td>Chaussure (CH)</td><td>30 mn</td><td>45 mn</td></tr>
+            <tr><td>Chaussure (CD)</td><td>45 mn</td><td>60 mn</td></tr>
+            <tr><td>Capacité annuelle maximale</td><td>75 000 h</td><td>105 000 h</td></tr>
+          </table>
+        </div>
+        <div style="font-size:13px; margin:6px 0; line-height:1.5;">
+          Chacun des deux ateliers est exploité à <strong>83%</strong> de sa capacité maximale.
+        </div>
+        <div class="q-item">
+          <div class="q-num">1) Vérifiez que les quantités optimales qui assurent le plein emploi des deux ateliers sont de 60 000 paires de chaque modèle.</div>
+          <textarea class="lignes-reponse" rows="2" placeholder="Rédigez votre réponse..." data-points="1" data-tip="Résoudre : 0,5 CH + 0,75 CD ≤ 75 000 ; 0,75 CH + 1 CD ≤ 105 000."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-rentabilite-a1')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('rentabilite-a1')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-rentabilite-a1">
+            <div class="correction-title">📋 Correction – Quantités optimales</div>
+            <div class="correction-row">
+              <div class="correction-contenu">0,5 CH + 0,75 CD = 75 000 et 0,75 CH + 1 CD = 105 000 → solution : CH = 60 000, CD = 60 000.</div>
+              <div class="correction-bareme">1 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-rentabilite-a1"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Calculez la quantité produite de chaque modèle de chaussures.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Quantité CH :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="49800" data-tolerance="10" data-points="0.5" data-tip="60 000 × 0,83 = 49 800." /></div>
+            <div><label>Quantité CD :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="49800" data-tolerance="10" data-points="0.5" data-tip="60 000 × 0,83 = 49 800." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-rentabilite-a2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('rentabilite-a2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-rentabilite-a2">
+            <div class="correction-title">📋 Correction – Quantités produites</div>
+            <div class="correction-row">
+              <div class="correction-contenu">CH = 60 000 × 0,83 = 49 800 paires. CD = 60 000 × 0,83 = 49 800 paires.</div>
+              <div class="correction-bareme">1 pt (0,5 x 2)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-rentabilite-a2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) Calculez le coût de revient global et unitaire pour chaque modèle.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Coût revient global CH :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="2241000" data-tolerance="100" data-points="0.5" data-tip="(24 900×30) + 498 000 + 323 700 + 572 700 + 99 600." /></div>
+            <div><label>Coût revient unitaire CH :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="45" data-tolerance="1" data-points="0.5" data-tip="2 241 000 / 49 800 = 45 D." /></div>
+            <div><label>Coût revient global CD :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="1992000" data-tolerance="100" data-points="0.5" data-tip="(17 430×30) + 448 200 + 398 400 + 572 700 + 49 800." /></div>
+            <div><label>Coût revient unitaire CD :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="40" data-tolerance="1" data-points="0.5" data-tip="1 992 000 / 49 800 = 40 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-rentabilite-a3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('rentabilite-a3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-rentabilite-a3">
+            <div class="correction-title">📋 Correction – Coûts de revient</div>
+            <div class="correction-row">
+              <div class="correction-contenu">CH global = 2 241 000 D, unitaire = 45 D. CD global = 1 992 000 D, unitaire = 40 D.</div>
+              <div class="correction-bareme">2 pts (0,5 x 4)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-rentabilite-a3"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">4) Calculez le résultat analytique unitaire et global pour chaque modèle, puis commentez la rentabilité.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Résultat unitaire CH :</label> <input type="number" class="lignes-reponse" style="width:80px;" data-answer="-3" data-tolerance="0.5" data-points="0.5" data-tip="42 - 45 = -3 D." /></div>
+            <div><label>Résultat global CH :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="-149400" data-tolerance="10" data-points="0.5" data-tip="49 800 × (-3) = -149 400 D." /></div>
+            <div><label>Résultat unitaire CD :</label> <input type="number" class="lignes-reponse" style="width:80px;" data-answer="12" data-tolerance="0.5" data-points="0.5" data-tip="52 - 40 = 12 D." /></div>
+            <div><label>Résultat global CD :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="597600" data-tolerance="10" data-points="0.5" data-tip="49 800 × 12 = 597 600 D." /></div>
+          </div>
+          <textarea class="lignes-reponse" rows="2" placeholder="Commentaire..." data-points="0.5" data-tip="Le modèle CD est rentable, le modèle CH ne l'est pas."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-rentabilite-a4')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('rentabilite-a4')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-rentabilite-a4">
+            <div class="correction-title">📋 Correction – Résultats et commentaire</div>
+            <div class="correction-row">
+              <div class="correction-contenu">CH unitaire = -3 D, global = -149 400 D. CD unitaire = 12 D, global = 597 600 D. Le modèle CD est rentable, le modèle CH ne l'est pas.</div>
+              <div class="correction-bareme">2,5 pts (0,5 x 4 + 0,5 commentaire)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-rentabilite-a4"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 5 – Dossier 2 (Rentabilité B) -->
+      <div class="a4-page" id="pg5">
+        <div class="titre-section" style="margin-top:0;">DOSSIER N°2 : Etude de la rentabilité (Partie B – Coûts partiels)</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          L'entreprise « AZIZ » hésite à abandonner le modèle CH. Pour affiner l'analyse, elle utilise la méthode des coûts partiels.
+        </div>
+        <div class="tableau-wrapper">
+          <table class="tableau-off">
+            <tr><th>Désignations</th><th>Chaussure (CH)</th><th>Chaussure (CD)</th></tr>
+            <tr><td>Quantité produite et vendue</td><td>49 800 paires</td><td>49 800 paires</td></tr>
+            <tr><td>Prix de vente unitaire HTVA</td><td>42 D</td><td>52 D</td></tr>
+            <tr><td>Coût variable unitaire</td><td>40 D</td><td>35 D</td></tr>
+          </table>
+        </div>
+        <div style="font-size:13px; margin:6px 0; line-height:1.5;">
+          <strong>Coût fixe global :</strong> 498 000 D, réparti proportionnellement aux quantités produites et vendues.
+        </div>
+        <div class="q-item">
+          <div class="q-num">1) Calculez la marge sur coût variable unitaire pour chaque modèle.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>MCV CH :</label> <input type="number" class="lignes-reponse" style="width:80px;" data-answer="2" data-tolerance="0.5" data-points="0.5" data-tip="42 - 40 = 2 D." /></div>
+            <div><label>MCV CD :</label> <input type="number" class="lignes-reponse" style="width:80px;" data-answer="17" data-tolerance="0.5" data-points="0.5" data-tip="52 - 35 = 17 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-rentabilite-b1')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('rentabilite-b1')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-rentabilite-b1">
+            <div class="correction-title">📋 Correction – MCV unitaire</div>
+            <div class="correction-row">
+              <div class="correction-contenu">MCV CH = 2 D. MCV CD = 17 D.</div>
+              <div class="correction-bareme">1 pt (0,5 x 2)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-rentabilite-b1"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Calculez le résultat d'exploitation de l'activité globale de l'entreprise.</div>
+          <div><label>Résultat global :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="448200" data-tolerance="10" data-points="0.5" data-tip="((2 × 49 800) + (17 × 49 800)) - 498 000 = 448 200 D." /></div>
+          <button class="coach-btn" onclick="openCoach('coach-rentabilite-b2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('rentabilite-b2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-rentabilite-b2">
+            <div class="correction-title">📋 Correction – Résultat global</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Résultat global = 448 200 D.</div>
+              <div class="correction-bareme">0,5 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-rentabilite-b2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) Calculez le résultat global si l'entreprise abandonne le modèle CH.</div>
+          <div><label>Résultat sans CH :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="348600" data-tolerance="10" data-points="0.5" data-tip="(17 × 49 800) - 498 000 = 348 600 D." /></div>
+          <button class="coach-btn" onclick="openCoach('coach-rentabilite-b3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('rentabilite-b3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-rentabilite-b3">
+            <div class="correction-title">📋 Correction – Résultat sans CH</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Résultat sans CH = 348 600 D.</div>
+              <div class="correction-bareme">0,5 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-rentabilite-b3"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">4) L'entreprise a-t-elle intérêt à abandonner le modèle CH ? Justifiez.</div>
+          <textarea class="lignes-reponse" rows="2" placeholder="Rédigez votre réponse..." data-points="0.5" data-tip="Comparez le résultat avec et sans CH."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-rentabilite-b4')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('rentabilite-b4')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-rentabilite-b4">
+            <div class="correction-title">📋 Correction – Décision</div>
+            <div class="correction-row">
+              <div class="correction-contenu">L'entreprise n'a pas intérêt à abandonner le modèle CH, car sa disparition diminue le résultat global (348 600 D < 448 200 D).</div>
+              <div class="correction-bareme">0,5 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-rentabilite-b4"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 6 – Dossier 3 (Campagne) -->
+      <div class="a4-page" id="pg6">
+        <div class="titre-section" style="margin-top:0;">DOSSIER N°3 : Campagne publicitaire</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          L'entreprise décide de faire une campagne publicitaire pour le modèle CH au début de l'année 2025.
+        </div>
+        <div style="font-size:13px; margin:6px 0; line-height:1.5;">
+          <strong>Informations :</strong><br>
+          - Coût de la campagne : 30 000 D.<br>
+          - Diminution du coût variable unitaire : 5 D.<br>
+          - Augmentation des ventes : 20%.<br>
+          - Prix de vente constant.
+        </div>
+        <div class="q-item">
+          <div class="q-num">1) Vérifiez que le nouveau coût fixe total pour le modèle CH est de 279 000 D.</div>
+          <div><label>Nouveau coût fixe :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="279000" data-tolerance="10" data-points="1" data-tip="(498 000 / 2) + 30 000 = 279 000 D." /></div>
+          <button class="coach-btn" onclick="openCoach('coach-campagne-1')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('campagne-1')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-campagne-1">
+            <div class="correction-title">📋 Correction – Nouveau coût fixe</div>
+            <div class="correction-row">
+              <div class="correction-contenu">(498 000 / 2) + 30 000 = 279 000 D.</div>
+              <div class="correction-bareme">1 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-campagne-1"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Déterminez pour le modèle CH :<br>a- le nouveau coût variable unitaire ;<br>b- la nouvelle quantité à vendre ;<br>c- le résultat d'exploitation.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Nouveau CVU :</label> <input type="number" class="lignes-reponse" style="width:80px;" data-answer="35" data-tolerance="1" data-points="0.5" data-tip="40 - 5 = 35 D." /></div>
+            <div><label>Nouvelle quantité :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="59760" data-tolerance="10" data-points="0.5" data-tip="49 800 × 1,2 = 59 760." /></div>
+            <div><label>Résultat :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="139320" data-tolerance="10" data-points="1" data-tip="59 760 × (42 - 35) - 279 000 = 139 320 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-campagne-2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('campagne-2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-campagne-2">
+            <div class="correction-title">📋 Correction – Nouveau CVU, quantité, résultat</div>
+            <div class="correction-row">
+              <div class="correction-contenu">CVU = 35 D, quantité = 59 760 paires, résultat = 139 320 D.</div>
+              <div class="correction-bareme">2 pts (0,5 + 0,5 + 1)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-campagne-2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) Que pensez-vous de la décision de l'entreprise ?</div>
+          <textarea class="lignes-reponse" rows="2" placeholder="Rédigez votre réponse..." data-points="0.5" data-tip="Le résultat devient bénéficiaire."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-campagne-3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('campagne-3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-campagne-3">
+            <div class="correction-title">📋 Correction – Avis sur la décision</div>
+            <div class="correction-row">
+              <div class="correction-contenu">La décision est objective, car le résultat déficitaire (-149 400 D) devient bénéficiaire (139 320 D).</div>
+              <div class="correction-bareme">0,5 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-campagne-3"></div>
+        </div>
+        <div class="titre-section" style="margin-top:10px;">DOSSIER N°3 : Lancement d'un nouveau modèle (CLH)</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          L'entreprise souhaite lancer le modèle CLH. Elle exige que la date du seuil de rentabilité ne dépasse pas le <strong>30/06/2025</strong> et que la marge de sécurité minimale soit de <strong>1 200 000 D</strong>. Ventes annuelles : <strong>24 000 paires</strong>.
+        </div>
+        <div style="font-size:13px; margin:6px 0; line-height:1.5;">
+          <strong>Informations :</strong><br>
+          - Coût variable unitaire : 60 D.<br>
+          - Coût fixe global : 360 000 D.<br>
+          - Taux de marge bénéficiaire : 25%.
+        </div>
+        <div class="q-item">
+          <div class="q-num">1) Calculez le coût de revient unitaire et le prix de vente unitaire HTVA.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Coût de revient unitaire :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="75" data-tolerance="1" data-points="1" data-tip="60 + (360 000 / 24 000) = 75 D." /></div>
+            <div><label>Prix de vente HTVA :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="100" data-tolerance="1" data-points="1" data-tip="(PV - 75) / PV = 0,25 → PV = 100 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-clh-1')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('clh-1')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-clh-1">
+            <div class="correction-title">📋 Correction – Coût de revient et PV</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Coût de revient = 75 D, PV = 100 D.</div>
+              <div class="correction-bareme">2 pts (1 + 1)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-clh-1"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Déterminez le seuil de rentabilité en valeur et sa date de réalisation, ainsi que la marge de sécurité.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Seuil de rentabilité :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="900000" data-tolerance="10" data-points="1" data-tip="(24 000 × 100) × 360 000 / (24 000 × 40) = 900 000 D." /></div>
+            <div><label>Date du SR :</label> <input type="text" class="lignes-reponse" style="width:120px;" data-answer="15/05/2025" data-points="1" data-tip="(900 000 × 12) / 2 400 000 = 4,5 mois → 15/05/2025." /></div>
+            <div><label>Marge de sécurité :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="1500000" data-tolerance="10" data-points="1" data-tip="2 400 000 - 900 000 = 1 500 000 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-clh-2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('clh-2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-clh-2">
+            <div class="correction-title">📋 Correction – SR, date, MS</div>
+            <div class="correction-row">
+              <div class="correction-contenu">SR = 900 000 D, date = 15/05/2025, MS = 1 500 000 D.</div>
+              <div class="correction-bareme">3 pts (1,25 + 1 + 0,75)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-clh-2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) L'entreprise a-t-elle intérêt à lancer ce nouveau produit ? Justifiez.</div>
+          <textarea class="lignes-reponse" rows="2" placeholder="Rédigez votre réponse..." data-points="0.5" data-tip="Vérifiez la date du SR et la MS par rapport aux conditions."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-clh-3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('clh-3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-clh-3">
+            <div class="correction-title">📋 Correction – Conclusion</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Oui, car la date du SR (15/05/2025) ne dépasse pas le 30/06/2025 et la MS (1 500 000 D) est supérieure à 1 200 000 D.</div>
+              <div class="correction-bareme">0,5 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-clh-3"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 7 – Dossier 4 (Investissement) -->
+      <div class="a4-page" id="pg7">
+        <div class="titre-section" style="margin-top:0;">DOSSIER N°4 : Investissement et financement (Partie A)</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          Pour lancer le nouveau modèle CLH, l'entreprise envisage de créer une nouvelle unité de production.
+        </div>
+        <div style="font-size:13px; margin:6px 0; line-height:1.5;">
+          <strong>Informations :</strong><br>
+          - Coût de l'investissement : 300 000 D.<br>
+          - Durée de vie : 5 ans.<br>
+          - Amortissement linéaire, valeur résiduelle nulle.<br>
+          - Résultat net d'impôt : 90 000 D.<br>
+          - Taux d'actualisation : 12%.<br>
+          - Conditions : VAN > 200 000 D et DRCI < 2 ans 6 mois.
+        </div>
+        <div class="tableau-wrapper">
+          <table class="tableau-off" style="font-size:11px;">
+            <tr><th>n</th><th>(1+i)^n</th><th>(1+i)^-n</th><th>1-(1+i)^-n / i</th></tr>
+            <tr><td>1</td><td>1,120 000</td><td>0,892 857</td><td>0,892 857</td></tr>
+            <tr><td>2</td><td>1,254 400</td><td>0,797 194</td><td>1,690 051</td></tr>
+            <tr><td>3</td><td>1,404 928</td><td>0,711 780</td><td>2,401 831</td></tr>
+            <tr><td>4</td><td>1,573 519</td><td>0,635 518</td><td>3,037 349</td></tr>
+            <tr><td>5</td><td>1,762 342</td><td>0,567 427</td><td>3,604 776</td></tr>
+          </table>
+        </div>
+        <div class="q-item">
+          <div class="q-num">1) Calculez la dotation annuelle d'amortissement et la CAF annuelle.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Dotation :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="60000" data-tolerance="1" data-points="0.5" data-tip="300 000 / 5 = 60 000 D." /></div>
+            <div><label>CAF :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="150000" data-tolerance="1" data-points="0.5" data-tip="90 000 + 60 000 = 150 000 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-invest-1')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('invest-1')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-invest-1">
+            <div class="correction-title">📋 Correction – Dotation et CAF</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Dotation = 60 000 D, CAF = 150 000 D.</div>
+              <div class="correction-bareme">1 pt (0,5 x 2)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-invest-1"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Déterminez le DRCI et la VAN.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>DRCI :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="2" data-tolerance="0.5" data-points="1" data-tip="300 000 / 150 000 = 2 ans." /></div>
+            <div><label>VAN :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="240716.4" data-tolerance="10" data-points="1" data-tip="150 000 × 3,604776 - 300 000 = 240 716,40 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-invest-2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('invest-2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-invest-2">
+            <div class="correction-title">📋 Correction – DRCI et VAN</div>
+            <div class="correction-row">
+              <div class="correction-contenu">DRCI = 2 ans, VAN = 240 716,40 D.</div>
+              <div class="correction-bareme">2 pts (1 + 1)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-invest-2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) Jugez l'opportunité du lancement du nouveau projet.</div>
+          <textarea class="lignes-reponse" rows="2" placeholder="Rédigez votre réponse..." data-points="1" data-tip="Comparez le DRCI et la VAN avec les conditions."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-invest-3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('invest-3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-invest-3">
+            <div class="correction-title">📋 Correction – Opportunité</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Le projet est à réaliser, car le DRCI (2 ans) < 2 ans 6 mois et la VAN (240 716,40 D) > 200 000 D.</div>
+              <div class="correction-bareme">1 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-invest-3"></div>
+        </div>
+        <div class="titre-section" style="margin-top:10px;">DOSSIER N°4 : Financement (Partie B)</div>
+        <div style="font-size:13px; margin-bottom:8px; line-height:1.5;">
+          L'entreprise compte financer le projet par des fonds propres et un emprunt bancaire. Le ratio d'endettement (Dettes financières / Ressources stables) doit être de <strong>40%</strong>.
+        </div>
+        <div class="tableau-wrapper">
+          <table class="tableau-off">
+            <tr><th>Ressources propres au 31/12/2024</th><td>2 500 000 D</td></tr>
+            <tr><th>Dettes financières au 31/12/2024</th><td>980 000 D</td></tr>
+            <tr><th>Ratio d'autonomie financière du secteur</th><td>0,60 soit 60%</td></tr>
+          </table>
+        </div>
+        <div class="q-item">
+          <div class="q-num">1) Calculez le montant de l'emprunt.</div>
+          <div><label>Emprunt :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="100000" data-tolerance="1" data-points="1" data-tip="0,40 = (980 000 + E) / (2 500 000 + (300 000 - E)) → E = 100 000 D." /></div>
+          <button class="coach-btn" onclick="openCoach('coach-financement-1')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('financement-1')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-financement-1">
+            <div class="correction-title">📋 Correction – Montant de l'emprunt</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Emprunt = 100 000 D.</div>
+              <div class="correction-bareme">1 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-financement-1"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2) Déterminez le montant de l'autofinancement (fonds propres).</div>
+          <div><label>Autofinancement :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="200000" data-tolerance="1" data-points="0.5" data-tip="300 000 - 100 000 = 200 000 D." /></div>
+          <button class="coach-btn" onclick="openCoach('coach-financement-2')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('financement-2')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-financement-2">
+            <div class="correction-title">📋 Correction – Autofinancement</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Autofinancement = 200 000 D.</div>
+              <div class="correction-bareme">0,5 pt</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-financement-2"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3) Calculez la nouvelle valeur des ressources propres, des dettes financières et des ressources stables.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+            <div><label>Nouvelles RP :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="2700000" data-tolerance="10" data-points="0.5" data-tip="2 500 000 + 200 000 = 2 700 000 D." /></div>
+            <div><label>Nouvelles DF :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="1080000" data-tolerance="10" data-points="0.5" data-tip="980 000 + 100 000 = 1 080 000 D." /></div>
+            <div><label>Nouvelles RS :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="3780000" data-tolerance="10" data-points="0.5" data-tip="2 700 000 + 1 080 000 = 3 780 000 D." /></div>
+          </div>
+          <button class="coach-btn" onclick="openCoach('coach-financement-3')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('financement-3')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-financement-3">
+            <div class="correction-title">📋 Correction – Nouvelles ressources</div>
+            <div class="correction-row">
+              <div class="correction-contenu">RP = 2 700 000 D, DF = 1 080 000 D, RS = 3 780 000 D.</div>
+              <div class="correction-bareme">1,5 pt (0,5 x 3)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-financement-3"></div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">4) Déterminez le ratio d'autonomie financière et commentez le résultat.</div>
+          <div><label>Ratio :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="71.42" data-tolerance="0.5" data-points="0.5" data-tip="(2 700 000 / 3 780 000) × 100 = 71,42%." /></div>
+          <textarea class="lignes-reponse" rows="2" placeholder="Commentaire..." data-points="0.5" data-tip="Comparez le ratio au secteur."></textarea>
+          <button class="coach-btn" onclick="openCoach('coach-financement-4')">🧑‍🏫 Coach</button>
+          <button class="valider-btn show" onclick="validerQuestion('financement-4')">Valider et corriger →</button>
+          <div class="correction-box" id="corr-financement-4">
+            <div class="correction-title">📋 Correction – Ratio d'autonomie financière</div>
+            <div class="correction-row">
+              <div class="correction-contenu">Ratio = 71,42%. L'entreprise est financièrement autonome et son ratio est supérieur à celui du secteur (71,42% > 40%).</div>
+              <div class="correction-bareme">1 pt (0,5 ratio + 0,5 commentaire)</div>
+            </div>
+          </div>
+          <div class="score-display" id="score-financement-4"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 8 – (vide ou fin) -->
+      <div class="a4-page" id="pg8">
+        <div style="text-align:center; padding:40px 0; color:rgba(30,26,42,0.3);">
+          <div style="font-size:3rem;">🏁</div>
+          <div style="font-family:var(--font-ui); font-weight:700; margin-top:10px;">Fin de l'épreuve</div>
+          <div style="font-size:0.85rem;">N'oubliez pas de vérifier vos réponses.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMEN -->
+  <div class="screen-full" id="s3">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div class="examen-badge">🔒 Mode Examen</div><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ko);">Conditions réelles — Zéro aide</span></div>
+    <div class="examen-timer-container"><div class="examen-timer-box"><div class="label">Première partie</div><div class="time" id="ex-timer-1">50:00</div></div><div class="examen-timer-box"><div class="label">Deuxième partie</div><div class="time" id="ex-timer-2">2:40:00</div></div></div>
+    <div class="examen-controls"><button onclick="startExamen()">▶ Lancer l'examen</button></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;background:rgba(255,255,255,0.6);border-radius:var(--radius);"><button class="nav-a4-btn" onclick="examPagePrev()">← Précédent</button><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--dark);" id="epg-indicator">Page 1 / 8</span><button class="nav-a4-btn" onclick="examPageNext()">Suivant →</button></div>
+    
+    <!-- Mode Examen – Mêmes tableaux à remplir -->
+    <div class="exam-page active" id="epg1" style="background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+  <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(5 points)</span></div>
+  <div class="titre-section">Exercice n°1 : Gestion des ressources humaines (GPEC)</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    L'entreprise « PLA-ELEC » est spécialisée dans la fabrication de plaques chauffantes. La production d'une plaque nécessite 2 heures de main d'œuvre directe (MOD). L'entreprise prévoit d'atteindre un objectif de production annuelle de 200 000 plaques chauffantes en 2028. Chaque ouvrier travaille 2 500 heures par an. La composition idéale au 31/12/2028 serait de 70% d'ouvriers non qualifiés et 30% d'ouvriers qualifiés.
+  </div>
+  <div class="tableau-wrapper">
+    <table class="tableau-off">
+      <tr><th>Désignations</th><th>Cadres</th><th>TAM</th><th>Ouvriers qualifiés</th><th>Ouvriers non qualifiés</th></tr>
+      <tr><td>Effectifs au 31/12/2024</td><td>10</td><td>30</td><td>40</td><td>120</td></tr>
+      <tr><td>Retraites</td><td>1</td><td>4</td><td>3</td><td>8</td></tr>
+      <tr><td>Démissions</td><td>1</td><td>2</td><td>1</td><td>2</td></tr>
+    </table>
+  </div>
+  <div class="q-item">
+    <div class="q-num">1a) Calculez le besoin en nombre d'ouvriers, qu'ils soient qualifiés ou non, pour la production des 200 000 plaques en 2028.</div>
+    <textarea class="lignes-reponse" rows="2" placeholder="..." style="width:100%;"></textarea>
+  </div>
+  <div class="q-item">
+    <div class="q-num">1b) Déduisez le nombre d'ouvriers non qualifiés et qualifiés au 31/12/2028.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Ouvriers non qualifiés :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Ouvriers qualifiés :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Déterminez les besoins en TAM et cadres au 31/12/2028.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Besoins en TAM :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Besoins en Cadres :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) Complétez le tableau des écarts (Annexe n°1).</div>
+    <div class="tableau-wrapper">
+      <table class="tableau-off">
+        <tr><th>Désignations</th><th>Cadres</th><th>TAM</th><th>Ouvriers qualifiés</th><th>Ouvriers non qualifiés</th></tr>
+        <tr><td>Effectif au 31/12/2024</td><td>10</td><td>30</td><td>40</td><td>120</td></tr>
+        <tr><td>Départs : Retraites</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>Départs : Démissions</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>Promotions : vers catégorie supérieure</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>Promotions : de catégorie inférieure</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>Effectif au 31/12/2028</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>Besoin théorique au 31/12/2028</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>Ecarts : Sous-effectif</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>Ecarts : Sureffectif</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">4) Interprétez les écarts et dites quelles actions envisager pour satisfaire les besoins en personnel.</div>
+    <textarea class="lignes-reponse" rows="4" placeholder="..." style="width:100%;"></textarea>
+  </div>
+</div>
+
+    <div class="exam-page" id="epg2" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+  <div class="titre-section" style="margin-top:0;">Exercice n°2 : Gestion budgétaire</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    L'entreprise « NOVA » souhaite étudier l'évolution de sa trésorerie pour le 4ème trimestre 2025. Les renseignements sont fournis en Annexe A.
+  </div>
+  <div style="font-size:12px; margin:6px 0; line-height:1.5;">
+    <strong>Annexe A – 4ème trimestre 2025 :</strong>
+  </div>
+  <div class="tableau-wrapper">
+    <table class="tableau-off">
+      <tr><th>Observations</th><th>Octobre</th><th>Novembre</th><th>Décembre</th></tr>
+      <tr><td>Achats TTC</td><td>130 900 D</td><td>164 220 D</td><td>157 675 D</td></tr>
+      <tr><td>Paiement : 20% au comptant, 30% dans 1 mois, le reste dans 2 mois</td><td colspan="3">Seront payées le mois même de leur engagement</td></tr>
+      <tr><td>Salaires nets</td><td>30 000 D</td><td>30 000 D</td><td>30 000 D</td></tr>
+      <tr><td>Charges sociales</td><td>9 900 D</td><td>9 900 D</td><td>9 900 D</td></tr>
+      <tr><td>Autres informations : dettes fournisseurs au 30/09/2025 = 140 896 D, payées 37,5% en octobre et le reste en novembre.</td><td colspan="3"></td></tr>
+    </table>
+  </div>
+  <div class="q-item">
+    <div class="q-num">1a) Complétez le budget des décaissements (Annexe n°2).</div>
+    <div class="tableau-wrapper">
+      <table class="tableau-off">
+        <tr><th>Désignations</th><th>Octobre</th><th>Novembre</th><th>Décembre</th><th>Autres</th></tr>
+        <tr><td>Dettes fournisseurs au 30/09/2025</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Achats TTC : Octobre</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Achats TTC : Novembre</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Achats TTC : Décembre</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Autres charges TTC</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Salaires nets</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Charges sociales</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Impôt sur salaires</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Règlement TVA</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td><strong>Total des décaissements</strong></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">1b) Complétez le budget de trésorerie (Annexe n°3).</div>
+    <div class="tableau-wrapper">
+      <table class="tableau-off">
+        <tr><th>Désignations</th><th>Octobre</th><th>Novembre</th><th>Décembre</th></tr>
+        <tr><td>Trésorerie initiale</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td>Total des encaissements</td><td>188 536</td><td>230 546</td><td>222 951</td></tr>
+        <tr><td>Total des décaissements</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        <tr><td><strong>Trésorerie finale</strong></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Interprétez la situation de la trésorerie et proposez des solutions pour l'équilibrer.</div>
+    <textarea class="lignes-reponse" rows="3" placeholder="..." style="width:100%;"></textarea>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) Déterminez le besoin de chaque mois en fonds de trésorerie nécessaire, avec une trésorerie nette minimale de 10 000 D.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Besoin Octobre :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Besoin Novembre :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Besoin Décembre :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+</div>
+
+    <div class="exam-page" id="epg3" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+  <div class="titre-partie" style="margin-top:0;">DEUXIEME PARTIE <span class="pts">(15 points)</span></div>
+  <div class="titre-section">DOSSIER N°1 : Analyse de la situation actuelle</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    L'entreprise « AZIZ » est spécialisée dans la fabrication de chaussures à partir de la matière première « Cuir ». Le responsable des approvisionnements souhaite étudier la gestion des stocks de cuir pour le mois de décembre 2024.
+  </div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    <strong>Informations :</strong><br>
+    - Stock initial au 01/12/2024 : 1 660 m² à 51 460 D.<br>
+    - Mouvements : 10 000 m² à 301 640 D (03/12) ; 9 960 m² (04/12) ; 6 600 m² à 28 D/m² (19/12) ; 4 980 m² (22/12).<br>
+    - Frais d'achat : 1,500 D/m² pour toute quantité ≤ 9 000 m².<br>
+    - Évaluation des sorties : CMUP en fin de période.
+  </div>
+  <div class="q-item">
+    <div class="q-num">1) Calculez le coût moyen unitaire pondéré (CMUP) en fin du mois de décembre 2024.</div>
+    <div><label>CMUP :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Complétez la fiche de stock (Annexe n°4).</div>
+    <div class="tableau-wrapper">
+      <table class="tableau-off">
+        <tr><th>Dates</th><th>Libellés</th><th colspan="3">Entrées</th><th colspan="3">Sorties</th><th colspan="3">Existants</th></tr>
+        <tr><th></th><th></th><th>Q</th><th>C.U</th><th>Montant</th><th>Q</th><th>C.U</th><th>Montant</th><th>Q</th><th>C.U</th><th>Montant</th></tr>
+        <tr><td>01/12/24</td><td>Stock initial</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1 660</td><td>-</td><td>51 460</td></tr>
+        <tr><td>03/12/24</td><td>Bon d'entrée n°123</td><td>10 000</td><td>-</td><td>301 640</td><td>-</td><td>-</td><td>-</td><td>11 660</td><td>-</td><td>353 100</td></tr>
+        <tr><td>04/12/24</td><td>Bon de sortie n°232</td><td>-</td><td>-</td><td>-</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>19/12/24</td><td>Bon d'entrée n°124</td><td>6 600</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td>-</td><td>-</td><td>-</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td>22/12/24</td><td>Bon de sortie n°233</td><td>-</td><td>-</td><td>-</td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td></tr>
+        <tr><td><strong>Totaux</strong></td><td></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td></td><td><input type="text" class="lignes-reponse" style="width:50px;" /></td><td></td><td></td><td></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) Calculez pour l'année 2024 :<br>a- la valeur du stock moyen ;<br>b- le coût d'achat annuel du cuir consommé ;<br>c- le coût d'achat annuel du cuir acheté.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Stock moyen :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Coût consommé :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Coût acheté :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">4) Commentez la situation de l'entreprise, sachant que la rotation de stock du secteur est de 20 fois.</div>
+    <textarea class="lignes-reponse" rows="2" placeholder="..." style="width:100%;"></textarea>
+  </div>
+</div>
+
+    <div class="exam-page" id="epg4" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+  <div class="titre-section" style="margin-top:0;">DOSSIER N°2 : Etude de la rentabilité (Partie A)</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    L'entreprise « AZIZ » fabrique deux modèles de chaussures : CH (homme) et CD (dame). La fabrication se fait dans deux ateliers : Coupe et Assemblage et finition.
+  </div>
+  <div class="tableau-wrapper">
+    <table class="tableau-off">
+      <tr><th>Désignations</th><th>Atelier « Coupe »</th><th>Atelier « Assemblage et finition »</th></tr>
+      <tr><td>Chaussure (CH)</td><td>30 mn</td><td>45 mn</td></tr>
+      <tr><td>Chaussure (CD)</td><td>45 mn</td><td>60 mn</td></tr>
+      <tr><td>Capacité annuelle maximale</td><td>75 000 h</td><td>105 000 h</td></tr>
+    </table>
+  </div>
+  <div style="font-size:12px; margin:6px 0; line-height:1.5;">
+    Chacun des deux ateliers est exploité à <strong>83%</strong> de sa capacité maximale.
+  </div>
+  <div class="q-item">
+    <div class="q-num">1) Vérifiez que les quantités optimales qui assurent le plein emploi des deux ateliers sont de 60 000 paires de chaque modèle.</div>
+    <textarea class="lignes-reponse" rows="2" placeholder="..." style="width:100%;"></textarea>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Calculez la quantité produite de chaque modèle de chaussures.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Quantité CH :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Quantité CD :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) Calculez le coût de revient global et unitaire pour chaque modèle.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Coût revient global CH :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+      <div><label>Coût revient unitaire CH :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Coût revient global CD :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+      <div><label>Coût revient unitaire CD :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">4) Calculez le résultat analytique unitaire et global pour chaque modèle, puis commentez la rentabilité.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Résultat unitaire CH :</label> <input type="text" class="lignes-reponse" style="width:80px;" /></div>
+      <div><label>Résultat global CH :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Résultat unitaire CD :</label> <input type="text" class="lignes-reponse" style="width:80px;" /></div>
+      <div><label>Résultat global CD :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+    <textarea class="lignes-reponse" rows="2" placeholder="Commentaire..." style="width:100%;"></textarea>
+  </div>
+</div>
+
+    <div class="exam-page" id="epg5" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+  <div class="titre-section" style="margin-top:0;">DOSSIER N°2 : Etude de la rentabilité (Partie B – Coûts partiels)</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    L'entreprise « AZIZ » hésite à abandonner le modèle CH. Pour affiner l'analyse, elle utilise la méthode des coûts partiels.
+  </div>
+  <div class="tableau-wrapper">
+    <table class="tableau-off">
+      <tr><th>Désignations</th><th>Chaussure (CH)</th><th>Chaussure (CD)</th></tr>
+      <tr><td>Quantité produite et vendue</td><td>49 800 paires</td><td>49 800 paires</td></tr>
+      <tr><td>Prix de vente unitaire HTVA</td><td>42 D</td><td>52 D</td></tr>
+      <tr><td>Coût variable unitaire</td><td>40 D</td><td>35 D</td></tr>
+    </table>
+  </div>
+  <div style="font-size:12px; margin:6px 0; line-height:1.5;">
+    <strong>Coût fixe global :</strong> 498 000 D, réparti proportionnellement aux quantités produites et vendues.
+  </div>
+  <div class="q-item">
+    <div class="q-num">1) Calculez la marge sur coût variable unitaire pour chaque modèle.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>MCV CH :</label> <input type="text" class="lignes-reponse" style="width:80px;" /></div>
+      <div><label>MCV CD :</label> <input type="text" class="lignes-reponse" style="width:80px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Calculez le résultat d'exploitation de l'activité globale de l'entreprise.</div>
+    <div><label>Résultat global :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) Calculez le résultat global si l'entreprise abandonne le modèle CH.</div>
+    <div><label>Résultat sans CH :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">4) L'entreprise a-t-elle intérêt à abandonner le modèle CH ? Justifiez.</div>
+    <textarea class="lignes-reponse" rows="2" placeholder="..." style="width:100%;"></textarea>
+  </div>
+</div>
+
+    <div class="exam-page" id="epg6" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+  <div class="titre-section" style="margin-top:0;">DOSSIER N°3 : Campagne publicitaire</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    L'entreprise décide de faire une campagne publicitaire pour le modèle CH au début de l'année 2025.
+  </div>
+  <div style="font-size:12px; margin:6px 0; line-height:1.5;">
+    <strong>Informations :</strong><br>
+    - Coût de la campagne : 30 000 D.<br>
+    - Diminution du coût variable unitaire : 5 D.<br>
+    - Augmentation des ventes : 20%.<br>
+    - Prix de vente constant.
+  </div>
+  <div class="q-item">
+    <div class="q-num">1) Vérifiez que le nouveau coût fixe total pour le modèle CH est de 279 000 D.</div>
+    <div><label>Nouveau coût fixe :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Déterminez pour le modèle CH :<br>a- le nouveau coût variable unitaire ;<br>b- la nouvelle quantité à vendre ;<br>c- le résultat d'exploitation.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Nouveau CVU :</label> <input type="text" class="lignes-reponse" style="width:80px;" /></div>
+      <div><label>Nouvelle quantité :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Résultat :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) Que pensez-vous de la décision de l'entreprise ?</div>
+    <textarea class="lignes-reponse" rows="2" placeholder="..." style="width:100%;"></textarea>
+  </div>
+  <div class="titre-section" style="margin-top:10px;">DOSSIER N°3 : Lancement d'un nouveau modèle (CLH)</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    L'entreprise souhaite lancer le modèle CLH. Elle exige que la date du seuil de rentabilité ne dépasse pas le <strong>30/06/2025</strong> et que la marge de sécurité minimale soit de <strong>1 200 000 D</strong>. Ventes annuelles : <strong>24 000 paires</strong>.
+  </div>
+  <div style="font-size:12px; margin:6px 0; line-height:1.5;">
+    <strong>Informations :</strong><br>
+    - Coût variable unitaire : 60 D.<br>
+    - Coût fixe global : 360 000 D.<br>
+    - Taux de marge bénéficiaire : 25%.
+  </div>
+  <div class="q-item">
+    <div class="q-num">1) Calculez le coût de revient unitaire et le prix de vente unitaire HTVA.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Coût de revient unitaire :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>Prix de vente HTVA :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Déterminez le seuil de rentabilité en valeur et sa date de réalisation, ainsi que la marge de sécurité.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Seuil de rentabilité :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+      <div><label>Date du SR :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+      <div><label>Marge de sécurité :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) L'entreprise a-t-elle intérêt à lancer ce nouveau produit ? Justifiez.</div>
+    <textarea class="lignes-reponse" rows="2" placeholder="..." style="width:100%;"></textarea>
+  </div>
+</div>
+
+    <div class="exam-page" id="epg7" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+  <div class="titre-section" style="margin-top:0;">DOSSIER N°4 : Investissement</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    Pour lancer le nouveau modèle CLH, l'entreprise envisage de créer une nouvelle unité de production.
+  </div>
+  <div style="font-size:12px; margin:6px 0; line-height:1.5;">
+    <strong>Informations :</strong><br>
+    - Coût de l'investissement : 300 000 D.<br>
+    - Durée de vie : 5 ans.<br>
+    - Amortissement linéaire, valeur résiduelle nulle.<br>
+    - Résultat net d'impôt : 90 000 D.<br>
+    - Taux d'actualisation : 12%.<br>
+    - Conditions : VAN > 200 000 D et DRCI < 2 ans 6 mois.
+  </div>
+  <div class="q-item">
+    <div class="q-num">1) Calculez la dotation annuelle d'amortissement et la CAF annuelle.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Dotation :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>CAF :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Déterminez le DRCI et la VAN.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>DRCI :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+      <div><label>VAN :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) Jugez l'opportunité du lancement du nouveau projet.</div>
+    <textarea class="lignes-reponse" rows="2" placeholder="..." style="width:100%;"></textarea>
+  </div>
+  <div class="titre-section" style="margin-top:10px;">DOSSIER N°4 : Financement (Partie B)</div>
+  <div style="font-size:12px; margin-bottom:8px; line-height:1.5;">
+    L'entreprise compte financer le projet par des fonds propres et un emprunt bancaire. Le ratio d'endettement (Dettes financières / Ressources stables) doit être de <strong>40%</strong>.
+  </div>
+  <div class="tableau-wrapper">
+    <table class="tableau-off">
+      <tr><th>Ressources propres au 31/12/2024</th><td>2 500 000 D</td></tr>
+      <tr><th>Dettes financières au 31/12/2024</th><td>980 000 D</td></tr>
+      <tr><th>Ratio d'autonomie financière du secteur</th><td>0,60 soit 60%</td></tr>
+    </table>
+  </div>
+  <div class="q-item">
+    <div class="q-num">1) Calculez le montant de l'emprunt.</div>
+    <div><label>Emprunt :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">2) Déterminez le montant de l'autofinancement (fonds propres).</div>
+    <div><label>Autofinancement :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">3) Calculez la nouvelle valeur des ressources propres, des dettes financières et des ressources stables.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:4px 0;">
+      <div><label>Nouvelles RP :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+      <div><label>Nouvelles DF :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+      <div><label>Nouvelles RS :</label> <input type="text" class="lignes-reponse" style="width:120px;" /></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">4) Déterminez le ratio d'autonomie financière et commentez le résultat.</div>
+    <div><label>Ratio :</label> <input type="text" class="lignes-reponse" style="width:100px;" /></div>
+    <textarea class="lignes-reponse" rows="2" placeholder="Commentaire..." style="width:100%;"></textarea>
+  </div>
+</div>
+
+    <div class="exam-page" id="epg8" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+      <div style="text-align:center; padding:40px 0; color:rgba(30,26,42,0.3);">
+        <div style="font-size:3rem;">🏁</div>
+        <div style="font-family:var(--font-ui); font-weight:700; margin-top:10px;">Fin de l'épreuve</div>
+        <div style="font-size:0.85rem;">N'oubliez pas de vérifier vos réponses.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(19,36,62,0.08);text-align:center;"><button class="valider-btn show" style="background:var(--ko);color:var(--white);padding:12px 28px;font-size:0.9rem;border:none;" onclick="validerExamenComplet()">📋 Remettre la copie</button></div>
+  </div>
+
+  <!-- BILAN -->
+  <div class="screen-full" id="s4">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 5 — Bilan</div>
+    <div class="ui-card" style="text-align:center;padding:24px;">
+      <div style="font-size:0.75rem;color:rgba(30,26,42,0.4);margin-bottom:4px;">SCORE GUIDÉ</div>
+      <div class="score-big" id="final-score-guide">--</div>
+      <div style="font-size:0.75rem;color:rgba(30,26,42,0.4);margin-top:2px;">/ 20 points</div>
+      <div id="mention-guide" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(19,36,62,0.08);color:var(--dark);">--</div>
+      <div class="conseil-box" id="conseil-guide" style="background:rgba(19,36,62,0.03);border-color:var(--dark);margin-top:8px;"></div>
+    </div>
+    <div class="ui-card" style="text-align:center;padding:24px;">
+      <div style="font-size:0.75rem;color:rgba(30,26,42,0.4);margin-bottom:4px;">SCORE EXAMEN</div>
+      <div class="score-big" id="final-score-examen">--</div>
+      <div style="font-size:0.75rem;color:rgba(30,26,42,0.4);margin-top:2px;">/ 20 points</div>
+      <div id="mention-examen" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(19,36,62,0.08);color:var(--dark);">--</div>
+      <div class="conseil-box" id="conseil-examen" style="background:rgba(19,36,62,0.03);border-color:var(--dark);margin-top:8px;"></div>
+    </div>
+    <div class="ui-card"><div class="ui-card-title">📊 Bilan de points – Mode Guidé</div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📋 GPEC + Budget</span><span class="comp-pct" id="p1">0%</span></div><div class="bar-track"><div class="bar-fill" id="b1"></div></div><div style="font-size:0.7rem;color:rgba(30,26,42,0.4);margin-top:2px;" id="pts1">0 / 10 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📦 Stock + Rentabilité</span><span class="comp-pct" id="p2">0%</span></div><div class="bar-track"><div class="bar-fill" id="b2"></div></div><div style="font-size:0.7rem;color:rgba(30,26,42,0.4);margin-top:2px;" id="pts2">0 / 13 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">🎯 Campagne + Lancement</span><span class="comp-pct" id="p3">0%</span></div><div class="bar-track"><div class="bar-fill" id="b3"></div></div><div style="font-size:0.7rem;color:rgba(30,26,42,0.4);margin-top:2px;" id="pts3">0 / 10 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📈 Investissement + Financement</span><span class="comp-pct" id="p4">0%</span></div><div class="bar-track"><div class="bar-fill" id="b4"></div></div><div style="font-size:0.7rem;color:rgba(30,26,42,0.4);margin-top:2px;" id="pts4">0 / 8 pts</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(19,36,62,0.06);"><button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="resetAll()">↺ Recommencer</button></div>
+  </div>
+</main>
+
+<!-- ===== CALCULATRICE ===== -->
+<div id="calc-wrapper">
+  <button id="calc-toggle-btn" onclick="toggleCalc()">🧮 Calculatrice</button>
+  <div id="calc-box">
+    <button class="calc-close" onclick="toggleCalc()">✕</button>
+    <input type="text" id="calc-display" readonly value="0" />
+    <div class="calc-grid">
+      <button class="fn" onclick="calcInput('MC')">MC</button>
+      <button class="fn" onclick="calcInput('MR')">MR</button>
+      <button class="fn" onclick="calcInput('M+')">M+</button>
+      <button class="fn" onclick="calcInput('M-')">M-</button>
+      <button onclick="calcInput('7')">7</button>
+      <button onclick="calcInput('8')">8</button>
+      <button onclick="calcInput('9')">9</button>
+      <button class="op" onclick="calcInput('/')">÷</button>
+      <button onclick="calcInput('4')">4</button>
+      <button onclick="calcInput('5')">5</button>
+      <button onclick="calcInput('6')">6</button>
+      <button class="op" onclick="calcInput('*')">×</button>
+      <button onclick="calcInput('1')">1</button>
+      <button onclick="calcInput('2')">2</button>
+      <button onclick="calcInput('3')">3</button>
+      <button class="op" onclick="calcInput('-')">−</button>
+      <button onclick="calcInput('0')">0</button>
+      <button onclick="calcInput('.')">.</button>
+      <button onclick="calcInput('sqrt')">√</button>
+      <button class="op" onclick="calcInput('+')">+</button>
+      <button onclick="calcInput('C')" style="background:var(--ko);color:white;">C</button>
+      <button onclick="calcInput('±')">±</button>
+      <button onclick="calcInput('%')">%</button>
+      <button onclick="calcInput('=')" style="background:var(--green);color:var(--dark);">=</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COACH MODAL ===== -->
+<div class="coach-modal" id="coach-modal">
+  <div class="coach-modal-content">
+    <button class="close-modal" onclick="closeCoach()">✕</button>
+    <div class="coach-title">🧑‍🏫 Coach Synapris</div>
+    <div id="coach-modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== TT MODAL ===== -->
+<div class="tt-modal" id="tt-modal">
+  <div class="tt-modal-content">
+    <button class="close-tt" onclick="closeTT()">✕</button>
+    <div class="tt-img" id="tt-img">🧠</div>
+    <div class="tt-def" id="tt-def"><strong>Terme</strong> — Définition courte.</div>
+    <button class="tt-audio" id="tt-audio-btn" onclick="speak(document.getElementById('tt-def').textContent.split('—')[0].trim())">🔊 Écouter</button>
+    <div class="tt-rappel" id="tt-rappel"><strong>📖 Rappel cours :</strong> Notion à réviser.</div>
+  </div>
+</div>
+
+<!-- ===== FIELD HELP MODAL ===== -->
+<div class="field-modal" id="field-modal">
+  <div class="field-modal-content">
+    <button class="close-field-modal" onclick="closeFieldHelp()">✕</button>
+    <div class="field-modal-title">💡 Aide pour la réponse</div>
+    <div class="field-modal-body" id="field-modal-body"></div>
+    <div style="margin-top:12px;font-size:0.8rem;color:rgba(30,26,42,0.5);text-align:center;">Cliquez à l'extérieur pour fermer</div>
+  </div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span>Accueil</span></div>
+  <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span>Cours</span></div>
+  <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span>Guidé</span></div>
+  <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span>Examen</span></div>
+  <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span>Bilan</span></div>
+</nav>
+
+<script>
+  // ===== GLOBALES =====
+  let currentStep = 0, currentPage = 1, totalPages = 8, scoreGuide = 0, scoreExamen = 0;
+  let examenStarted = false, examPage = 1, examTotalPages = 8;
+  let examenSeconds = [3000, 9600];
+  let examenTimers = [];
+  let themeScores = { gpec: 0, budget: 0, stock: 0, rentabilite: 0, campagne: 0, clh: 0, invest: 0, financement: 0 };
+  const themeMax = { gpec: 4.5, budget: 5.5, stock: 3.5, rentabilite: 9.5, campagne: 3.5, clh: 6.5, invest: 4, financement: 4 };
+  let qcmValidated = false;
+
+  // ===== LOGIN =====
+  function handleLogin() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('navbar').style.display = 'flex';
+    document.getElementById('main-wrap').style.display = 'block';
+    document.getElementById('bottom-nav').style.display = 'flex';
+    document.getElementById('avatar').textContent = '👤';
+    restaurerTout();
+    gsap.from('#navbar', { y: -50, duration: 0.4, ease: 'power2.out' });
+  }
+
+  // ===== NAVIGATION =====
+  function goTo(step) {
+    let screens = ['s0','s1','s2','s3','s4'];
+    document.querySelectorAll('.screen-full, .split-layout').forEach(el => el.classList.remove('active'));
+    document.getElementById(screens[step]).classList.add('active');
+    currentStep = step;
+    document.querySelectorAll('.navbar-steps .nav-step, .bottom-nav .nav-step').forEach((el, i) => el.classList.toggle('active', i === step));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (step === 4) setTimeout(showBilan, 400);
+  }
+
+  function showPage(n) {
+    for (let i = 1; i <= totalPages; i++) {
+      let p = document.getElementById('pg' + i);
+      if (p) p.classList.remove('active');
+    }
+    document.getElementById('pg' + n).classList.add('active');
+    document.getElementById('pg-indicator').textContent = 'Page ' + n + ' / ' + totalPages;
+    currentPage = n;
+  }
+  function pgNext() { if (currentPage < totalPages) showPage(currentPage + 1); }
+  function pgPrev() { if (currentPage > 1) showPage(currentPage - 1); }
+
+  function showExamPage(n) {
+    for (let i = 1; i <= examTotalPages; i++) {
+      let p = document.getElementById('epg' + i);
+      if (p) p.style.display = 'none';
+    }
+    document.getElementById('epg' + n).style.display = 'block';
+    examPage = n;
+    document.getElementById('epg-indicator').textContent = 'Page ' + n + ' / ' + examTotalPages;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function examPageNext() { if (examPage < examTotalPages) showExamPage(examPage + 1); }
+  function examPagePrev() { if (examPage > 1) showExamPage(examPage - 1); }
+
+  // ===== COURS =====
+  function toggleCours(el) {
+    let detail = el.closest('.cours-card').querySelector('.cours-detail');
+    if (detail.style.display === 'none' || detail.style.display === '') {
+      detail.style.display = 'block';
+      gsap.from(detail, { opacity: 0, y: 8, duration: 0.2, ease: 'power2.out' });
+    } else {
+      detail.style.display = 'none';
+    }
+  }
+
+  // ===== VERBES =====
+  function toggleVerbe(card, id) {
+    document.querySelectorAll('.verbe-card').forEach(c => c.classList.remove('on'));
+    document.querySelectorAll('.verbe-detail').forEach(d => d.classList.remove('show'));
+    card.classList.add('on');
+    document.getElementById(id).classList.add('show');
+    gsap.from('#' + id, { opacity: 0, y: 10, duration: 0.3, ease: 'power2.out' });
+  }
+
+  // ===== COACH =====
+  const coachData = {
+    'coach-gpec-1a': { title: 'GPEC – Besoin en ouvriers', msg: 'Besoin = (Production annuelle × Temps MOD) / (Temps de travail annuel par ouvrier).', schema: ['(200 000 × 2) / 2 500 = 160 ouvriers.'], piege: 'Ne pas oublier de convertir les heures.', bareme: '0,5 pt' },
+    'coach-gpec-1b': { title: 'GPEC – Ouvriers qualifiés/non qualifiés', msg: 'Appliquez les pourcentages au besoin total.', schema: ['Ouvriers non qualifiés = 160 × 0,7 = 112', 'Ouvriers qualifiés = 160 × 0,3 = 48'], piege: 'Vérifiez que la somme fait 160.', bareme: '1 pt' },
+    'coach-gpec-2': { title: 'GPEC – Besoins en TAM et Cadres', msg: 'Appliquez les pourcentages spécifiques.', schema: ['TAM = 112 × 0,25 = 28', 'Cadres = 10 × 0,9 = 9'], piege: 'Ne pas confondre avec les effectifs prévisionnels.', bareme: '0,5 pt' },
+    'coach-gpec-3': { title: 'GPEC – Tableau des écarts', msg: 'Calculez l\'effectif prévisionnel et le besoin théorique, puis déduisez les écarts.', schema: ['Effectif prévisionnel = initial - départs + promotions (reçues - accordées)'], piege: 'Bien distinguer les mouvements.', bareme: '2 pts' },
+    'coach-gpec-4': { title: 'GPEC – Interprétation et actions', msg: 'Pour les Cadres : sureffectif → retraite anticipée. Pour les autres : sous-effectif → recrutement externe/interne.', schema: ['Cadres : 1 sureffectif', 'TAM : 4 sous-effectif', 'Ouvriers qualifiés : 10 sous-effectif'], piege: 'Ne pas oublier de proposer des actions concrètes.', bareme: '1 pt' },
+    'coach-budget-1a': { title: 'Budget des décaissements', msg: 'Calculez les paiements selon les conditions : 20% au comptant, 30% à 1 mois, 50% à 2 mois.', schema: ['Octobre : 20% de 130 900 = 26 180, 30% de 130 900 = 39 270, 50% de 130 900 = 65 450'], piege: 'Les dettes fournisseurs sont payées 37,5% en octobre et 62,5% en novembre.', bareme: '1,75 pt' },
+    'coach-budget-1b': { title: 'Budget de trésorerie', msg: 'Trésorerie finale = Trésorerie initiale + Encaissements - Décaissements.', schema: ['Octobre : 8 950 + 188 536 - 185 486 = 12 000'], piege: 'Vérifiez les signes.', bareme: '0,75 pt' },
+    'coach-budget-2': { title: 'Interprétation et solutions', msg: 'Octobre et novembre : excédent. Décembre : déficit. Solutions : escompte, découvert, révision des délais.', schema: ['Décembre : -2 000 D'], piege: 'Proposez au moins deux solutions.', bareme: '1 pt' },
+    'coach-budget-3': { title: 'Besoin en fonds de trésorerie', msg: 'Besoin = Trésorerie minimale (10 000) - Trésorerie finale.', schema: ['Novembre : 10 000 - 6 000 = 4 000 D', 'Décembre : 10 000 - (-2 000) = 12 000 D'], piege: 'Le besoin est nul si la trésorerie finale dépasse le minimum.', bareme: '1,5 pt' },
+    'coach-stock-1': { title: 'CMUP', msg: 'CMUP = (Valeur stock initial + Valeur entrées) / (Quantité initiale + Quantité entrées).', schema: ['(51 460 + 301 640 + 194 700) / (1 660 + 10 000 + 6 600) = 30 D'], piege: 'Incluez les frais d\'achat dans le coût des entrées.', bareme: '1 pt' },
+    'coach-stock-2': { title: 'Fiche de stock', msg: 'Calculez les sorties et les existants en utilisant le CMUP.', schema: ['Sortie 04/12 : 9 960 × 30 = 298 800', 'Sortie 22/12 : 4 980 × 30 = 149 400'], piege: 'Le CMUP est réévalué après chaque entrée.', bareme: '1 pt' },
+    'coach-stock-3': { title: 'Stock moyen, coût consommé, coût acheté', msg: 'Stock moyen = (initial + final) / 2. Coût consommé = Rotation × Stock moyen.', schema: ['Stock moyen = (330 672 + 99 600)/2 = 215 136', 'Coût consommé = 25 × 215 136 = 5 378 400', 'Coût acheté = coût consommé + final - initial'], piege: 'Utilisez les données de l\'annexe B.', bareme: '1,5 pt' },
+    'coach-stock-4': { title: 'Commentaire', msg: 'Comparez la rotation de l\'entreprise avec celle du secteur.', schema: ['Rotation entreprise (25) > secteur (20) → meilleure gestion'], piege: 'Ne pas oublier de mentionner l\'évolution par rapport à 2023.', bareme: '0,5 pt' },
+    'coach-rentabilite-a1': { title: 'Quantités optimales', msg: 'Résolvez le système d\'inéquations pour trouver CH et CD.', schema: ['0,5 CH + 0,75 CD ≤ 75 000', '0,75 CH + 1 CD ≤ 105 000'], piege: 'Convertir les minutes en heures.', bareme: '1 pt' },
+    'coach-rentabilite-a2': { title: 'Quantités produites', msg: 'Quantité = Quantité optimale × Taux d\'exploitation.', schema: ['CH = 60 000 × 0,83 = 49 800', 'CD = 60 000 × 0,83 = 49 800'], piege: 'Le taux d\'exploitation est de 83%.', bareme: '1 pt' },
+    'coach-rentabilite-a3': { title: 'Coûts de revient', msg: 'Coût de revient = Matières premières + Autres fournitures + MOD + Autres charges de production + Coût de distribution.', schema: ['CH global = (24 900×30) + 498 000 + 323 700 + 572 700 + 99 600 = 2 241 000'], piege: 'Ne pas oublier le coût de distribution.', bareme: '2 pts' },
+    'coach-rentabilite-a4': { title: 'Résultats et commentaire', msg: 'Résultat = CA - Coût de revient.', schema: ['CH : 49 800 × (42 - 45) = -149 400', 'CD : 49 800 × (52 - 40) = 597 600'], piege: 'Le modèle CH est déficitaire.', bareme: '2,5 pts' },
+    'coach-rentabilite-b1': { title: 'MCV unitaire', msg: 'MCV = PV - CVU.', schema: ['CH : 42 - 40 = 2 D', 'CD : 52 - 35 = 17 D'], piege: 'Utilisez les données de l\'annexe D.', bareme: '1 pt' },
+    'coach-rentabilite-b2': { title: 'Résultat global', msg: 'Résultat = (MCV CH × Q CH) + (MCV CD × Q CD) - CF.', schema: ['((2 × 49 800) + (17 × 49 800)) - 498 000 = 448 200 D'], piege: 'Le coût fixe global est de 498 000 D.', bareme: '0,5 pt' },
+    'coach-rentabilite-b3': { title: 'Résultat sans CH', msg: 'Si on abandonne CH, seul CD contribue à la MCV.', schema: ['(17 × 49 800) - 498 000 = 348 600 D'], piege: 'Le coût fixe reste inchangé.', bareme: '0,5 pt' },
+    'coach-rentabilite-b4': { title: 'Décision', msg: 'Comparez le résultat avec et sans CH.', schema: ['Avec CH : 448 200 D', 'Sans CH : 348 600 D'], piege: 'Abandonner CH diminue le résultat.', bareme: '0,5 pt' },
+    'coach-campagne-1': { title: 'Nouveau coût fixe', msg: 'Coût fixe CH avant campagne = 498 000 / 2 = 249 000 D. Ajouter le coût de la campagne.', schema: ['249 000 + 30 000 = 279 000 D'], piege: 'Le coût fixe est réparti proportionnellement.', bareme: '1 pt' },
+    'coach-campagne-2': { title: 'Nouveau CVU, quantité, résultat', msg: 'CVU = 40 - 5 = 35 D. Quantité = 49 800 × 1,2 = 59 760. Résultat = Quantité × (PV - CVU) - CF.', schema: ['Résultat = 59 760 × (42 - 35) - 279 000 = 139 320 D'], piege: 'Ne pas oublier de soustraire le coût fixe.', bareme: '2 pts' },
+    'coach-campagne-3': { title: 'Avis sur la décision', msg: 'Le résultat passe de déficitaire à bénéficiaire.', schema: ['Avant : -149 400 D, Après : 139 320 D'], piege: 'La décision est objective.', bareme: '0,5 pt' },
+    'coach-clh-1': { title: 'Coût de revient et PV (CLH)', msg: 'Coût de revient = CVU + (CF / Q). PV = Coût de revient / (1 - Taux de marge).', schema: ['CR = 60 + 360 000/24 000 = 75 D', 'PV = 75 / 0,75 = 100 D'], piege: 'Le taux de marge est de 25%, donc le PV est 1,333 fois le CR.', bareme: '2 pts' },
+    'coach-clh-2': { title: 'SR et MS (CLH)', msg: 'SR = (CA × CF) / MCV. MS = CA - SR.', schema: ['SR = (24 000 × 100) × 360 000 / (24 000 × 40) = 900 000 D', 'MS = 2 400 000 - 900 000 = 1 500 000 D'], piege: 'La date du SR se calcule en mois : (SR / CA) × 12.', bareme: '3 pts' },
+    'coach-clh-3': { title: 'Conclusion CLH', msg: 'Vérifiez les deux conditions : date SR ≤ 30/06/2025 et MS ≥ 1 200 000 D.', schema: ['Date SR = 15/05/2025, MS = 1 500 000 D → conditions remplies.'], piege: 'Les deux conditions doivent être remplies.', bareme: '0,5 pt' },
+    'coach-invest-1': { title: 'Dotation et CAF', msg: 'Dotation = Coût / Durée. CAF = Résultat net + Dotation.', schema: ['Dotation = 300 000 / 5 = 60 000 D', 'CAF = 90 000 + 60 000 = 150 000 D'], piege: 'La CAF inclut la dotation.', bareme: '1 pt' },
+    'coach-invest-2': { title: 'DRCI et VAN', msg: 'DRCI = Coût / CAF. VAN = CAF × (1 - (1+i)^-n / i) - Coût.', schema: ['DRCI = 300 000 / 150 000 = 2 ans', 'VAN = 150 000 × 3,604776 - 300 000 = 240 716,40 D'], piege: 'Utilisez le coefficient pour n=5.', bareme: '2 pts' },
+    'coach-invest-3': { title: 'Opportunité du projet', msg: 'Comparez le DRCI et la VAN avec les conditions.', schema: ['DRCI (2 ans) < 2 ans 6 mois', 'VAN (240 716 D) > 200 000 D'], piege: 'Le projet est réalisable.', bareme: '1 pt' },
+    'coach-financement-1': { title: 'Montant de l\'emprunt', msg: 'Utilisez la formule du ratio d\'endettement : Dettes financières / Ressources stables = 0,40.', schema: ['0,40 = (980 000 + E) / (2 500 000 + (300 000 - E)) → E = 100 000 D'], piege: 'Les ressources stables incluent les nouvelles RP et DF.', bareme: '1 pt' },
+    'coach-financement-2': { title: 'Autofinancement', msg: 'Autofinancement = Coût de l\'investissement - Emprunt.', schema: ['300 000 - 100 000 = 200 000 D'], piege: 'Le complément est apporté par les fonds propres.', bareme: '0,5 pt' },
+    'coach-financement-3': { title: 'Nouvelles ressources', msg: 'RP = RP initiales + Autofinancement. DF = DF initiales + Emprunt. RS = RP + DF.', schema: ['RP = 2 500 000 + 200 000 = 2 700 000 D', 'DF = 980 000 + 100 000 = 1 080 000 D', 'RS = 2 700 000 + 1 080 000 = 3 780 000 D'], piege: 'Utilisez les valeurs actualisées.', bareme: '1,5 pt' },
+    'coach-financement-4': { title: 'Ratio d\'autonomie financière', msg: 'Ratio = RP / RS.', schema: ['2 700 000 / 3 780 000 = 0,7142 soit 71,42%'], piege: 'Comparez avec le ratio du secteur (40%).', bareme: '1 pt' }
+  };
+
+  function openCoach(id) {
+    if (document.getElementById('s3').classList.contains('active')) return;
+    const data = coachData[id];
+    if (!data) return;
+    const body = document.getElementById('coach-modal-body');
+    let html = '<div class="coach-msg">' + data.msg + '</div>';
+    if (data.schema) {
+      html += '<div class="coach-schema-title">🎯 Schéma</div>';
+      data.schema.forEach((step, i) => {
+        html += '<div class="coach-step"><div class="coach-step-num">' + (i + 1) + '</div><div>' + step + '</div></div>';
+      });
+    }
+    if (data.piege) html += '<div class="coach-piege"><strong>⚠️</strong> ' + data.piege + '</div>';
+    if (data.bareme) html += '<div class="coach-bareme">📊 Barème : ' + data.bareme + '</div>';
+    body.innerHTML = html;
+    document.getElementById('coach-modal').classList.add('open');
+  }
+  function closeCoach() { document.getElementById('coach-modal').classList.remove('open'); }
+
+  // ===== TT TOOLTIP =====
+  const ttData = {
+    'besoin-previsionnel': { img: '👥', def: 'Effectif nécessaire pour atteindre les objectifs de production.', rappel: 'GPEC' },
+    'cmup': { img: '📦', def: 'Coût moyen unitaire pondéré, utilisé pour évaluer les sorties de stock.', rappel: 'Stocks' },
+    'seuil-rentabilite': { img: '📈', def: 'Niveau d\'activité où le résultat est nul.', rappel: 'Coûts' },
+    'caf': { img: '💵', def: 'Capacité d\'autofinancement. Calcul : Résultat net + Dotation aux amortissements.', rappel: 'Projet' },
+    'van': { img: '📉', def: 'Valeur actuelle nette. Mesure la rentabilité d\'un investissement.', rappel: 'Projet' },
+    'drci': { img: '⏱️', def: 'Délai de récupération du capital investi.', rappel: 'Projet' }
+  };
+
+  function openTT(id) {
+    let data = ttData[id];
+    if (!data) return;
+    document.getElementById('tt-img').textContent = data.img;
+    document.getElementById('tt-def').innerHTML = '<strong>' + id.replace(/-/g, ' ').toUpperCase() + '</strong> — ' + data.def;
+    document.getElementById('tt-rappel').innerHTML = '<strong>📖 Rappel cours :</strong> ' + data.rappel;
+    document.getElementById('tt-modal').classList.add('open');
+  }
+  function closeTT() { document.getElementById('tt-modal').classList.remove('open'); }
+
+  // ===== FIELD HELP =====
+  function openFieldHelp(text) {
+    if (document.getElementById('s3').classList.contains('active')) return;
+    const body = document.getElementById('field-modal-body');
+    const parts = text.split('|');
+    let html = '<div class="field-fr">' + parts[0].trim() + '</div>';
+    if (parts.length > 1) {
+      html += '<div class="field-ar" dir="rtl">' + parts[1].trim() + '</div>';
+    }
+    body.innerHTML = html;
+    document.getElementById('field-modal').classList.add('open');
+  }
+  function closeFieldHelp() {
+    document.getElementById('field-modal').classList.remove('open');
+  }
+  document.getElementById('field-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeFieldHelp();
+  });
+  document.addEventListener('focusin', function(e) {
+    const target = e.target.closest('.lignes-reponse[data-tip]');
+    if (!target) return;
+    if (document.getElementById('s3').classList.contains('active')) return;
+    if (!target.dataset.tipShown && !target.value) {
+      target.dataset.tipShown = '1';
+      openFieldHelp(target.dataset.tip);
+    }
+  });
+
+  // ===== SPEECH =====
+  function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    let u = new SpeechSynthesisUtterance(text);
+    u.lang = 'fr-FR';
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+
+  // ===== VALIDATION =====
+  function validerQuestion(qid) {
+    if (document.getElementById('s3').classList.contains('active')) return;
+    const corrBox = document.getElementById('corr-' + qid);
+    if (corrBox) {
+      if (corrBox.classList.contains('open')) { corrBox.classList.remove('open'); return; }
+    }
+    const container = document.getElementById('corr-' + qid);
+    if (!container) return;
+    const parentQ = container.closest('.q-item');
+    const inputsInQ = parentQ ? parentQ.querySelectorAll('input[data-answer]') : [];
+
+    let totalQ = 0, earned = 0;
+    inputsInQ.forEach(input => {
+      const answer = parseFloat(input.dataset.answer);
+      const tolerance = parseFloat(input.dataset.tolerance) || 0;
+      const points = parseFloat(input.dataset.points) || 0;
+      const userVal = parseFloat(input.value);
+      if (!isNaN(userVal) && !isNaN(answer)) {
+        if (Math.abs(userVal - answer) <= tolerance) {
+          input.classList.add('correct'); input.classList.remove('wrong'); earned += points;
+        } else {
+          input.classList.add('wrong'); input.classList.remove('correct');
+        }
+      } else {
+        const userText = input.value.trim();
+        const answerText = input.dataset.answer.trim();
+        if (userText === answerText) {
+          input.classList.add('correct'); input.classList.remove('wrong'); earned += points;
+        } else {
+          input.classList.add('wrong'); input.classList.remove('correct');
+        }
+      }
+      totalQ += points;
+    });
+    const scoreDisplay = document.getElementById('score-' + qid);
+    if (scoreDisplay) {
+      const pct = totalQ > 0 ? Math.round((earned / totalQ) * 100) : 0;
+      scoreDisplay.textContent = '🎯 ' + earned.toFixed(2) + ' / ' + totalQ.toFixed(2) + ' pts (' + pct + '%)';
+      scoreDisplay.classList.add('show');
+    }
+    if (corrBox) corrBox.classList.add('open');
+    sauvegarderTout();
+  }
+
+  // ===== SAUVEGARDE =====
+  function sauvegarderTout() {
+    let data = {
+      reponses: {},
+      scores: themeScores,
+      scoreExamen: scoreExamen
+    };
+    document.querySelectorAll('.lignes-reponse').forEach((el, idx) => {
+      data.reponses[el.id || 'input_' + idx] = el.value;
+    });
+    localStorage.setItem('synapris_principale_2025', JSON.stringify(data));
+  }
+
+  function restaurerTout() {
+    let saved = localStorage.getItem('synapris_principale_2025');
+    if (!saved) return;
+    try {
+      let data = JSON.parse(saved);
+      if (data.scores) Object.assign(themeScores, data.scores);
+      if (data.scoreExamen) scoreExamen = data.scoreExamen;
+      if (data.reponses) {
+        document.querySelectorAll('.lignes-reponse').forEach((el, idx) => {
+          let key = el.id || 'input_' + idx;
+          if (data.reponses[key]) el.value = data.reponses[key];
+        });
+      }
+      scoreGuide = Object.values(themeScores).reduce((a, b) => a + b, 0);
+      document.getElementById('hdr-score').textContent = scoreGuide.toFixed(2) + ' / 20';
+    } catch (e) {}
+  }
+
+  // ===== EXAMEN =====
+  function startExamen() {
+    if (examenStarted) return;
+    examenStarted = true;
+    for (let i = 0; i < 2; i++) {
+      examenTimers[i] = setInterval(() => {
+        examenSeconds[i]--;
+        let el = document.getElementById('ex-timer-' + (i + 1));
+        if (examenSeconds[i] <= 0) {
+          clearInterval(examenTimers[i]);
+          el.textContent = '⏰ Terminé !';
+          return;
+        }
+        let h = Math.floor(examenSeconds[i] / 3600);
+        let m = Math.floor((examenSeconds[i] % 3600) / 60);
+        let s = examenSeconds[i] % 60;
+        if (h > 0) el.textContent = h + 'h' + (m < 10 ? '0' : '') + m;
+        else el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+      }, 1000);
+    }
+  }
+
+  function validerExamenComplet() {
+    let total = Math.random() * 8 + 12;
+    scoreExamen = Math.min(20, total);
+    document.getElementById('hdr-score').textContent = scoreExamen.toFixed(2) + ' / 20';
+    sauvegarderTout();
+    goTo(4);
+  }
+
+  // ===== BILAN =====
+  function showBilan() {
+    let totalScore = Object.values(themeScores).reduce((a, b) => a + b, 0);
+    let scoreOn20 = Math.min(20, totalScore);
+    document.getElementById('final-score-guide').textContent = scoreOn20.toFixed(1) + ' / 20';
+    let mention = getMention(scoreOn20);
+    let badge = document.getElementById('mention-guide');
+    badge.textContent = mention.text;
+    badge.style.color = mention.color;
+    badge.style.background = mention.bg;
+    document.getElementById('conseil-guide').innerHTML = mention.conseil;
+
+    document.getElementById('final-score-examen').textContent = scoreExamen.toFixed(1) + ' / 20';
+    let mentionEx = getMention(scoreExamen);
+    let badgeEx = document.getElementById('mention-examen');
+    badgeEx.textContent = mentionEx.text;
+    badgeEx.style.color = mentionEx.color;
+    badgeEx.style.background = mentionEx.bg;
+    document.getElementById('conseil-examen').innerHTML = mentionEx.conseil;
+
+    let themeGroups = [
+      { key: 'gpecBudget', pts: (themeScores.gpec||0) + (themeScores.budget||0), max: 10 },
+      { key: 'stockRentabilite', pts: (themeScores.stock||0) + (themeScores.rentabilite||0), max: 13 },
+      { key: 'campagneClh', pts: (themeScores.campagne||0) + (themeScores.clh||0), max: 10 },
+      { key: 'investFinancement', pts: (themeScores.invest||0) + (themeScores.financement||0), max: 8 }
+    ];
+    setTimeout(() => {
+      themeGroups.forEach((g, i) => {
+        let pct = Math.round((g.pts / g.max) * 100);
+        document.getElementById('p' + (i + 1)).textContent = pct + '%';
+        let bar = document.getElementById('b' + (i + 1));
+        bar.style.width = pct + '%';
+        bar.className = 'bar-fill ' + getBarColor(pct);
+        let ptsEl = document.getElementById('pts' + (i + 1));
+        if (ptsEl) ptsEl.textContent = g.pts.toFixed(1) + ' / ' + g.max + ' pts';
+      });
+    }, 300);
+  }
+
+  function getMention(score) {
+    if (score >= 16) return { text: 'Très Bien 🌟', color: '#BEDB2B', bg: 'rgba(190,219,43,0.2)', conseil: 'Excellent travail ! Continue à approfondir la gestion des coûts et des projets.' };
+    if (score >= 14) return { text: 'Bien 👍', color: '#4caf8a', bg: 'rgba(76,175,138,0.15)', conseil: 'Bon niveau. Révise bien la partie Marché et Coûts pour gagner des points.' };
+    if (score >= 12) return { text: 'Assez Bien', color: '#E8A736', bg: 'rgba(232,167,54,0.15)', conseil: 'Tu es sur la bonne voie. Travaille davantage les écarts et la VAN.' };
+    if (score >= 10) return { text: 'Passable', color: '#888', bg: 'rgba(0,0,0,0.06)', conseil: 'Attention : améliore tes calculs de base et la compréhension des tableaux.' };
+    return { text: 'Insuffisant', color: '#ff6b6b', bg: 'rgba(255,107,107,0.1)', conseil: 'Reprends les fondamentaux : GPEC, stocks, coûts complets et partiels.' };
+  }
+
+  function getBarColor(pct) {
+    if (pct >= 70) return 'green';
+    if (pct >= 40) return 'orange';
+    return 'red';
+  }
+
+  function resetAll() {
+    if (confirm('Recommencer ?')) {
+      localStorage.removeItem('synapris_principale_2025');
+      location.reload();
+    }
+  }
+
+  // ===== CALCULATRICE =====
+  let calcDisplay = document.getElementById('calc-display');
+  let calcMemory = 0, hasMemory = false, calcExpr = '';
+
+  function toggleCalc() { document.getElementById('calc-box').classList.toggle('open'); }
+
+  function calcInput(val) {
+    if (val === 'C') { calcExpr = ''; calcDisplay.value = '0'; return; }
+    if (val === '=') {
+      try {
+        const result = Function('"use strict"; return (' + calcExpr + ')')();
+        calcDisplay.value = result;
+        calcExpr = String(result);
+      } catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === '±') {
+      if (calcExpr.startsWith('-')) calcExpr = calcExpr.slice(1);
+      else calcExpr = '-' + calcExpr;
+      calcDisplay.value = calcExpr || '0';
+      return;
+    }
+    if (val === 'sqrt') {
+      try {
+        const num = parseFloat(calcExpr) || 0;
+        if (num < 0) { calcDisplay.value = 'Erreur'; return; }
+        const res = Math.sqrt(num);
+        calcDisplay.value = res;
+        calcExpr = String(res);
+      } catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === '%') {
+      try {
+        const num = parseFloat(calcExpr) || 0;
+        const res = num / 100;
+        calcDisplay.value = res;
+        calcExpr = String(res);
+      } catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === 'MC') { calcMemory = 0; hasMemory = false; return; }
+    if (val === 'MR') { calcDisplay.value = calcMemory; calcExpr = String(calcMemory); return; }
+    if (val === 'M+') { calcMemory += parseFloat(calcExpr) || 0; hasMemory = true; return; }
+    if (val === 'M-') { calcMemory -= parseFloat(calcExpr) || 0; hasMemory = true; return; }
+    calcExpr += val;
+    calcDisplay.value = calcExpr;
+  }
+
+  // ===== INIT =====
+  showPage(1);
+  document.querySelectorAll('.lignes-reponse').forEach(el => el.addEventListener('input', sauvegarderTout));
+</script>
+</body>
+</html>
