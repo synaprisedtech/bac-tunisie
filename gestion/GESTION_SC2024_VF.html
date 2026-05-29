@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Synapris — Gestion Bac 2024 | Session de contrôle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
+  </script>
+  <style>
+    :root {
+      --dark: #13243E;
+      --green: #BEDB2B;
+      --yellow: #FFE500;
+      --cream: #FDF8E7;
+      --white: #FFFFFF;
+      --text-dark: #13243E;
+      --text-light: rgba(255, 255, 255, 0.85);
+      --text-muted: rgba(255, 255, 255, 0.5);
+      --ok: #C5E384;
+      --ko: #ff6b6b;
+      --mid: #E8A736;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-ui: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-arabic: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+      --font-a4: 'Times New Roman', Times, serif;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--cream), #fff5e8);
+      padding: 20px;
+    }
+    .login-header {
+      text-align: center;
+      max-width: 450px;
+      margin-bottom: 24px;
+    }
+    .logo-placeholder-img {
+      width: 120px;
+      height: 120px;
+      background: #e0e0e0;
+      border-radius: 20px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #999;
+      box-shadow: var(--shadow);
+    }
+    .login-video {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 16px;
+      background: #1a1a2e;
+      margin: 0 auto 24px;
+      box-shadow: var(--shadow);
+    }
+    .login-video video {
+      width: 100%;
+      border-radius: 16px;
+      display: block;
+    }
+    .login-card {
+      background: var(--white);
+      padding: 32px 28px;
+      border-radius: var(--radius-lg);
+      max-width: 380px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .login-card .logo {
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+    .login-card .slogan {
+      font-size: 0.85rem;
+      color: var(--dark);
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      outline: none;
+      transition: var(--transition);
+    }
+    .login-card input:focus {
+      border-color: var(--dark);
+      box-shadow: 0 0 0 2px rgba(19, 36, 62, 0.15);
+    }
+    .login-card .btn-login {
+      width: 100%;
+      padding: 12px;
+      background: var(--dark);
+      color: var(--green);
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .login-card .btn-login:hover {
+      background: #0e1a2a;
+      transform: translateY(-2px);
+    }
+    .login-card .links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 14px;
+      font-size: 0.75rem;
+    }
+    .login-card .links a {
+      color: rgba(30, 26, 42, 0.5);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .login-card .links a:hover {
+      color: var(--dark);
+    }
+    .login-blocks {
+      max-width: 450px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .login-block {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 14px 10px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    .login-block:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .login-block .icon {
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+    .login-block .arabic {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .login-block .french {
+      font-size: 0.7rem;
+      color: rgba(30, 26, 42, 0.6);
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--dark);
+      padding: 0 24px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-logo {
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .navbar-steps {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      justify-content: center;
+      max-width: 600px;
+    }
+    .nav-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 50px;
+      transition: var(--transition);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: var(--font-body);
+    }
+    .nav-step .icon {
+      font-size: 1.6rem;
+    }
+    .nav-step .label {
+      font-size: 0.8rem;
+      text-transform: none;
+      letter-spacing: 0.04em;
+    }
+    .nav-step.active {
+      color: var(--green);
+      background: rgba(190, 219, 43, 0.12);
+      border: 1px solid var(--green);
+      box-shadow: 0 0 15px rgba(190, 219, 43, 0.1);
+    }
+    .nav-step:hover {
+      color: var(--green);
+      transform: translateY(-2px);
+    }
+    .navbar-score {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--green);
+      white-space: nowrap;
+    }
+    .navbar-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--green);
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-left: 8px;
+    }
+    #calc-wrapper {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 1500;
+    }
+    #calc-toggle-btn {
+      background: var(--dark);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      animation: clignote 1.5s infinite;
+    }
+    @keyframes clignote {
+      0%,
+      100% {
+        opacity: 1;
+        background: var(--dark);
+      }
+      50% {
+        opacity: 0.6;
+        background: var(--green);
+        color: var(--dark);
+      }
+    }
+    #calc-box {
+      display: none;
+      position: absolute;
+      bottom: 60px;
+      right: 0;
+      background: var(--white);
+      border: 2px solid var(--dark);
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      width: 260px;
+      box-shadow: var(--shadow-lg);
+    }
+    #calc-box.open {
+      display: block;
+    }
+    #calc-display {
+      width: 100%;
+      padding: 6px;
+      font-size: 1.2rem;
+      text-align: right;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      font-family: var(--font-mono);
+    }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    .calc-grid button {
+      padding: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      background: #f9f9f9;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+      min-height: 40px;
+    }
+    .calc-grid button:hover {
+      background: var(--dark);
+      color: var(--white);
+    }
+    .calc-grid button.op {
+      background: var(--green);
+      color: var(--dark);
+    }
+    .calc-grid button.op:hover {
+      background: #8f9e20;
+    }
+    .calc-grid button.fn {
+      background: var(--cream);
+    }
+    .calc-grid button.mem {
+      background: var(--yellow);
+    }
+    .calc-close {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: var(--ko);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .main-wrap {
+      display: none;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+    }
+    .screen-full {
+      display: none;
+      animation: fadeUp 0.4s ease-out;
+    }
+    .screen-full.active {
+      display: block;
+    }
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .split-layout {
+      display: none;
+      flex-direction: column;
+      min-height: calc(100vh - 60px);
+      animation: fadeUp 0.4s ease-out;
+    }
+    .split-layout.active {
+      display: flex;
+    }
+    #s0 .accueil-coach {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    #s0 .accueil-coach .coach-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    #s0 .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    #s0 .grid-2 .item {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    #s0 .grid-2 .item .label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      color: var(--dark);
+      font-weight: 700;
+    }
+    #s0 .grid-2 .item .value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    #s0 .grid-2 .item .desc {
+      font-size: 0.75rem;
+      color: rgba(30, 26, 42, 0.5);
+    }
+    #s0 .verbes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+    }
+    #s0 .verbe-card {
+      background: var(--cream);
+      border: 1px solid rgba(19, 36, 62, 0.08);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    #s0 .verbe-card:hover {
+      border-color: var(--dark);
+      transform: translateY(-2px);
+    }
+    #s0 .verbe-card.on {
+      border-color: var(--dark);
+      background: var(--dark);
+      color: var(--white);
+    }
+    #s0 .verbe-card.on .name {
+      color: var(--green);
+    }
+    #s0 .verbe-card .emoji {
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+    #s0 .verbe-card .name {
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    #s0 .verbe-detail {
+      display: none;
+      padding: 12px;
+      background: rgba(19, 36, 62, 0.03);
+      border-radius: var(--radius);
+      margin-top: 10px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      border-left: 3px solid var(--dark);
+    }
+    #s0 .verbe-detail.show {
+      display: block;
+    }
+    #s0 .recommandations {
+      background: #f8f9fa;
+      border-left: 5px solid var(--green);
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      margin-top: 8px;
+    }
+    #s1 .cours-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+    #s1 .cours-header {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      cursor: pointer;
+    }
+    #s1 .cours-header .icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(19, 36, 62, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    #s1 .cours-header .title {
+      font-family: var(--font-ui);
+      font-weight: 700;
+      color: var(--dark);
+    }
+    #s1 .cours-header .sub {
+      font-size: 0.8rem;
+      color: rgba(30, 26, 42, 0.5);
+    }
+    #s1 .cours-header .arrow {
+      color: var(--dark);
+      font-size: 0.8rem;
+    }
+    #s1 .cours-detail {
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(19, 36, 62, 0.06);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(30, 26, 42, 0.7);
+    }
+    #s1 .cours-detail.open {
+      display: block;
+    }
+    #s1 .cours-detail .piege {
+      background: rgba(255, 107, 107, 0.06);
+      border-left: 3px solid var(--ko);
+      padding: 6px 10px;
+      margin: 6px 0;
+      font-size: 0.85rem;
+    }
+    #s1 .cours-detail .arabe {
+      font-family: var(--font-arabic);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    #s1 .cours-detail .formules {
+      margin: 6px 0;
+      padding: 8px;
+      background: rgba(19, 36, 62, 0.03);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    #s1 .cours-detail .exemple {
+      margin: 6px 0;
+      padding: 8px;
+      background: rgba(190, 219, 43, 0.06);
+      border-left: 3px solid var(--green);
+      border-radius: 4px;
+    }
+    .tt-trigger {
+      display: inline;
+      color: var(--dark);
+      border-bottom: 1px dashed var(--dark);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    .tt-trigger:hover {
+      color: #0e1a2a;
+      border-color: #0e1a2a;
+    }
+    .entete-officiel {
+      background: var(--cream);
+      border: 2px solid var(--dark);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-a4);
+      font-size: 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(19, 36, 62, 0.08);
+    }
+    .entete-gauche {
+      font-weight: 700;
+      line-height: 1.5;
+      font-size: 11px;
+      color: var(--dark);
+    }
+    .entete-centre {
+      text-align: center;
+      flex: 1;
+    }
+    .entete-centre h1 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 2px;
+      color: var(--dark);
+    }
+    .entete-centre .sous-titre {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .entete-centre .details {
+      font-size: 11px;
+      margin-top: 4px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .entete-droit {
+      text-align: right;
+      font-size: 11px;
+    }
+    .a4-page {
+      display: none;
+      font-family: var(--font-a4);
+      padding: 0 0 60px 0;
+    }
+    .a4-page.active {
+      display: block;
+    }
+    .titre-partie {
+      font-weight: 700;
+      font-size: 15px;
+      border-bottom: 2px solid var(--dark);
+      padding-bottom: 4px;
+      margin: 16px 0 10px;
+      color: var(--dark);
+    }
+    .titre-section {
+      font-weight: 700;
+      font-size: 14px;
+      margin: 14px 0 6px;
+    }
+    .pts {
+      font-weight: 400;
+      font-size: 13px;
+    }
+    .tableau-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 10px 0;
+    }
+    .tableau-off {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-a4);
+      font-size: 13px;
+      min-width: 500px;
+    }
+    .tableau-off th,
+    .tableau-off td {
+      border: 1px solid var(--text-dark);
+      padding: 6px 8px;
+      text-align: center;
+      vertical-align: top;
+    }
+    .tableau-off th {
+      background: #f0f0f0;
+      font-weight: 700;
+    }
+    .tableau-off input[type="text"],
+    .tableau-off input[type="number"] {
+      width: 100%;
+      border: none;
+      border-bottom: 1px dashed #aaa;
+      background: transparent;
+      font-family: var(--font-a4);
+      font-size: 12px;
+      padding: 2px 0;
+      outline: none;
+      text-align: center;
+      color: var(--text-dark);
+    }
+    .lignes-reponse {
+      width: 100%;
+      border: none;
+      border-bottom: 1px dashed #999;
+      padding: 6px 2px;
+      font-family: var(--font-a4);
+      font-size: 13px;
+      background: transparent;
+      resize: vertical;
+      outline: none;
+      min-height: 40px;
+      margin: 6px 0 8px;
+      color: var(--text-dark);
+    }
+    .q-item {
+      margin-bottom: 16px;
+      padding: 10px 14px;
+      border: 1px solid #e0e0e0;
+      border-radius: var(--radius);
+      background: #fafbff;
+    }
+    .q-item .q-num {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .nav-a4 {
+      position: relative;
+      top: 0;
+      transform: none;
+      background: var(--dark);
+      border: 2px solid var(--green);
+      border-radius: 60px;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      width: 100%;
+      min-width: 100%;
+      z-index: 500;
+    }
+    .nav-a4-btn {
+      padding: 12px 28px;
+      border: none;
+      background: var(--green);
+      color: var(--dark);
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .nav-a4-btn:hover {
+      transform: scale(1.05);
+      background: var(--dark);
+      color: var(--green);
+      border: 1px solid var(--green);
+      box-shadow: 0 0 0 2px var(--green), 0 0 0 4px rgba(190, 219, 43, 0.15);
+    }
+    .nav-a4-indicator {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green);
+      min-width: 80px;
+      text-align: center;
+    }
+    .correction-box {
+      display: none;
+      margin-top: 12px;
+      border: 2px solid var(--green);
+      border-radius: var(--radius);
+      padding: 0;
+      background: #E8F5E9;
+      overflow: hidden;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .correction-box.open {
+      display: block;
+    }
+    .correction-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #c8e6c9;
+      padding: 6px 12px;
+    }
+    .correction-row:last-child {
+      border-bottom: none;
+    }
+    .correction-contenu {
+      width: 72%;
+      font-size: 13px;
+      line-height: 1.6;
+      padding-right: 10px;
+    }
+    .correction-bareme {
+      width: 28%;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+      padding-left: 10px;
+      border-left: 1px solid #c8e6c9;
+      text-align: right;
+    }
+    .correction-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--dark);
+      margin-bottom: 6px;
+      padding: 6px 12px;
+      border-bottom: 1px solid #c8e6c9;
+      background: #f0f7f1;
+    }
+    .valider-btn {
+      margin-top: 10px;
+      padding: 6px 16px;
+      background: var(--dark);
+      color: var(--green);
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: none;
+    }
+    .valider-btn.show {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .valider-btn:hover {
+      background: #0e1a2a;
+      transform: translateY(-1px);
+    }
+    .score-display {
+      display: none;
+      margin-top: 8px;
+      padding: 8px;
+      background: rgba(190, 219, 43, 0.12);
+      border-left: 4px solid var(--green);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .score-display.show {
+      display: block;
+    }
+    .examen-mode .correction-box {
+      display: none !important;
+    }
+    .examen-mode .coach-btn {
+      display: none !important;
+    }
+    .examen-mode .valider-btn {
+      display: none !important;
+    }
+    .examen-mode .score-display {
+      display: none !important;
+    }
+    .examen-mode .field-modal {
+      display: none !important;
+    }
+    .examen-mode .tt-modal {
+      display: none !important;
+    }
+    .examen-mode .lignes-reponse {
+      background: transparent;
+    }
+    .examen-timer-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .examen-timer-box {
+      flex: 1;
+      min-width: 100px;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .examen-timer-box .label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      color: rgba(30, 26, 42, 0.4);
+      letter-spacing: 0.04em;
+    }
+    .examen-timer-box .time {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .examen-controls {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .examen-controls button {
+      padding: 8px 24px;
+      background: var(--dark);
+      color: var(--green);
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .score-big {
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      background: linear-gradient(135deg, var(--dark), #0e1a2a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+    }
+    .comp-bar {
+      margin: 8px 0;
+    }
+    .comp-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+    .comp-name {
+      color: rgba(30, 26, 42, 0.6);
+    }
+    .comp-pct {
+      font-family: var(--font-mono);
+      color: var(--dark);
+    }
+    .bar-track {
+      height: 4px;
+      background: rgba(19, 36, 62, 0.08);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--dark), var(--green));
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .conseil-box {
+      padding: 12px;
+      border-radius: var(--radius);
+      margin-top: 8px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      border-left: 4px solid var(--dark);
+    }
+    .bottom-nav {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--dark);
+      padding: 8px 0 env(safe-area-inset-bottom, 8px) 0;
+      border-top: 1px solid rgba(190, 219, 43, 0.2);
+      justify-content: space-around;
+      align-items: center;
+    }
+    .bottom-nav .nav-step {
+      flex: 1;
+      padding: 6px 0;
+      text-align: center;
+      font-size: 0.6rem;
+      color: rgba(190, 219, 43, 0.5);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .bottom-nav .nav-step .icon {
+      font-size: 1.3rem;
+    }
+    .bottom-nav .nav-step span:not(.icon) {
+      font-size: 0.65rem;
+    }
+    .bottom-nav .nav-step.active {
+      color: var(--green);
+    }
+    .tt-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .tt-modal.open {
+      display: flex;
+    }
+    .tt-modal-content {
+      background: var(--white);
+      max-width: 400px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .tt-modal-content .close-tt {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: rgba(30, 26, 42, 0.3);
+    }
+    .tt-modal-content .close-tt:hover {
+      color: var(--dark);
+    }
+    .tt-modal-content .tt-img {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .tt-modal-content .tt-def {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .tt-modal-content .tt-def strong {
+      color: var(--dark);
+    }
+    .tt-modal-content .tt-audio {
+      background: var(--dark);
+      color: var(--green);
+      border: none;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-body);
+    }
+    .tt-modal-content .tt-audio:hover {
+      background: #0e1a2a;
+    }
+    .tt-modal-content .tt-rappel {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: rgba(19, 36, 62, 0.05);
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: rgba(30, 26, 42, 0.7);
+    }
+    .tt-modal-content .tt-rappel strong {
+      color: var(--dark);
+    }
+    .field-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .field-modal.open {
+      display: flex;
+    }
+    .field-modal-content {
+      background: var(--white);
+      max-width: 400px;
+      width: 100%;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .field-modal-content .close-field-modal {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: rgba(30, 26, 42, 0.3);
+    }
+    .field-modal-content .close-field-modal:hover {
+      color: var(--dark);
+    }
+    .field-modal-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+    .field-modal-body {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-dark);
+    }
+    .field-modal-body .field-fr {
+      font-weight: 600;
+    }
+    .field-modal-body .field-ar {
+      font-family: var(--font-arabic);
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(19, 36, 62, 0.08);
+    }
+    .coach-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .coach-modal.open {
+      display: flex;
+    }
+    .coach-modal-content {
+      background: var(--dark);
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(190, 219, 43, 0.2);
+    }
+    .coach-modal-content .close-modal {
+      float: right;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .coach-modal-content .close-modal:hover {
+      color: var(--white);
+    }
+    .coach-modal-content .coach-title {
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+    .coach-modal-content .coach-msg {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .coach-modal-content .coach-msg strong {
+      color: var(--green);
+    }
+    .coach-modal-content .coach-schema-title {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .coach-modal-content .coach-step {
+      display: flex;
+      gap: 10px;
+      padding: 4px 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .coach-modal-content .coach-step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(190, 219, 43, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+    .coach-modal-content .coach-piege {
+      background: rgba(255, 107, 107, 0.08);
+      border-left: 3px solid var(--ko);
+      padding: 8px 12px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 10px 0;
+    }
+    .coach-modal-content .coach-piege strong {
+      color: var(--ko);
+    }
+    .coach-modal-content .coach-bareme {
+      padding: 8px 12px;
+      background: rgba(190, 219, 43, 0.1);
+      border-left: 3px solid var(--green);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--green);
+      margin-top: 10px;
+    }
+    .coach-modal-content .coach-arabe {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius);
+      font-family: var(--font-arabic);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      direction: rtl;
+      text-align: right;
+      border-right: 3px solid var(--green);
+    }
+    .coach-modal-content .coach-arabe strong {
+      color: var(--green);
+    }
+    .coach-btn {
+      margin-top: 8px;
+      padding: 4px 12px;
+      background: transparent;
+      border: 1px solid var(--dark);
+      color: var(--dark);
+      border-radius: 100px;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .coach-btn:hover {
+      background: rgba(19, 36, 62, 0.1);
+    }
+    @media (max-width: 900px) {
+      .navbar-steps .nav-step .label {
+        display: none;
+      }
+      .navbar-steps .nav-step {
+        padding: 4px 6px;
+      }
+      .navbar-steps .nav-step .icon {
+        font-size: 1.1rem;
+      }
+      .bottom-nav {
+        display: flex;
+      }
+      .main-wrap {
+        padding-bottom: 60px;
+      }
+    }
+    @media (max-width: 640px) {
+      .navbar {
+        padding: 0 10px;
+        height: 56px;
+      }
+      .navbar-logo {
+        font-size: 0.9rem;
+      }
+      .navbar-score {
+        font-size: 0.7rem;
+      }
+      .navbar-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+      }
+      .navbar-steps {
+        display: none;
+      }
+      .nav-a4-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+      .entete-officiel {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 12px;
+      }
+      .correction-row {
+        flex-direction: column;
+      }
+      .correction-contenu {
+        width: 100%;
+        padding-right: 0;
+        border-right: none;
+      }
+      .correction-bareme {
+        width: 100%;
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid #c8e6c9;
+        padding-top: 6px;
+        text-align: left;
+      }
+      #calc-wrapper {
+        bottom: 80px;
+        right: 16px;
+        left: auto;
+      }
+      #calc-box {
+        width: 240px;
+        right: 0;
+        left: auto;
+      }
+      .q-item {
+        overflow-x: auto;
+      }
+      .tableau-wrapper {
+        max-width: 100%;
+        overflow-x: auto;
+      }
+      .correction-box .tableau-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+      }
+      .correction-box .tableau-off {
+        min-width: 500px;
+      }
+    }
+    @media print {
+      .navbar,
+      .bottom-nav,
+      .nav-a4,
+      .coach-btn,
+      .valider-btn,
+      .examen-controls,
+      .login-screen,
+      #login-screen,
+      #calc-wrapper,
+      .mode-toggle {
+        display: none !important;
+      }
+      .split-layout {
+        display: block !important;
+        padding-bottom: 0 !important;
+      }
+      .correction-box {
+        border: 1px solid #ccc !important;
+        background: white !important;
+      }
+    }
+    #s0 .nav-a4,
+    #s1 .nav-a4,
+    #s4 .nav-a4 {
+      display: none !important;
+    }
+    #login-screen #calc-wrapper,
+    #s0 #calc-wrapper {
+      display: none !important;
+    }
+    .correct {
+      background: #d4edda !important;
+      border-bottom: 2px solid #28a745 !important;
+    }
+    .wrong {
+      background: #f8d7da !important;
+      border-bottom: 2px solid #dc3545 !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="login-screen">
+    <div class="login-header">
+      <div class="logo-placeholder-img"><img src="assets/logo.png" alt="Synapris" onerror="this.style.display='none';this.parentElement.innerHTML='🧠';" style="width:100%;height:100%;object-fit:contain;border-radius:16px;"></div>
+      <div class="login-video"><video loop muted autoplay playsinline><source src="assets/intro.mp4" type="video/mp4"></video></div>
+    </div>
+    <div class="login-card">
+      <div class="logo">⚡ Synapris</div>
+      <div class="slogan">Éclairer l'intelligence</div>
+      <input type="email" id="login-email" placeholder="Email"><input type="password" id="login-password" placeholder="Mot de passe">
+      <button class="btn-login" onclick="handleLogin()">Se connecter</button>
+      <div class="links"><a href="#">Créer un compte</a><a href="#">Mot de passe oublié</a></div>
+    </div>
+    <div class="login-blocks">
+      <div class="login-block"><div class="icon">🎯</div><div class="arabic">محاكاة الامتحان الرسمي</div><div class="french">Simulation officielle du bac – comme le jour J</div></div>
+      <div class="login-block"><div class="icon">🧑‍🏫</div><div class="arabic">الوضع الموجّه</div><div class="french">Mode guidé – correction officielle pas à pas</div></div>
+      <div class="login-block"><div class="icon">⏱️</div><div class="arabic">الوضع الامتحان</div><div class="french">Mode examen – chrono et conditions réelles</div></div>
+      <div class="login-block"><div class="icon">💾</div><div class="arabic">حفظ التقدّم</div><div class="french">Sauvegarde automatique – reprends où tu t'es arrêté</div></div>
+    </div>
+  </div>
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar" style="display:none;">
+    <div class="navbar-logo">🧠 Synapris</div>
+    <div class="navbar-steps">
+      <div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span class="label">Accueil</span></div>
+      <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span class="label">Cours</span></div>
+      <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span class="label">Guidé</span></div>
+      <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span class="label">Examen</span></div>
+      <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span class="label">Bilan</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;"><span class="navbar-score" id="hdr-score">0 / 20</span><div class="navbar-avatar" id="avatar">👤</div></div>
+  </nav>
+  <!-- MAIN -->
+  <main class="main-wrap" id="main-wrap" style="display:none;">
+    <!-- ACCUEIL -->
+    <div class="screen-full active" id="s0">
+      <div style="text-align:center;padding:4px 0 16px;">
+        <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">📅 Jour 1 / 10</div>
+        <h1 style="font-family:var(--font-ui);font-weight:800;font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--dark);line-height:1.1;">Gestion<br><span style="color:#0e1a2a;">Bac 2024 – Session de contrôle</span></h1>
+        <p style="font-size:0.85rem;color:rgba(30,26,42,0.5);margin-top:4px;">Épreuve officielle simulée — Section Économie &amp; Gestion</p>
+      </div>
+      <div class="accueil-coach">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div class="coach-avatar">🧑‍🏫</div>
+          <div>
+            <div style="font-family:var(--font-ui);font-weight:700;font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Ton Coach Synapris</div>
+            <div style="font-size:0.85rem;line-height:1.6;color:rgba(30,26,42,0.7);">Tu vas simuler l'épreuve officielle du baccalauréat 2024 (session de contrôle). Le layout que tu vois est <strong style="color:var(--dark);">identique à l'épreuve réelle</strong>. Je suis là pour t'aider à <strong style="color:var(--dark);">construire ton raisonnement</strong> — jamais te donner la réponse.</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="item"><div class="label">Partie 1</div><div class="value">5 pts</div><div class="desc">Coûts partiels + GPEC</div></div>
+        <div class="item"><div class="label">Partie 2</div><div class="value">15 pts</div><div class="desc">Optimisation, Coûts, Wilson, Invest.</div></div>
+        <div class="item"><div class="label">Durée</div><div class="value">3h30</div><div class="desc">Coefficient 3</div></div>
+        <div class="item"><div class="label">Format</div><div class="value">9 pages</div><div class="desc">Navigation ← → par page</div></div>
+      </div>
+      <div style="background:var(--white);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow);">
+        <div style="font-family:var(--font-ui);font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:10px;">🎯 Verbes d'action</div>
+        <p style="font-size:0.8rem;color:rgba(30,26,42,0.5);margin-bottom:10px;">Clique sur chaque verbe pour comprendre ce qu'attend le correcteur.</p>
+        <div class="verbes-grid">
+          <div class="verbe-card" onclick="toggleVerbe(this,'v-calculer')"><div class="emoji">🧮</div><div class="name">CALCULER</div></div>
+          <div class="verbe-card" onclick="toggleVerbe(this,'v-determiner')"><div class="emoji">📐</div><div class="name">DÉTERMINER</div></div>
+          <div class="verbe-card" onclick="toggleVerbe(this,'v-justifier')"><div class="emoji">✍️</div><div class="name">JUSTIFIER</div></div>
+          <div class="verbe-card" onclick="toggleVerbe(this,'v-analyser')"><div class="emoji">🔍</div><div class="name">ANALYSER</div></div>
+          <div class="verbe-card" onclick="toggleVerbe(this,'v-interpreter')"><div class="emoji">📊</div><div class="name">INTERPRÉTER</div></div>
+          <div class="verbe-card" onclick="toggleVerbe(this,'v-verifier')"><div class="emoji">✅</div><div class="name">VÉRIFIER</div></div>
+        </div>
+        <div id="v-calculer" class="verbe-detail"><strong>CALCULER</strong> = Appliquer une formule et présenter le résultat chiffré. <br><span style="color:var(--ko);">⚠️</span> Réponse sans formule = 0 pt.</div>
+        <div id="v-determiner" class="verbe-detail"><strong>DÉTERMINER</strong> = Identifier avec précision une valeur après calcul. <br><span style="color:var(--ko);">⚠️</span> Résultat sans unité = incomplet.</div>
+        <div id="v-justifier" class="verbe-detail"><strong>JUSTIFIER</strong> = Données du document + calculs + mécanisme. <br><span style="color:var(--ko);">⚠️</span> Nommer sans justifier = incomplet.</div>
+        <div id="v-analyser" class="verbe-detail"><strong>ANALYSER</strong> = Décomposer chaque élément du document + interpréter. <br><span style="color:var(--ko);">⚠️</span> Décrire sans interpréter = 0 pt.</div>
+        <div id="v-interpreter" class="verbe-detail"><strong>INTERPRÉTER</strong> = Expliquer la signification d'un résultat. <br><span style="color:var(--ko);">⚠️</span> Donner un chiffre sans l'analyser = 0 pt.</div>
+        <div id="v-verifier" class="verbe-detail"><strong>VÉRIFIER</strong> = Confirmer une valeur par le calcul. <br><span style="color:var(--ko);">⚠️</span> Sans détail du calcul = 0 pt.</div>
+      </div>
+      <div class="recommandations">
+        <h3 style="color:var(--dark);font-weight:800;font-size:0.9rem;">📌 Recommandations officielles – Épreuve de Gestion</h3>
+        <ul style="list-style:none;padding:0;line-height:1.8;font-size:0.85rem;">
+          <li>✅ La révision finale doit porter essentiellement sur les différentes formules et synthèses évoquées par les différents chapitres.</li>
+          <li>✅ Vérifiez bien que votre machine à calculer fonctionne bien.</li>
+          <li>✅ Consacrez 10 à 15 mn environ pour une lecture totale du sujet.</li>
+          <li>✅ Le sujet de Gestion se compose de deux parties : la première partie notée sur 5 points (2 exercices), la deuxième partie notée sur 15 points (quelques dossiers).</li>
+          <li>✅ Pour la première partie : commencez par l'exercice que vous jugez facile, respectez l'ordre des questions, mais passez à la suivante si vous bloquez.</li>
+          <li>✅ Pour la deuxième partie (étude de cas) : saisissez le fil conducteur en lisant l'introduction générale du cas et celles de chaque dossier.</li>
+          <li>✅ Vérifiez bien vos calculs et remplissez clairement les annexes (évitez ratures et surcharges).</li>
+          <li>✅ Justifiez vos résultats par les calculs nécessaires.</li>
+        </ul>
+        <div style="margin-top:12px;text-align:right;font-style:italic;color:var(--dark);font-weight:600;">Bon courage ! 🍀</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+        <button class="valider-btn show" style="background:var(--dark);color:var(--green);padding:10px 28px;font-size:0.85rem;" onclick="goTo(1)">Commencer →</button>
+      </div>
+    </div>
+    <!-- COURS -->
+    <div class="screen-full" id="s1">
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 2 — Rappel cours</div>
+      <h2 style="font-family:var(--font-ui);font-weight:800;font-size:1.4rem;color:var(--dark);margin-bottom:4px;">Ce que tu dois savoir</h2>
+      <p style="font-size:0.85rem;color:rgba(30,26,42,0.5);margin-bottom:16px;">Notions ciblées pour <em>cette</em> épreuve uniquement</p>
+      <!-- Fiche Coûts partiels -->
+      <div class="cours-card"><div class="cours-header" onclick="toggleCours(this)"><div class="icon-box">💰</div><div><div class="title">Coûts partiels – SR, Marge de sécurité</div><div class="sub">MCVU, SR valeur/date, marge de sécurité, taux de marque</div></div><span class="arrow">▼</span></div><div class="cours-detail"><p><strong>Définition :</strong> La méthode des <span class="tt-trigger" onclick="openTT('couts-partiels')">coûts partiels</span> distingue charges variables et fixes. Le <span class="tt-trigger" onclick="openTT('sr')">seuil de rentabilité</span> est le niveau d'activité où le résultat est nul. La <span class="tt-trigger" onclick="openTT('marge-securite')">marge de sécurité</span> mesure l'écart entre CA et SR.</p><div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> طريقة التكاليف الجزئية تميز بين الأعباء المتغيرة والثابتة. عتبة المردودية هي مستوى النشاط حيث النتيجة معدومة.</div><div class="formules"><strong>Formules clés :</strong><br>• SR valeur = (CF / MCVU) × PV unitaire<br>• SR quantité = CF / MCVU<br>• Date SR = (SR / CA) × 12 mois<br>• Marge de sécurité = CA − SR<br>• PV facturé = PV public × (1 − Taux de marque)</div><div class="exemple"><strong>Exemple :</strong> CF = 108 000 D, MCVU = 50 D, PV = 100 D → SR = 216 000 D, Date = 3,6 mois (18/04).</div><div class="piege"><strong>⚠️ Piège :</strong> Pour la date du SR, utiliser le PV facturé (100 D) et pas le PV public (125 D).</div></div></div>
+      <!-- Fiche GPEC -->
+      <div class="cours-card"><div class="cours-header" onclick="toggleCours(this)"><div class="icon-box">👥</div><div><div class="title">GPEC & Masse salariale</div><div class="sub">Effectif prévisionnel, salaire brut, charges connexes</div></div><span class="arrow">▼</span></div><div class="cours-detail"><p><strong>Définition :</strong> La <span class="tt-trigger" onclick="openTT('gpec')">GPEC</span> anticipe les besoins en personnel. La <span class="tt-trigger" onclick="openTT('masse-salariale')">masse salariale</span> inclut les salaires bruts et les <span class="tt-trigger" onclick="openTT('charges-connexes')">charges connexes</span> (CNSS 16,57%, TFP 1%, FOPROLOS 1% = 18,57%).</p><div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> الكتلة الأجرية تشمل الأجور الخام والمساهمات الاجتماعية (18,57%).</div><div class="formules"><strong>Formules clés :</strong><br>• Effectif prévisionnel = Effectif initial − Départs + Recrutements ± Promotions<br>• Masse salariale = Salaire brut global × 1,1857<br>• Taux d'évolution = (MSn+1 − MSn) / MSn</div><div class="exemple"><strong>Exemple :</strong> Salaires 2024 = 1 165 680 D → Masse salariale = 1 165 680 × 1,1857 = 1 382 146,776 D.</div><div class="piege"><strong>⚠️ Piège :</strong> Les promotions affectent les effectifs : un promu quitte sa catégorie et rejoint la catégorie supérieure.</div></div></div>
+      <!-- Fiche Coûts complets -->
+      <div class="cours-card"><div class="cours-header" onclick="toggleCours(this)"><div class="icon-box">📊</div><div><div class="title">Coûts complets – Sections homogènes</div><div class="sub">Prestations réciproques, coût de production, coût de revient</div></div><span class="arrow">▼</span></div><div class="cours-detail"><p><strong>Définition :</strong> La méthode des <span class="tt-trigger" onclick="openTT('sections-homogenes')">sections homogènes</span> répartit les charges indirectes par centre d'analyse. Les <span class="tt-trigger" onclick="openTT('prestations-reciproques')">prestations réciproques</span> surviennent quand deux sections auxiliaires se fournissent mutuellement.</p><div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> طريقة الأقسام المتجانسة توزع الأعباء غير المباشرة. الخدمات المتبادلة تحدث بين قسمين مساعدين.</div><div class="formules"><strong>Formules clés :</strong><br>• Système : A = Total primaire A + a% × E ; E = Total primaire E + e% × A<br>• Coût de production = Σ charges directes + Σ charges indirectes<br>• Coût de revient = Coût de production + Charges de distribution<br>• Taux de rentabilité = Résultat / CA</div><div class="exemple"><strong>Exemple :</strong> A = 12 500 + 0,1E, E = 7 300 + 0,2A → A = 13 500 D, E = 10 000 D.</div><div class="piege"><strong>⚠️ Piège :</strong> Les UO (unités d'œuvre) changent par section : mètre de tissu pour approvisionnement, HMOD pour Coupe/Confection.</div></div></div>
+      <!-- Fiche Investissement & Financement -->
+      <div class="cours-card"><div class="cours-header" onclick="toggleCours(this)"><div class="icon-box">📈</div><div><div class="title">Investissement & Financement</div><div class="sub">CAF, VAN, DRCI, coût net de financement, crédit-bail</div></div><span class="arrow">▼</span></div><div class="cours-detail"><p><strong>Définition :</strong> L'étude d'investissement utilise la <span class="tt-trigger" onclick="openTT('caf')">CAF</span>, la <span class="tt-trigger" onclick="openTT('van')">VAN</span> et le <span class="tt-trigger" onclick="openTT('drci')">DRCI</span>. Le <span class="tt-trigger" onclick="openTT('cout-net-financement')">coût net de financement</span> compare les modes de financement en actualisant les flux.</p><div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> دراسة الاستثمار تستعمل طاقة التمويل الذاتي والقيمة الحالية الصافية ومدة الاسترجاع.</div><div class="formules"><strong>Formules clés :</strong><br>• Coût réel = Prix HT + Frais installation<br>• CAF = Bénéfice net + Dotation<br>• VAN = Σ CAF actualisées − Coût<br>• DRCI = Coût / CAF (si constante)<br>• Coût net de financement = Σ Flux nets actualisés</div><div class="exemple"><strong>Exemple :</strong> Unité S : CAF = 40 000+25 600 = 65 600 D (année 1), VAN = 214 196 − 128 000 = 86 196 D.</div><div class="piege"><strong>⚠️ Piège :</strong> Pour le coût net de financement, ajouter les économies d'impôt sur amortissements (3 840 D/an) et sur intérêts.</div></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(19,36,62,0.06);">
+        <button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="goTo(0)">← Accueil</button>
+        <button class="valider-btn show" style="background:var(--dark);color:var(--green);padding:10px 28px;font-size:0.85rem;" onclick="goTo(2)">Mode Guidé →</button>
+      </div>
+    </div>
+    <!-- GUIDÉ -->
+    <div class="split-layout" id="s2">
+      <div class="nav-a4"><button class="nav-a4-btn" onclick="pgPrev()">← Précédent</button><span class="nav-a4-indicator" id="pg-indicator">Page 1 / 8</span><button class="nav-a4-btn" onclick="pgNext()">Suivant →</button></div>
+      <div style="padding:0 16px 20px; max-width:980px; margin:0 auto; width:100%;">
+        <div class="entete-officiel"><div class="entete-gauche">République Tunisienne<br>Ministère de l'Éducation</div><div class="entete-centre"><h1>EXAMEN DU BACCALAURÉAT</h1><div class="sous-titre">SESSION 2024 — Session de contrôle</div><div class="details"><span>Épreuve : <strong>Gestion</strong></span><span>Section : <strong>Économie &amp; Gestion</strong></span><span>Durée : <strong>3h30</strong></span><span>Coefficient : <strong>3</strong></span></div></div><div class="entete-droit">N° d'inscription :<br><span style="font-family:var(--font-mono);">[ ][ ][ ][ ][ ][ ][ ][ ]</span></div></div>
+        <!-- PAGE 1 -->
+        <div class="a4-page active" id="pg1">
+          <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(5 points)</span></div>
+          <div class="titre-section">Exercice n°1 : Gestion commerciale</div>
+          <div style="font-size:13px;margin-bottom:8px;line-height:1.6;">L'entreprise « EXCELLENCE » vend des tables en plastique. MCVU = 50 D, production = 7 200 tables/an, CF = 108 000 D. Taux de marque grandes surfaces = 20%. PV public = 125 D HTVA 19%.</div>
+          <div class="q-item"><div class="q-num">1) Calculez le prix de vente minimal pour l'entreprise.</div><div><label>PV minimal :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="65" data-tolerance="1" data-points="0.5" data-tip="[(125×0,8) − 50] + (108 000/7 200) = 65 D."></div><button class="coach-btn" onclick="openCoach('coach-cp-1')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('cp-1')">Valider et corriger →</button><div class="correction-box" id="corr-cp-1"><div class="correction-title">📋 Correction – Prix de vente minimal</div><div class="correction-row"><div class="correction-contenu">[(125 × 0,8) − 50] + (108 000 / 7 200) = <strong>65 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-cp-1"></div></div>
+          <div class="q-item"><div class="q-num">2) Vérifiez que le prix de vente HTVA facturé aux grandes surfaces est de 100 D.</div><textarea class="lignes-reponse" rows="1" placeholder="Détaillez..." data-points="0.5" data-tip="PV = 125 × 0,8 = 100 D."></textarea><button class="coach-btn" onclick="openCoach('coach-cp-2')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('cp-2')">Valider et corriger →</button><div class="correction-box" id="corr-cp-2"><div class="correction-title">📋 Correction – PV facturé</div><div class="correction-row"><div class="correction-contenu">125 × 0,8 = <strong>100 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-cp-2"></div></div>
+          <div class="q-item"><div class="q-num">3a) Déterminez le seuil de rentabilité en valeur.</div><div><label>SR valeur :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="216000" data-tolerance="100" data-points="0.5" data-tip="(108 000 / 50) × 100 = 216 000 D."></div><button class="coach-btn" onclick="openCoach('coach-cp-3a')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('cp-3a')">Valider et corriger →</button><div class="correction-box" id="corr-cp-3a"><div class="correction-title">📋 Correction – SR valeur</div><div class="correction-row"><div class="correction-contenu">(108 000 / 50) × 100 = <strong>216 000 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-cp-3a"></div></div>
+          <div class="q-item"><div class="q-num">3b) Déterminez la date du seuil de rentabilité.</div><div><label>Date SR :</label> <input type="text" class="lignes-reponse" style="width:150px;" data-answer="18/04/2023" data-points="0.5" data-tip="(216 000 × 12) / 720 000 = 3,6 mois → 3 mois et 18 jours."></div><button class="coach-btn" onclick="openCoach('coach-cp-3b')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('cp-3b')">Valider et corriger →</button><div class="correction-box" id="corr-cp-3b"><div class="correction-title">📋 Correction – Date SR</div><div class="correction-row"><div class="correction-contenu">(216 000 × 12) / 720 000 = 3,6 soit <strong>3 mois et 18 jours</strong> = <strong>18/04/2023</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-cp-3b"></div></div>
+          <div class="q-item"><div class="q-num">3c) Calculez la marge de sécurité.</div><div><label>Marge de sécurité :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="504000" data-tolerance="100" data-points="0.5" data-tip="720 000 − 216 000 = 504 000 D."></div><button class="coach-btn" onclick="openCoach('coach-cp-3c')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('cp-3c')">Valider et corriger →</button><div class="correction-box" id="corr-cp-3c"><div class="correction-title">📋 Correction – Marge de sécurité</div><div class="correction-row"><div class="correction-contenu">720 000 − 216 000 = <strong>504 000 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-cp-3c"></div></div>
+          <div class="q-item"><div class="q-num">4) Commentez les résultats de la question 3.</div><textarea class="lignes-reponse" rows="2" placeholder="..." data-points="0.25" data-tip="Marge de sécurité importante, SR début 2e trimestre → activité rentable et sécurisée."></textarea><button class="coach-btn" onclick="openCoach('coach-cp-4')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('cp-4')">Valider et corriger →</button><div class="correction-box" id="corr-cp-4"><div class="correction-title">📋 Correction – Commentaire</div><div class="correction-row"><div class="correction-contenu">La marge de sécurité est importante, la date du SR est très proche (début du 2ème trimestre) donc l'activité de l'entreprise est <strong>rentable et sécurisée</strong>.</div><div class="correction-bareme">0,25 pt</div></div></div><div class="score-display" id="score-cp-4"></div></div>
+        </div>
+        <!-- PAGE 2 -->
+        <div class="a4-page" id="pg2">
+          <div class="titre-section" style="margin-top:0;">Exercice n°2 : Gestion des ressources humaines</div>
+          <div style="font-size:13px;margin-bottom:8px;line-height:1.5;">Entreprise « MOUNIRA ». Effectifs 2023 : C(5), TAM(10), OQ(12), OS(50). Salaires : C 26 400, TAM 20 400, OQ 13 200, OS 10 560 D. Promotions : 6 OS→OQ, 3 OQ→TAM, 2 TAM→C. Départs : C(2), TAM(3), OQ(2), OS(5). Recrutements : C(2), TAM(4), OQ(5), OS(15). Salaire nouveaux = 80% du salaire moyen 2023. Charges connexes = 16,57%+1%+1% = 18,57%.</div>
+          <!-- Q1a Annexe 1 -->
+          <div class="q-item"><div class="q-num">1a) Complétez l'annexe n°1 – Effectifs prévisionnels au 31/12/2024.</div>
+            <div class="tableau-wrapper"><table class="tableau-off"><tr><th>Éléments</th><th>C</th><th>TAM</th><th>OQ</th><th>OS</th></tr><tr><td>Effectif 31/12/2023</td><td>5</td><td>10</td><td>12</td><td>50</td></tr><tr><td>Départs retraite</td><td>2</td><td>3</td><td>2</td><td>5</td></tr><tr><td>Recrutement externe</td><td>2</td><td>4</td><td>5</td><td>15</td></tr><tr><td>Promotion de catégorie inf.</td><td><input type="text" class="lignes-reponse" style="width:40px;" data-answer="2" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:40px;" data-answer="3" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:40px;" data-answer="6" data-points="0.125"></td><td>-</td></tr><tr><td>Promotion vers catégorie sup.</td><td>-</td><td><input type="text" class="lignes-reponse" style="width:40px;" data-answer="2" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:40px;" data-answer="3" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:40px;" data-answer="6" data-points="0.125"></td></tr><tr><td><strong>Effectif 31/12/2024</strong></td><td><strong><input type="text" class="lignes-reponse" style="width:40px;" data-answer="7" data-points="0.125"></strong></td><td><strong><input type="text" class="lignes-reponse" style="width:40px;" data-answer="12" data-points="0.125"></strong></td><td><strong><input type="text" class="lignes-reponse" style="width:40px;" data-answer="18" data-points="0.125"></strong></td><td><strong><input type="text" class="lignes-reponse" style="width:40px;" data-answer="54" data-points="0.125"></strong></td></tr></table></div>
+            <button class="coach-btn" onclick="openCoach('coach-gpec-1a')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('gpec-1a')">Valider et corriger →</button>
+            <div class="correction-box" id="corr-gpec-1a"><div class="correction-title">📋 Correction – Annexe n°1 : Effectifs prévisionnels au 31/12/2024</div><div class="tableau-wrapper"><table class="tableau-off" style="font-size:11px;"><tr><th>Éléments</th><th>C</th><th>TAM</th><th>OQ</th><th>OS</th></tr><tr><td>Effectif au 31/12/2023</td><td>5</td><td>10</td><td>12</td><td>50</td></tr><tr><td>Départs à la retraite</td><td>2</td><td>3</td><td>2</td><td>5</td></tr><tr><td>Recrutement externe</td><td>2</td><td>4</td><td>5</td><td>15</td></tr><tr><td>Promotion de la catégorie inférieure</td><td>2</td><td>3</td><td>6</td><td>-</td></tr><tr><td>Promotion vers la catégorie supérieure</td><td>-</td><td>2</td><td>3</td><td>6</td></tr><tr><td><strong>Effectif au 31/12/2024</strong></td><td><strong>7</strong></td><td><strong>12</strong></td><td><strong>18</strong></td><td><strong>54</strong></td></tr></table></div></div>
+            <div class="score-display" id="score-gpec-1a"></div>
+          </div>
+          <!-- Q1b Annexe 2 -->
+          <div class="q-item"><div class="q-num">1b) Complétez l'annexe n°2 – Salaires bruts annuels 2024.</div>
+            <div class="tableau-wrapper"><table class="tableau-off"><tr><th>Éléments</th><th>Eff.</th><th>Sal. ind.</th><th>Sal. global</th></tr><tr><td colspan="4"><strong>Effectifs après départs et promotions</strong></td></tr><tr><td>Cadres</td><td>5</td><td>26 400</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="132000" data-points="0.125"></td></tr><tr><td>TAM</td><td>8</td><td>20 400</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="163200" data-points="0.125"></td></tr><tr><td>OQ</td><td>13</td><td>13 200</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="171600" data-points="0.125"></td></tr><tr><td>OS</td><td>39</td><td>10 560</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="411840" data-points="0.125"></td></tr><tr><td colspan="4"><strong>Nouveaux recrutés 2024</strong></td></tr><tr><td>Cadres</td><td>2</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="21120" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="42240" data-points="0.125"></td></tr><tr><td>TAM</td><td>4</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="16320" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="65280" data-points="0.125"></td></tr><tr><td>OQ</td><td>5</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="10560" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="52800" data-points="0.125"></td></tr><tr><td>OS</td><td>15</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="8448" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="126720" data-points="0.125"></td></tr></table></div>
+            <button class="coach-btn" onclick="openCoach('coach-gpec-1b')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('gpec-1b')">Valider et corriger →</button>
+            <div class="correction-box" id="corr-gpec-1b"><div class="correction-title">📋 Correction – Annexe n°2 : Salaires bruts annuels 2024</div><div class="tableau-wrapper"><table class="tableau-off" style="font-size:11px;"><tr><th>Éléments</th><th>Effectif</th><th>Salaire brut annuel et individuel moyen</th><th>Salaire brut annuel global</th></tr><tr><td colspan="4"><strong>Effectifs après départ à la retraite et promotion</strong></td></tr><tr><td>Cadres</td><td>5</td><td>26 400</td><td>132 000</td></tr><tr><td>TAM</td><td>8</td><td>20 400</td><td>163 200</td></tr><tr><td>Ouvriers Qualifiés</td><td>13</td><td>13 200</td><td>171 600</td></tr><tr><td>Ouvriers Spécialisés</td><td>39</td><td>10 560</td><td>411 840</td></tr><tr><td colspan="4"><strong>Effectif des nouveaux recrutés en 2024</strong></td></tr><tr><td>Cadres</td><td>2</td><td>21 120</td><td>42 240</td></tr><tr><td>TAM</td><td>4</td><td>16 320</td><td>65 280</td></tr><tr><td>Ouvriers Qualifiés</td><td>5</td><td>10 560</td><td>52 800</td></tr><tr><td>Ouvriers Spécialisés</td><td>15</td><td>8 448</td><td>126 720</td></tr><tr><td><strong>Totaux</strong></td><td><strong>91</strong></td><td></td><td><strong>1 165 680</strong></td></tr></table></div></div>
+            <div class="score-display" id="score-gpec-1b"></div>
+          </div>
+          <!-- Q1c -->
+          <div class="q-item"><div class="q-num">1c) Calculez la masse salariale globale en 2024.</div><div><label>Masse salariale :</label> <input type="number" class="lignes-reponse" style="width:130px;" data-answer="1382146.776" data-tolerance="100" data-points="0.5" data-tip="1 165 680 × 1,1857."></div><button class="coach-btn" onclick="openCoach('coach-gpec-1c')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('gpec-1c')">Valider et corriger →</button><div class="correction-box" id="corr-gpec-1c"><div class="correction-title">📋 Correction – Masse salariale</div><div class="correction-row"><div class="correction-contenu">1 165 680 × 1,1857 = <strong>1 382 146,776 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-gpec-1c"></div></div>
+          <!-- Q2 -->
+          <div class="q-item"><div class="q-num">2) Sachant que MS 2023 = 1 212 259,680 D, calculez le taux d'évolution et commentez.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"><div><label>Taux :</label> <input type="text" class="lignes-reponse" style="width:80px;" data-answer="14.01%" data-points="0.25"></div></div><textarea class="lignes-reponse" rows="2" placeholder="Commentaire..." data-points="0.25" data-tip="Malgré la baisse des salaires des nouveaux, la MS a augmenté."></textarea><button class="coach-btn" onclick="openCoach('coach-gpec-2')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('gpec-2')">Valider et corriger →</button><div class="correction-box" id="corr-gpec-2"><div class="correction-title">📋 Correction – Taux d'évolution</div><div class="correction-row"><div class="correction-contenu">(1 382 146,776 − 1 212 259,680) / 1 212 259,680 = <strong>14,01%</strong>. Malgré la diminution des salaires des nouveaux recrutés, la masse salariale a augmenté.</div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-gpec-2"></div></div>
+        </div>
+        <!-- PAGE 3 -->
+        <div class="a4-page" id="pg3">
+          <div class="titre-partie" style="margin-top:0;">DEUXIEME PARTIE <span class="pts">(15 points)</span></div>
+          <div class="titre-section">Dossier N°1-A : Quantité optimale à fabriquer</div>
+          <div style="font-size:13px;margin-bottom:8px;">Atelier Coupe : P 10mn, V 12mn, capacité 2 000h/mois. Atelier Confection : P 20mn, V 30mn, capacité 4 500h/mois.</div>
+          <div class="q-item"><div class="q-num">1) Exprimez sous forme d'inéquations les contraintes.</div><textarea class="lignes-reponse" rows="2" placeholder="..." data-points="0.5" data-tip="Coupe : 10P+12V ≤ 120 000 min. Confection : 20P+30V ≤ 270 000 min."></textarea><button class="coach-btn" onclick="openCoach('coach-opt-1')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('opt-1')">Valider et corriger →</button><div class="correction-box" id="corr-opt-1"><div class="correction-title">📋 Correction – Contraintes</div><div class="correction-row"><div class="correction-contenu">Atelier Coupe : 10/60 P + 12/60 V ≤ 2 000<br>Atelier Confection : 20/60 P + 30/60 V ≤ 4 500</div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-opt-1"></div></div>
+          <div class="q-item"><div class="q-num">2) Déterminez algébriquement les quantités optimales P et V.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"><div><label>P :</label> <input type="number" class="lignes-reponse" style="width:90px;" data-answer="6000" data-tolerance="10" data-points="0.5"></div><div><label>V :</label> <input type="number" class="lignes-reponse" style="width:90px;" data-answer="5000" data-tolerance="10" data-points="0.5"></div></div><button class="coach-btn" onclick="openCoach('coach-opt-2')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('opt-2')">Valider et corriger →</button><div class="correction-box" id="corr-opt-2"><div class="correction-title">📋 Correction – Quantités optimales</div><div class="correction-row"><div class="correction-contenu">1/6 P + 1/5 V = 2 000 ; 1/3 P + 1/2 V = 4 500 → <strong>P = 6 000 et V = 5 000</strong></div><div class="correction-bareme">1 pt</div></div></div><div class="score-display" id="score-opt-2"></div></div>
+          <div class="titre-section">Dossier N°1-B : Étude de la rentabilité</div>
+          <div style="font-size:13px;margin-bottom:6px;">Annexe A (charges directes P et V) et Annexe B (tableau de répartition). Prestations réciproques Administration/Entretien. Production = plein emploi (P=6 000, V=5 000). PV P=91,360 D, V=124 D.</div>
+          <div class="q-item"><div class="q-num">1) Déterminez les totaux à répartir des sections Administration et Entretien.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"><div><label>A :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="13500" data-tolerance="10" data-points="0.5"></div><div><label>E :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="10000" data-tolerance="10" data-points="0.5"></div></div><button class="coach-btn" onclick="openCoach('coach-pr-1')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('pr-1')">Valider et corriger →</button><div class="correction-box" id="corr-pr-1"><div class="correction-title">📋 Correction – Prestations réciproques</div><div class="correction-row"><div class="correction-contenu">A = 12 500 + 1/10 E ; E = 7 300 + 2/10 A → <strong>A = 13 500 D, E = 10 000 D</strong></div><div class="correction-bareme">1 pt</div></div></div><div class="score-display" id="score-pr-1"></div></div>
+        </div>
+        <!-- PAGE 4 -->
+        <div class="a4-page" id="pg4">
+          <div class="titre-section" style="margin-top:0;">Suite Dossier N°1-B</div>
+          <div class="q-item"><div class="q-num">2a) Complétez l'annexe n°3 – Tableau de répartition des charges indirectes.</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th></th><th>Approvis.</th><th>At. Coupe</th><th>At. Confection</th><th>Distribution</th></tr><tr><td>Totaux après rép. secondaire</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="9000" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="6000" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="18000" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="5720" data-points="0.125"></td></tr><tr><td>Nombre d'UO</td><td>18 000</td><td>2 000</td><td>4 500</td><td>11 000</td></tr><tr><td>Coût d'une UO</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="0.500" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="3.000" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="4.000" data-points="0.125"></td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="0.520" data-points="0.125"></td></tr></table></div><button class="coach-btn" onclick="openCoach('coach-pr-2a')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('pr-2a')">Valider et corriger →</button><div class="correction-box" id="corr-pr-2a"><div class="correction-title">📋 Correction – Annexe n°3 : Tableau de répartition des charges indirectes</div><div class="tableau-wrapper"><table class="tableau-off" style="font-size:11px;"><tr><th></th><th>Approvis.</th><th>Atelier Coupe</th><th>Atelier Confection</th><th>Distribution</th></tr><tr><td>Totaux après répartition secondaire</td><td>9 000</td><td>6 000</td><td>18 000</td><td>5 720</td></tr><tr><td>Nature de l'unité d'œuvre</td><td>1 mètre de tissu acheté</td><td>HMOD</td><td>HMOD</td><td>1 article vendu</td></tr><tr><td>Nombre d'unités d'œuvre</td><td>18 000</td><td>2 000</td><td>4 500</td><td>11 000</td></tr><tr><td>Coût d'une unité d'œuvre</td><td>0,500</td><td>3,000</td><td>4,000</td><td>0,520</td></tr></table></div></div><div class="score-display" id="score-pr-2a"></div></div>
+          <div class="q-item"><div class="q-num">2b) Complétez l'annexe n°4 – Coûts de production.</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Éléments</th><th colspan="3">Pantalons (P=6 000)</th><th colspan="3">Vestes (V=5 000)</th></tr><tr><td>Tissu consommé</td><td>9 000</td><td>24,500</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="220500" data-points="0.125"></td><td>9 000</td><td>24,500</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="220500" data-points="0.125"></td></tr><tr><td>Fournitures</td><td>6 000</td><td>12</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="72000" data-points="0.125"></td><td>5 000</td><td>20</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="100000" data-points="0.125"></td></tr><tr><td>MOD Coupe</td><td>1 000</td><td>6,300</td><td>6 300</td><td>1 000</td><td>6,300</td><td>6 300</td></tr><tr><td>MOD Confection</td><td>2 000</td><td>7,100</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="14200" data-points="0.125"></td><td>2 500</td><td>7,100</td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="17750" data-points="0.125"></td></tr><tr><td>Autres frais prod.</td><td>6 000</td><td>11</td><td>66 000</td><td>5 000</td><td>15,490</td><td>77 450</td></tr><tr><td>Ch. ind. Coupe</td><td>1 000</td><td>3,000</td><td>3 000</td><td>1 000</td><td>3,000</td><td>3 000</td></tr><tr><td>Ch. ind. Confection</td><td>2 000</td><td>4,000</td><td>8 000</td><td>2 500</td><td>4,000</td><td>10 000</td></tr><tr><td><strong>Coût de production</strong></td><td><strong>6 000</strong></td><td><strong>65,000</strong></td><td><strong><input type="text" class="lignes-reponse" style="width:70px;" data-answer="390000" data-points="0.125"></strong></td><td><strong>5 000</strong></td><td><strong>87,000</strong></td><td><strong><input type="text" class="lignes-reponse" style="width:70px;" data-answer="435000" data-points="0.125"></strong></td></tr></table></div><button class="coach-btn" onclick="openCoach('coach-pr-2b')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('pr-2b')">Valider et corriger →</button><div class="correction-box" id="corr-pr-2b"><div class="correction-title">📋 Correction – Annexe n°4 : Coût de production</div><div class="tableau-wrapper"><table class="tableau-off" style="font-size:11px;"><tr><th>Éléments</th><th colspan="3">Pantalons (P)</th><th colspan="3">Vestes (V)</th></tr><tr><td>Tissu consommé</td><td>9 000</td><td>24,500</td><td>220 500</td><td>9 000</td><td>24,500</td><td>220 500</td></tr><tr><td>Fournitures diverses</td><td>6 000</td><td>12</td><td>72 000</td><td>5 000</td><td>20</td><td>100 000</td></tr><tr><td>MOD Atelier Coupe</td><td>1 000</td><td>6,300</td><td>6 300</td><td>1 000</td><td>6,300</td><td>6 300</td></tr><tr><td>MOD Atelier Confection</td><td>2 000</td><td>7,100</td><td>14 200</td><td>2 500</td><td>7,100</td><td>17 750</td></tr><tr><td>Autres frais de production</td><td>6 000</td><td>11</td><td>66 000</td><td>5 000</td><td>15,490</td><td>77 450</td></tr><tr><td>Charges indirectes Atelier Coupe</td><td>1 000</td><td>3,000</td><td>3 000</td><td>1 000</td><td>3,000</td><td>3 000</td></tr><tr><td>Charges indirectes Atelier Confection</td><td>2 000</td><td>4,000</td><td>8 000</td><td>2 500</td><td>4,000</td><td>10 000</td></tr><tr><td><strong>Coût de production</strong></td><td><strong>6 000</strong></td><td><strong>65,000</strong></td><td><strong>390 000</strong></td><td><strong>5 000</strong></td><td><strong>87,000</strong></td><td><strong>435 000</strong></td></tr></table></div></div><div class="score-display" id="score-pr-2b"></div></div>
+          <div class="q-item"><div class="q-num">2c) Complétez les annexes n°5 et n°6 – Coûts de revient et Résultats.</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Éléments</th><th colspan="3">P</th><th colspan="3">V</th></tr><tr><td><strong>Coût de revient</strong></td><td>6 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="68.520" data-points="0.25"></td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="411120" data-points="0.25"></td><td>5 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="90.520" data-points="0.25"></td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="452600" data-points="0.25"></td></tr><tr><td><strong>Résultat</strong></td><td>6 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="22.840" data-points="0.25"></td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="137040" data-points="0.25"></td><td>5 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="33.480" data-points="0.25"></td><td><input type="text" class="lignes-reponse" style="width:70px;" data-answer="167400" data-points="0.25"></td></tr></table></div><button class="coach-btn" onclick="openCoach('coach-pr-2c')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('pr-2c')">Valider et corriger →</button><div class="correction-box" id="corr-pr-2c"><div class="correction-title">📋 Correction – Annexes n°5 et n°6</div><div class="tableau-wrapper"><table class="tableau-off" style="font-size:11px;"><tr><th>Éléments</th><th colspan="3">Pantalons (P)</th><th colspan="3">Vestes (V)</th></tr><tr><td><strong>Coût de revient</strong></td><td>6 000</td><td>68,520</td><td>411 120</td><td>5 000</td><td>90,520</td><td>452 600</td></tr><tr><td><strong>Résultat</strong></td><td>6 000</td><td>22,840</td><td>137 040</td><td>5 000</td><td>33,480</td><td>167 400</td></tr></table></div></div><div class="score-display" id="score-pr-2c"></div></div>
+          <div class="q-item"><div class="q-num">3) Déterminez le taux de rentabilité de chaque article.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"><div><label>TR P :</label> <input type="text" class="lignes-reponse" style="width:70px;" data-answer="25%" data-points="0.25"></div><div><label>TR V :</label> <input type="text" class="lignes-reponse" style="width:70px;" data-answer="27%" data-points="0.25"></div></div><button class="coach-btn" onclick="openCoach('coach-pr-3')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('pr-3')">Valider et corriger →</button><div class="correction-box" id="corr-pr-3"><div class="correction-title">📋 Correction – Taux de rentabilité</div><div class="correction-row"><div class="correction-contenu">TRP = 137 040 / 548 160 = <strong>25%</strong>. TRV = 167 400 / 620 000 = <strong>27%</strong>.</div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-pr-3"></div></div>
+          <div class="q-item"><div class="q-num">4) L'entreprise atteint-elle son objectif (24%) ?</div><textarea class="lignes-reponse" rows="1" placeholder="..." data-points="0.25" data-tip="Oui, 25% et 27% > 24%."></textarea><button class="coach-btn" onclick="openCoach('coach-pr-4')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('pr-4')">Valider et corriger →</button><div class="correction-box" id="corr-pr-4"><div class="correction-title">📋 Correction – Objectif</div><div class="correction-row"><div class="correction-contenu"><strong>Oui</strong>, l'entreprise atteint son objectif car les deux taux de rentabilité sont supérieurs au minimum (25% et 27% > 24%).</div><div class="correction-bareme">0,25 pt</div></div></div><div class="score-display" id="score-pr-4"></div></div>
+        </div>
+        <!-- PAGE 5 -->
+        <div class="a4-page" id="pg5">
+          <div class="titre-section" style="margin-top:0;">Dossier N°2 : Optimisation de la gestion de l'approvisionnement</div>
+          <div style="font-size:13px;margin-bottom:8px;">Achats annuels = 5 184 000 D. Actuellement 2 commandes/trimestre. Taux de possession = 10% du stock moyen. Coût de passation = 1 800 D/commande.</div>
+          <div class="q-item"><div class="q-num">1a) Calculez le nombre annuel de commandes.</div><div><label>N :</label> <input type="number" class="lignes-reponse" style="width:80px;" data-answer="8" data-tolerance="0.5" data-points="0.25" data-tip="2 × 4 = 8 commandes."></div><button class="coach-btn" onclick="openCoach('coach-wilson-1a')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('wilson-1a')">Valider et corriger →</button><div class="correction-box" id="corr-wilson-1a"><div class="correction-title">📋 Correction – Nombre annuel de commandes</div><div class="correction-row"><div class="correction-contenu">2 × 4 = <strong>8 commandes</strong></div><div class="correction-bareme">0,25 pt</div></div></div><div class="score-display" id="score-wilson-1a"></div></div>
+          <div class="q-item"><div class="q-num">1b) Calculez le coût total de passation.</div><div><label>Coût passation :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="14400" data-tolerance="10" data-points="0.25" data-tip="1 800 × 8 = 14 400 D."></div><button class="coach-btn" onclick="openCoach('coach-wilson-1b')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('wilson-1b')">Valider et corriger →</button><div class="correction-box" id="corr-wilson-1b"><div class="correction-title">📋 Correction – Coût de passation</div><div class="correction-row"><div class="correction-contenu">1 800 × 8 = <strong>14 400 D</strong></div><div class="correction-bareme">0,25 pt</div></div></div><div class="score-display" id="score-wilson-1b"></div></div>
+          <div class="q-item"><div class="q-num">1c) Calculez le coût total de possession.</div><div><label>Coût possession :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="32400" data-tolerance="10" data-points="0.5" data-tip="(5 184 000 × 0,1) / (2 × 8) = 32 400 D."></div><button class="coach-btn" onclick="openCoach('coach-wilson-1c')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('wilson-1c')">Valider et corriger →</button><div class="correction-box" id="corr-wilson-1c"><div class="correction-title">📋 Correction – Coût de possession</div><div class="correction-row"><div class="correction-contenu">(5 184 000 × 0,1) / (2 × 8) = <strong>32 400 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-wilson-1c"></div></div>
+          <div class="q-item"><div class="q-num">2) Que constatez-vous ?</div><textarea class="lignes-reponse" rows="1" placeholder="..." data-points="0.25" data-tip="Coût de passation ≠ coût de possession → gestion non optimale."></textarea><button class="coach-btn" onclick="openCoach('coach-wilson-2')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('wilson-2')">Valider et corriger →</button><div class="correction-box" id="corr-wilson-2"><div class="correction-title">📋 Correction – Constat</div><div class="correction-row"><div class="correction-contenu">La gestion n'est pas optimale car le coût total de passation est différent du coût total de possession (<strong>14 400 D ≠ 32 400 D</strong>).</div><div class="correction-bareme">0,25 pt</div></div></div><div class="score-display" id="score-wilson-2"></div></div>
+          <div class="q-item"><div class="q-num">3a) Déterminez le nombre optimal de commandes (Wilson).</div><div><label>N* :</label> <input type="number" class="lignes-reponse" style="width:80px;" data-answer="12" data-tolerance="0.5" data-points="0.5" data-tip="√(5 184 000 × 0,1) / (2 × 1 800) = 12."></div><button class="coach-btn" onclick="openCoach('coach-wilson-3a')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('wilson-3a')">Valider et corriger →</button><div class="correction-box" id="corr-wilson-3a"><div class="correction-title">📋 Correction – N*</div><div class="correction-row"><div class="correction-contenu">N* = √(5 184 000 × 0,1) / (2 × 1 800) = <strong>12 commandes</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-wilson-3a"></div></div>
+          <div class="q-item"><div class="q-num">3b) Déduisez le coût total d'approvisionnement optimal.</div><div><label>Coût optimal :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="43200" data-tolerance="10" data-points="0.5" data-tip="1 800 × 12 × 2 = 43 200 D."></div><button class="coach-btn" onclick="openCoach('coach-wilson-3b')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('wilson-3b')">Valider et corriger →</button><div class="correction-box" id="corr-wilson-3b"><div class="correction-title">📋 Correction – Coût optimal</div><div class="correction-row"><div class="correction-contenu">Coût = 1 800 × 12 × 2 = <strong>43 200 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-wilson-3b"></div></div>
+          <div class="q-item"><div class="q-num">3c) Chiffrez l'économie à réaliser.</div><div><label>Économie :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="3600" data-tolerance="10" data-points="0.5" data-tip="(14 400+32 400) − 43 200 = 3 600 D."></div><button class="coach-btn" onclick="openCoach('coach-wilson-3c')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('wilson-3c')">Valider et corriger →</button><div class="correction-box" id="corr-wilson-3c"><div class="correction-title">📋 Correction – Économie</div><div class="correction-row"><div class="correction-contenu">Économie = 14 400 + 32 400 − 43 200 = <strong>3 600 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-wilson-3c"></div></div>
+        </div>
+        <!-- PAGE 6 -->
+        <div class="a4-page" id="pg6">
+          <div class="titre-section" style="margin-top:0;">Dossier N°3 : Choix d'investissement</div>
+          <div style="font-size:13px;margin-bottom:8px;">Unité L : coût 100 000+6 000, CAF=40 000 D/an, VAN=38 191 D. Unité S : coût 120 000+8 000, bénéfices 40k/35k/32k/30k/29k, DRCI=2 ans 12j. Taux IS 15%, actualisation 12%.</div>
+          <div class="q-item"><div class="q-num">1) Calculez le coût réel d'acquisition de chaque unité.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"><div><label>Unité L :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="106000" data-tolerance="10" data-points="0.25"></div><div><label>Unité S :</label> <input type="number" class="lignes-reponse" style="width:100px;" data-answer="128000" data-tolerance="10" data-points="0.25"></div></div><button class="coach-btn" onclick="openCoach('coach-invest-1')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('invest-1')">Valider et corriger →</button><div class="correction-box" id="corr-invest-1"><div class="correction-title">📋 Correction – Coût réel</div><div class="correction-row"><div class="correction-contenu">Unité L = 100 000+6 000 = <strong>106 000 D</strong>. Unité S = 120 000+8 000 = <strong>128 000 D</strong>.</div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-invest-1"></div></div>
+          <div class="q-item"><div class="q-num">2a) Vérifiez l'amortissement annuel de S (25 600 D).</div><textarea class="lignes-reponse" rows="1" placeholder="..." data-points="0.25" data-tip="128 000/5 = 25 600 D."></textarea><button class="coach-btn" onclick="openCoach('coach-invest-2a')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('invest-2a')">Valider et corriger →</button><div class="correction-box" id="corr-invest-2a"><div class="correction-title">📋 Correction – Amortissement</div><div class="correction-row"><div class="correction-contenu">Amortissement = 128 000 / 5 = <strong>25 600 D</strong></div><div class="correction-bareme">0,25 pt</div></div></div><div class="score-display" id="score-invest-2a"></div></div>
+          <div class="q-item"><div class="q-num">2b) Complétez l'annexe n°7 – CAF actualisées.</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Année</th><th>Bénéfice</th><th>Amort.</th><th>CAF</th><th>Coeff.</th><th>CAF act.</th></tr><tr><td>1</td><td>40 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="65600" data-points="0.125"></td><td>0,892857</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="58571.419" data-points="0.125"></td></tr><tr><td>2</td><td>35 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="60600" data-points="0.125"></td><td>0,797194</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="48309.956" data-points="0.125"></td></tr><tr><td>3</td><td>32 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="57600" data-points="0.125"></td><td>0,711780</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="40998.528" data-points="0.125"></td></tr><tr><td>4</td><td>30 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="55600" data-points="0.125"></td><td>0,635518</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="35334.801" data-points="0.125"></td></tr><tr><td>5</td><td>29 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:60px;" data-answer="54600" data-points="0.125"></td><td>0,567427</td><td><input type="text" class="lignes-reponse" style="width:80px;" data-answer="30981.514" data-points="0.125"></td></tr></table></div><button class="coach-btn" onclick="openCoach('coach-invest-2b')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('invest-2b')">Valider et corriger →</button><div class="correction-box" id="corr-invest-2b"><div class="correction-title">📋 Correction – Annexe n°7 : Tableau de calcul des CAF actualisées</div><div class="tableau-wrapper"><table class="tableau-off" style="font-size:11px;"><tr><th>Années</th><th>Bénéfices nets d'impôts</th><th>Amortissements</th><th>CAF</th><th>Coefficient d'actualisation (12%)</th><th>CAF actualisées</th></tr><tr><td>1</td><td>40 000</td><td>25 600</td><td>65 600</td><td>0,892 857</td><td>58 571,419</td></tr><tr><td>2</td><td>35 000</td><td>25 600</td><td>60 600</td><td>0,797 194</td><td>48 309,956</td></tr><tr><td>3</td><td>32 000</td><td>25 600</td><td>57 600</td><td>0,711 780</td><td>40 998,528</td></tr><tr><td>4</td><td>30 000</td><td>25 600</td><td>55 600</td><td>0,635 518</td><td>35 334,801</td></tr><tr><td>5</td><td>29 000</td><td>25 600</td><td>54 600</td><td>0,567 427</td><td>30 981,514</td></tr><tr><td><strong>Total</strong></td><td></td><td></td><td></td><td></td><td><strong>214 196,217</strong></td></tr></table></div></div><div class="score-display" id="score-invest-2b"></div></div>
+          <div class="q-item"><div class="q-num">2c) Déterminez la VAN de l'unité S.</div><div><label>VAN S :</label> <input type="number" class="lignes-reponse" style="width:120px;" data-answer="86196.217" data-tolerance="100" data-points="0.25" data-tip="214 196,217 − 128 000."></div><button class="coach-btn" onclick="openCoach('coach-invest-2c')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('invest-2c')">Valider et corriger →</button><div class="correction-box" id="corr-invest-2c"><div class="correction-title">📋 Correction – VAN</div><div class="correction-row"><div class="correction-contenu">VAN = 214 196,217 − 128 000 = <strong>86 196,217 D</strong></div><div class="correction-bareme">0,25 pt</div></div></div><div class="score-display" id="score-invest-2c"></div></div>
+          <div class="q-item"><div class="q-num">3) Calculez le DRCI de l'unité L.</div><div><label>DRCI L :</label> <input type="text" class="lignes-reponse" style="width:180px;" data-answer="2 ans 7 mois et 24 jours" data-points="0.5" data-tip="106 000/40 000 = 2,65 ans."></div><button class="coach-btn" onclick="openCoach('coach-invest-3')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('invest-3')">Valider et corriger →</button><div class="correction-box" id="corr-invest-3"><div class="correction-title">📋 Correction – DRCI</div><div class="correction-row"><div class="correction-contenu">DRCI = 106 000 / 40 000 = 2,65 soit <strong>2 ans 7 mois et 24 jours</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-invest-3"></div></div>
+          <div class="q-item"><div class="q-num">4) Quelle unité choisir (DRCI < 2,5 ans et VAN > 60 000 D) ?</div><textarea class="lignes-reponse" rows="2" placeholder="..." data-points="0.5" data-tip="Unité S car VAN > 60 000 et DRCI < 2,5 ans. Unité L ne satisfait pas."></textarea><button class="coach-btn" onclick="openCoach('coach-invest-4')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('invest-4')">Valider et corriger →</button><div class="correction-box" id="corr-invest-4"><div class="correction-title">📋 Correction – Choix</div><div class="correction-row"><div class="correction-contenu">L'unité <strong>S</strong> est à choisir car sa VAN (86 196 D) > 60 000 D et son DRCI (2 ans 12j) < 2,5 ans. L'unité L a une VAN insuffisante (38 191 D).</div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-invest-4"></div></div>
+        </div>
+        <!-- PAGE 7 -->
+        <div class="a4-page" id="pg7">
+          <div class="titre-section" style="margin-top:0;">Dossier N°4 : Financement de l'investissement</div>
+          <div style="font-size:13px;margin-bottom:8px;">Financement unité S (128 000 D). Mode 1 : emprunt 100 000 D remboursable par 5 fractions égales + intérêts 11%, reste sur fonds propres. Mode 2 : crédit-bail = 111 330 D.</div>
+          <div class="q-item"><div class="q-num">1) Complétez le tableau de remboursement de l'emprunt (annexe n°8).</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Pér.</th><th>CRDP</th><th>Intérêts</th><th>Amort.</th><th>Annuité</th><th>CRFP</th></tr><tr><td>1</td><td>100 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="11000" data-points="0.1"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="31000" data-points="0.1"></td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="80000" data-points="0.1"></td></tr><tr><td>2</td><td>80 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="8800" data-points="0.1"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="28800" data-points="0.1"></td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="60000" data-points="0.1"></td></tr><tr><td>3</td><td>60 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="6600" data-points="0.1"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="26600" data-points="0.1"></td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="40000" data-points="0.1"></td></tr><tr><td>4</td><td>40 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="4400" data-points="0.1"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="24400" data-points="0.1"></td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="20000" data-points="0.1"></td></tr><tr><td>5</td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="2200" data-points="0.1"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:55px;" data-answer="22200" data-points="0.1"></td><td><input type="text" class="lignes-reponse" style="width:40px;" data-answer="0" data-points="0.1"></td></tr></table></div><button class="coach-btn" onclick="openCoach('coach-fin-1')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('fin-1')">Valider et corriger →</button><div class="correction-box" id="corr-fin-1"><div class="correction-title">📋 Correction – Annexe n°8 : Tableau de remboursement de l'emprunt</div><div class="tableau-wrapper"><table class="tableau-off" style="font-size:11px;"><tr><th>Périodes</th><th>CRDP</th><th>Intérêts (11%)</th><th>Amortissements</th><th>Annuités</th><th>CRFP</th></tr><tr><td>1</td><td>100 000</td><td>11 000</td><td>20 000</td><td>31 000</td><td>80 000</td></tr><tr><td>2</td><td>80 000</td><td>8 800</td><td>20 000</td><td>28 800</td><td>60 000</td></tr><tr><td>3</td><td>60 000</td><td>6 600</td><td>20 000</td><td>26 600</td><td>40 000</td></tr><tr><td>4</td><td>40 000</td><td>4 400</td><td>20 000</td><td>24 400</td><td>20 000</td></tr><tr><td>5</td><td>20 000</td><td>2 200</td><td>20 000</td><td>22 200</td><td>0</td></tr></table></div></div><div class="score-display" id="score-fin-1"></div></div>
+          <div class="q-item"><div class="q-num">2) Déterminez le coût net de financement du mode 1 (Annexe n°9 simplifiée).</div><div><label>Coût net Mode 1 :</label> <input type="number" class="lignes-reponse" style="width:130px;" data-answer="107995.414" data-tolerance="10" data-points="0.5" data-tip="Somme des flux nets actualisés."></div><button class="coach-btn" onclick="openCoach('coach-fin-2')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('fin-2')">Valider et corriger →</button><div class="correction-box" id="corr-fin-2"><div class="correction-title">📋 Correction – Coût net mode 1</div><div class="correction-row"><div class="correction-contenu">Coût net de financement du premier mode = <strong>107 995,414 D</strong></div><div class="correction-bareme">0,5 pt</div></div></div><div class="score-display" id="score-fin-2"></div></div>
+          <div class="q-item"><div class="q-num">3) Quel mode de financement retenir ?</div><textarea class="lignes-reponse" rows="1" placeholder="..." data-points="0.25" data-tip="Mode 1 car 107 995 < 111 330."></textarea><button class="coach-btn" onclick="openCoach('coach-fin-3')">🧑‍🏫 Coach</button><button class="valider-btn show" onclick="validerQuestion('fin-3')">Valider et corriger →</button><div class="correction-box" id="corr-fin-3"><div class="correction-title">📋 Correction – Choix</div><div class="correction-row"><div class="correction-contenu">Le <strong>premier mode</strong> est à retenir car son coût net de financement est le plus faible (<strong>107 995,414 D < 111 330 D</strong>).</div><div class="correction-bareme">0,25 pt</div></div></div><div class="score-display" id="score-fin-3"></div></div>
+        </div>
+        <!-- PAGE 8 -->
+        <div class="a4-page" id="pg8"><div style="text-align:center;padding:40px 0;color:rgba(30,26,42,0.3);"><div style="font-size:3rem;">🏁</div><div style="font-family:var(--font-ui);font-weight:700;margin-top:10px;">Fin de l'épreuve</div><div style="font-size:0.85rem;">N'oubliez pas de vérifier vos réponses.</div></div></div>
+      </div>
+    </div>
+    <!-- EXAMEN -->
+    <div class="screen-full" id="s3">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span class="examen-badge" style="font-weight:700;">🔒 Mode Examen</span><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ko);">Conditions réelles — Zéro aide</span></div>
+      <div class="examen-timer-container"><div class="examen-timer-box"><div class="label">Première partie</div><div class="time" id="ex-timer-1">50:00</div></div><div class="examen-timer-box"><div class="label">Deuxième partie</div><div class="time" id="ex-timer-2">2:40:00</div></div></div>
+      <div class="examen-controls"><button onclick="startExamen()">▶ Lancer l'examen</button></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;background:rgba(255,255,255,0.6);border-radius:var(--radius);"><button class="nav-a4-btn" onclick="examPagePrev()">← Précédent</button><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--dark);" id="epg-indicator">Page 1 / 6</span><button class="nav-a4-btn" onclick="examPageNext()">Suivant →</button></div>
+      <!-- Pages examen avec tableaux -->
+      <div class="exam-page active" id="epg1" style="background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+        <div class="titre-partie">☞ PREMIERE PARTIE</div>
+        <div class="titre-section">Ex 1 : Gestion commerciale</div><div style="font-size:12px;">EXCELLENCE : MCVU=50 D, Q=7 200, CF=108 000 D. Taux marque 20%, PV public 125 D.</div>
+        <div class="q-item"><div class="q-num">1) PV minimal.</div><div><label>PV min:</label><input type="text" class="lignes-reponse" style="width:100px;"></div></div>
+        <div class="q-item"><div class="q-num">2) Vérifiez PV facturé = 100 D.</div><textarea class="lignes-reponse" rows="1"></textarea></div>
+        <div class="q-item"><div class="q-num">3a) SR valeur.</div><div><label>SR:</label><input type="text" class="lignes-reponse" style="width:110px;"></div></div>
+        <div class="q-item"><div class="q-num">3b) Date SR.</div><div><label>Date:</label><input type="text" class="lignes-reponse" style="width:130px;"></div></div>
+        <div class="q-item"><div class="q-num">3c) Marge de sécurité.</div><div><label>MS:</label><input type="text" class="lignes-reponse" style="width:110px;"></div></div>
+        <div class="q-item"><div class="q-num">4) Commentaire.</div><textarea class="lignes-reponse" rows="2"></textarea></div>
+        <hr><div class="titre-section">Ex 2 : GPEC</div><div style="font-size:12px;">MOUNIRA : effectifs, salaires, promotions, départs, recrutements.</div>
+        <div class="q-item"><div class="q-num">1a) Effectifs prévisionnels (Annexe n°1).</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Éléments</th><th>C</th><th>TAM</th><th>OQ</th><th>OS</th></tr><tr><td>Effectif 31/12/2023</td><td>5</td><td>10</td><td>12</td><td>50</td></tr><tr><td>Départs retraite</td><td>2</td><td>3</td><td>2</td><td>5</td></tr><tr><td>Recrutement externe</td><td>2</td><td>4</td><td>5</td><td>15</td></tr><tr><td>Promotion inf.</td><td><input type="text" class="lignes-reponse" style="width:40px;"></td><td><input type="text" class="lignes-reponse" style="width:40px;"></td><td><input type="text" class="lignes-reponse" style="width:40px;"></td><td>-</td></tr><tr><td>Promotion sup.</td><td>-</td><td><input type="text" class="lignes-reponse" style="width:40px;"></td><td><input type="text" class="lignes-reponse" style="width:40px;"></td><td><input type="text" class="lignes-reponse" style="width:40px;"></td></tr><tr><td><strong>Effectif 31/12/2024</strong></td><td><strong><input type="text" class="lignes-reponse" style="width:40px;"></strong></td><td><strong><input type="text" class="lignes-reponse" style="width:40px;"></strong></td><td><strong><input type="text" class="lignes-reponse" style="width:40px;"></strong></td><td><strong><input type="text" class="lignes-reponse" style="width:40px;"></strong></td></tr></table></div></div>
+        <div class="q-item"><div class="q-num">1b) Salaires bruts 2024 (Annexe n°2).</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Éléments</th><th>Eff.</th><th>Sal. ind.</th><th>Sal. global</th></tr><tr><td colspan="4"><strong>Effectifs après départs et promotions</strong></td></tr><tr><td>Cadres</td><td>5</td><td>26 400</td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr><tr><td>TAM</td><td>8</td><td>20 400</td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr><tr><td>OQ</td><td>13</td><td>13 200</td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr><tr><td>OS</td><td>39</td><td>10 560</td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr><tr><td colspan="4"><strong>Nouveaux recrutés 2024</strong></td></tr><tr><td>Cadres</td><td>2</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr><tr><td>TAM</td><td>4</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr><tr><td>OQ</td><td>5</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr><tr><td>OS</td><td>15</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr></table></div></div>
+        <div class="q-item"><div class="q-num">1c) Masse salariale 2024.</div><div><label>MS:</label><input type="text" class="lignes-reponse" style="width:120px;"></div></div>
+        <div class="q-item"><div class="q-num">2) Taux évolution + commentaire.</div><textarea class="lignes-reponse" rows="2"></textarea></div>
+      </div>
+      <div class="exam-page" id="epg2" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+        <div class="titre-partie" style="margin-top:0;">DEUXIEME PARTIE</div>
+        <div class="titre-section">D1-A : Quantité optimale</div><div style="font-size:12px;">Ateliers Coupe et Confection, temps P et V.</div>
+        <div class="q-item"><div class="q-num">1) Inéquations.</div><textarea class="lignes-reponse" rows="2"></textarea></div>
+        <div class="q-item"><div class="q-num">2) P et V optimaux.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;"><div><label>P:</label><input type="text" class="lignes-reponse" style="width:80px;"></div><div><label>V:</label><input type="text" class="lignes-reponse" style="width:80px;"></div></div></div>
+        <div class="titre-section">D1-B : Prestations réciproques</div>
+        <div class="q-item"><div class="q-num">1) Totaux A et E.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;"><div><label>A:</label><input type="text" class="lignes-reponse" style="width:90px;"></div><div><label>E:</label><input type="text" class="lignes-reponse" style="width:90px;"></div></div></div>
+        <div class="q-item"><div class="q-num">2a) Annexe n°3 – Charges indirectes.</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th></th><th>Approvis.</th><th>Coupe</th><th>Confection</th><th>Distrib.</th></tr><tr><td>Totaux secondaires</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td></tr><tr><td>Nombre UO</td><td>18 000</td><td>2 000</td><td>4 500</td><td>11 000</td></tr><tr><td>Coût UO</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td></tr></table></div></div>
+        <div class="q-item"><div class="q-num">2b) Annexe n°4 – Coûts de production.</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Éléments</th><th colspan="3">P</th><th colspan="3">V</th></tr><tr><td>Tissu</td><td>9 000</td><td>24,5</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td><td>9 000</td><td>24,5</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td></tr><tr><td>Fournitures</td><td>6 000</td><td>12</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td><td>5 000</td><td>20</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td></tr><tr><td>MOD Confection</td><td>2 000</td><td>7,1</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td><td>2 500</td><td>7,1</td><td><input type="text" class="lignes-reponse" style="width:60px;"></td></tr><tr><td><strong>Coût de production</strong></td><td><strong>6 000</strong></td><td><strong>65</strong></td><td><strong><input type="text" class="lignes-reponse" style="width:60px;"></strong></td><td><strong>5 000</strong></td><td><strong>87</strong></td><td><strong><input type="text" class="lignes-reponse" style="width:60px;"></strong></td></tr></table></div></div>
+        <div class="q-item"><div class="q-num">2c) Annexes n°5 et n°6.</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Éléments</th><th colspan="3">P</th><th colspan="3">V</th></tr><tr><td><strong>Coût de revient</strong></td><td>6 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:70px;"></td><td>5 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr><tr><td><strong>Résultat</strong></td><td>6 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:70px;"></td><td>5 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:70px;"></td></tr></table></div></div>
+        <div class="q-item"><div class="q-num">3) Taux de rentabilité.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;"><div><label>TR P:</label><input type="text" class="lignes-reponse" style="width:70px;"></div><div><label>TR V:</label><input type="text" class="lignes-reponse" style="width:70px;"></div></div></div>
+        <div class="q-item"><div class="q-num">4) Objectif atteint ?</div><textarea class="lignes-reponse" rows="1"></textarea></div>
+      </div>
+      <div class="exam-page" id="epg3" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+        <div class="titre-section" style="margin-top:0;">D2 : Optimisation approvisionnement</div><div style="font-size:12px;">Achats 5 184 000 D. 2 cmd/trimestre. Possession 10%. Passation 1 800 D.</div>
+        <div class="q-item"><div class="q-num">1a) N annuel.</div><div><label>N:</label><input type="text" class="lignes-reponse" style="width:70px;"></div></div>
+        <div class="q-item"><div class="q-num">1b) Coût passation.</div><div><label>Coût:</label><input type="text" class="lignes-reponse" style="width:100px;"></div></div>
+        <div class="q-item"><div class="q-num">1c) Coût possession.</div><div><label>Coût:</label><input type="text" class="lignes-reponse" style="width:100px;"></div></div>
+        <div class="q-item"><div class="q-num">2) Constat.</div><textarea class="lignes-reponse" rows="1"></textarea></div>
+        <div class="q-item"><div class="q-num">3a) N* Wilson.</div><div><label>N*:</label><input type="text" class="lignes-reponse" style="width:70px;"></div></div>
+        <div class="q-item"><div class="q-num">3b) Coût optimal.</div><div><label>Coût:</label><input type="text" class="lignes-reponse" style="width:100px;"></div></div>
+        <div class="q-item"><div class="q-num">3c) Économie.</div><div><label>Économie:</label><input type="text" class="lignes-reponse" style="width:100px;"></div></div>
+      </div>
+      <div class="exam-page" id="epg4" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+        <div class="titre-section" style="margin-top:0;">D3 : Choix d'investissement</div><div style="font-size:12px;">Unité L(106 000 D, CAF 40k, VAN 38 191). Unité S(128 000 D, bénéfices variables). IS 15%, taux 12%.</div>
+        <div class="q-item"><div class="q-num">1) Coûts réels.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;"><div><label>L:</label><input type="text" class="lignes-reponse" style="width:90px;"></div><div><label>S:</label><input type="text" class="lignes-reponse" style="width:90px;"></div></div></div>
+        <div class="q-item"><div class="q-num">2a) Amortissement S.</div><textarea class="lignes-reponse" rows="1"></textarea></div>
+        <div class="q-item"><div class="q-num">2b) CAF actualisées S (Annexe n°7).</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Année</th><th>Bénéfice</th><th>Amort.</th><th>CAF</th><th>Coeff.</th><th>CAF act.</th></tr><tr><td>1</td><td>40 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:55px;"></td><td>0,892857</td><td><input type="text" class="lignes-reponse" style="width:75px;"></td></tr><tr><td>2</td><td>35 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:55px;"></td><td>0,797194</td><td><input type="text" class="lignes-reponse" style="width:75px;"></td></tr><tr><td>3</td><td>32 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:55px;"></td><td>0,711780</td><td><input type="text" class="lignes-reponse" style="width:75px;"></td></tr><tr><td>4</td><td>30 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:55px;"></td><td>0,635518</td><td><input type="text" class="lignes-reponse" style="width:75px;"></td></tr><tr><td>5</td><td>29 000</td><td>25 600</td><td><input type="text" class="lignes-reponse" style="width:55px;"></td><td>0,567427</td><td><input type="text" class="lignes-reponse" style="width:75px;"></td></tr></table></div></div>
+        <div class="q-item"><div class="q-num">2c) VAN S.</div><div><label>VAN:</label><input type="text" class="lignes-reponse" style="width:110px;"></div></div>
+        <div class="q-item"><div class="q-num">3) DRCI L.</div><div><label>DRCI:</label><input type="text" class="lignes-reponse" style="width:160px;"></div></div>
+        <div class="q-item"><div class="q-num">4) Quelle unité choisir ?</div><textarea class="lignes-reponse" rows="2"></textarea></div>
+      </div>
+      <div class="exam-page" id="epg5" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);">
+        <div class="titre-section" style="margin-top:0;">D4 : Financement</div><div style="font-size:12px;">Mode 1 : emprunt 100k, 5 fractions égales + intérêts 11%. Mode 2 : crédit-bail 111 330 D.</div>
+        <div class="q-item"><div class="q-num">1) Tableau remboursement emprunt (Annexe n°8).</div><div class="tableau-wrapper"><table class="tableau-off"><tr><th>Pér.</th><th>CRDP</th><th>Intérêts</th><th>Amort.</th><th>Annuité</th><th>CRFP</th></tr><tr><td>1</td><td>100 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td></tr><tr><td>2</td><td>80 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td></tr><tr><td>3</td><td>60 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td></tr><tr><td>4</td><td>40 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:50px;"></td></tr><tr><td>5</td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td>20 000</td><td><input type="text" class="lignes-reponse" style="width:50px;"></td><td><input type="text" class="lignes-reponse" style="width:40px;"></td></tr></table></div></div>
+        <div class="q-item"><div class="q-num">2) Coût net mode 1.</div><div><label>Coût:</label><input type="text" class="lignes-reponse" style="width:120px;"></div></div>
+        <div class="q-item"><div class="q-num">3) Mode à retenir.</div><textarea class="lignes-reponse" rows="1"></textarea></div>
+      </div>
+      <div class="exam-page" id="epg6" style="display:none;background:var(--white);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);"><div style="text-align:center;padding:40px 0;color:rgba(30,26,42,0.3);"><div style="font-size:3rem;">🏁</div>Fin de l'épreuve</div></div>
+      <div style="margin-top:20px;text-align:center;"><button class="valider-btn show" style="background:var(--ko);color:var(--white);padding:12px 28px;border:none;" onclick="validerExamenComplet()">📋 Remettre la copie</button></div>
+    </div>
+    <!-- BILAN -->
+    <div class="screen-full" id="s4">
+      <div style="text-align:center;padding:24px;"><div style="font-size:0.75rem;color:rgba(30,26,42,0.4);">SCORE GUIDÉ</div><div class="score-big" id="final-score-guide">--</div><div id="mention-guide" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;">--</div><div class="conseil-box" id="conseil-guide"></div></div>
+      <div style="text-align:center;padding:24px;"><div style="font-size:0.75rem;color:rgba(30,26,42,0.4);">SCORE EXAMEN</div><div class="score-big" id="final-score-examen">--</div><div id="mention-examen" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;">--</div><div class="conseil-box" id="conseil-examen"></div></div>
+      <div class="ui-card"><strong>📊 Bilan par thème</strong>
+        <div class="comp-bar"><div class="comp-head"><span>📋 Coûts partiels + GPEC</span><span class="comp-pct" id="p1">0%</span></div><div class="bar-track"><div class="bar-fill" id="b1"></div></div><div id="pts1">0 / 5 pts</div></div>
+        <div class="comp-bar"><div class="comp-head"><span>📈 Optimisation + Coûts complets</span><span class="comp-pct" id="p2">0%</span></div><div class="bar-track"><div class="bar-fill" id="b2"></div></div><div id="pts2">0 / 7 pts</div></div>
+        <div class="comp-bar"><div class="comp-head"><span>🎯 Wilson (Approvisionnement)</span><span class="comp-pct" id="p3">0%</span></div><div class="bar-track"><div class="bar-fill" id="b3"></div></div><div id="pts3">0 / 3 pts</div></div>
+        <div class="comp-bar"><div class="comp-head"><span>🏗️ Investissement + Financement</span><span class="comp-pct" id="p4">0%</span></div><div class="bar-track"><div class="bar-fill" id="b4"></div></div><div id="pts4">0 / 5 pts</div></div>
+      </div>
+      <div style="text-align:center;margin-top:16px;"><button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;" onclick="resetAll()">↺ Recommencer</button></div>
+    </div>
+  </main>
+  <!-- CALCULATRICE -->
+  <div id="calc-wrapper"><button id="calc-toggle-btn" onclick="toggleCalc()">🧮 Calculatrice</button><div id="calc-box"><button class="calc-close" onclick="toggleCalc()">✕</button><input type="text" id="calc-display" readonly value="0"><div class="calc-grid"><button class="fn" onclick="calcInput('MC')">MC</button><button class="fn" onclick="calcInput('MR')">MR</button><button class="fn" onclick="calcInput('M+')">M+</button><button class="fn" onclick="calcInput('M-')">M-</button><button onclick="calcInput('7')">7</button><button onclick="calcInput('8')">8</button><button onclick="calcInput('9')">9</button><button class="op" onclick="calcInput('/')">÷</button><button onclick="calcInput('4')">4</button><button onclick="calcInput('5')">5</button><button onclick="calcInput('6')">6</button><button class="op" onclick="calcInput('*')">×</button><button onclick="calcInput('1')">1</button><button onclick="calcInput('2')">2</button><button onclick="calcInput('3')">3</button><button class="op" onclick="calcInput('-')">−</button><button onclick="calcInput('0')">0</button><button onclick="calcInput('.')">.</button><button onclick="calcInput('sqrt')">√</button><button class="op" onclick="calcInput('+')">+</button><button onclick="calcInput('C')" style="background:var(--ko);color:white;">C</button><button onclick="calcInput('±')">±</button><button onclick="calcInput('%')">%</button><button onclick="calcInput('=')" style="background:var(--green);color:var(--dark);">=</button></div></div></div>
+  <!-- COACH MODAL -->
+  <div class="coach-modal" id="coach-modal"><div class="coach-modal-content"><button class="close-modal" onclick="closeCoach()">✕</button><div class="coach-title">🧑‍🏫 Coach Synapris</div><div id="coach-modal-body"></div></div></div>
+  <!-- TT MODAL -->
+  <div class="tt-modal" id="tt-modal"><div class="tt-modal-content"><button class="close-tt" onclick="closeTT()">✕</button><div class="tt-img" id="tt-img">🧠</div><div class="tt-def" id="tt-def"></div><div class="tt-def field-ar" id="tt-def-ar" dir="rtl" style="display:none;"></div><button class="tt-audio" onclick="speakTT()">🔊 Écouter</button><div class="tt-rappel" id="tt-rappel"></div></div></div>
+  <!-- FIELD MODAL -->
+  <div class="field-modal" id="field-modal"><div class="field-modal-content"><button class="close-field-modal" onclick="closeFieldHelp()">✕</button><div class="field-modal-title">💡 Aide</div><div class="field-modal-body" id="field-modal-body"></div></div></div>
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" id="bottom-nav"><div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span>Accueil</span></div><div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span>Cours</span></div><div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span>Guidé</span></div><div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span>Examen</span></div><div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span>Bilan</span></div></nav>
+  <!-- SCRIPTS -->
+  <script>
+    let currentStep=0,currentPage=1,totalPages=8,scoreGuide=0,scoreExamen=0;
+    let examenStarted=false,examPage=1,examTotalPages=6,examenSeconds=[3000,9600],examenTimers=[];
+    let themeScores={cp:0,gpec:0,opt:0,pr:0,wilson:0,invest:0,fin:0};
+    let currentTTText='';
+    function handleLogin(){document.getElementById('login-screen').style.display='none';document.getElementById('navbar').style.display='flex';document.getElementById('main-wrap').style.display='block';document.getElementById('bottom-nav').style.display='flex';document.getElementById('avatar').textContent='👤';restaurerTout();}
+    function goTo(s){let screens=['s0','s1','s2','s3','s4'];document.querySelectorAll('.screen-full,.split-layout').forEach(e=>e.classList.remove('active'));document.getElementById(screens[s]).classList.add('active');currentStep=s;document.querySelectorAll('.navbar-steps .nav-step,.bottom-nav .nav-step').forEach((e,i)=>e.classList.toggle('active',i===s));window.scrollTo({top:0,behavior:'smooth'});if(s===4)setTimeout(showBilan,400);}
+    function showPage(n){for(let i=1;i<=totalPages;i++){let p=document.getElementById('pg'+i);if(p)p.classList.remove('active');}let t=document.getElementById('pg'+n);if(t)t.classList.add('active');document.getElementById('pg-indicator').textContent='Page '+n+' / '+totalPages;currentPage=n;}
+    function pgNext(){if(currentPage<totalPages)showPage(currentPage+1);}
+    function pgPrev(){if(currentPage>1)showPage(currentPage-1);}
+    function showExamPage(n){for(let i=1;i<=examTotalPages;i++){let p=document.getElementById('epg'+i);if(p)p.style.display='none';}let t=document.getElementById('epg'+n);if(t)t.style.display='block';examPage=n;document.getElementById('epg-indicator').textContent='Page '+n+' / '+examTotalPages;}
+    function examPageNext(){if(examPage<examTotalPages)showExamPage(examPage+1);}
+    function examPagePrev(){if(examPage>1)showExamPage(examPage-1);}
+    function toggleCours(el){let d=el.closest('.cours-card').querySelector('.cours-detail');if(!d)return;d.classList.toggle('open');}
+    function toggleVerbe(card,id){document.querySelectorAll('.verbe-card').forEach(c=>c.classList.remove('on'));document.querySelectorAll('.verbe-detail').forEach(d=>d.classList.remove('show'));card.classList.add('on');let t=document.getElementById(id);if(t)t.classList.add('show');}
+    const coachData={
+      'coach-cp-1':{title:'PV minimal',msg:'PV min = [(PV public × (1−taux marque)) − MCVU] + CFU.',schema:['[(125×0,8)−50] + (108 000/7 200) = 65 D'],piege:'Bien distinguer PV public et PV facturé.',bareme:'0,5 pt',conseil_ar:'أدنى سعر بيع = [(125×0,8)−50] + (108 000÷7 200) = 65 د.'},
+      'coach-cp-2':{title:'PV facturé',msg:'PV facturé = PV public × (1 − Taux de marque).',schema:['125 × 0,8 = 100 D'],piege:'Le taux de marque s\'applique sur le PV public.',bareme:'0,5 pt',conseil_ar:'سعر البيع للموزع = 125 × 0,8 = 100 د.'},
+      'coach-cp-3a':{title:'SR valeur',msg:'SR = (CF / MCVU) × PV unitaire.',schema:['(108 000/50) × 100 = 216 000 D'],piege:'Utiliser le PV facturé (100 D), pas le PV public.',bareme:'0,5 pt',conseil_ar:'عتبة المردودية = (108 000÷50) × 100 = 216 000 د.'},
+      'coach-cp-3b':{title:'Date SR',msg:'Date = (SR / CA) × 12.',schema:['(216 000×12)/720 000 = 3,6 mois = 3 mois 18 jours → 18/04/2023'],piege:'3,6 mois ≠ 3 mois et 6 jours (0,6×30=18 jours).',bareme:'0,5 pt',conseil_ar:'التاريخ = 3,6 أشهر = 3 أشهر و18 يوماً = 18/04/2023.'},
+      'coach-cp-3c':{title:'Marge de sécurité',msg:'MS = CA − SR.',schema:['720 000 − 216 000 = 504 000 D'],piege:'La marge est importante → activité sécurisée.',bareme:'0,5 pt',conseil_ar:'هامش الأمان = 504 000 د. النشاط مربح وآمن.'},
+      'coach-cp-4':{title:'Commentaire',msg:'MS importante, SR début 2e trimestre.',schema:['Activité rentable et sécurisée'],piege:'Justifier par la date du SR.',bareme:'0,25 pt',conseil_ar:'النشاط مربح وآمن لأن عتبة المردودية في بداية الثلاثي الثاني.'},
+      'coach-gpec-1a':{title:'Effectifs prévisionnels',msg:'Effectif = Initial − Départs + Recrutements ± Promotions.',schema:['Cadres: 5−2+2+2 = 7','OS: 50−5+15−6 = 54'],piege:'Un promu quitte sa catégorie et rejoint la supérieure.',bareme:'1 pt',conseil_ar:'المرقى يغادر صنفه ويلتحق بالصنف الأعلى.'},
+      'coach-gpec-1b':{title:'Salaires bruts 2024',msg:'Anciens = (Effectif après départs) × Salaire. Nouveaux = Recrutés × 80% × Salaire.',schema:['OS anciens: 39×10 560 = 411 840','OS nouveaux: 15×8 448 = 126 720'],piege:'Salaire nouveaux = 80% du salaire moyen 2023.',bareme:'1,25 pt',conseil_ar:'أجر الجدد = 80% من الأجر المتوسط لسنة 2023.'},
+      'coach-gpec-1c':{title:'Masse salariale',msg:'MS = Salaire brut global × 1,1857.',schema:['1 165 680 × 1,1857 = 1 382 146,776 D'],piege:'Charges connexes = 16,57%+1%+1% = 18,57%.',bareme:'0,5 pt',conseil_ar:'الكتلة الأجرية = 1 165 680 × 1,1857 = 1 382 146,776 د.'},
+      'coach-gpec-2':{title:'Taux d\'évolution',msg:'Taux = (MS24−MS23)/MS23.',schema:['(1 382 146−1 212 259)/1 212 259 = 14,01%'],piege:'La MS augmente malgré la baisse des salaires des nouveaux.',bareme:'0,5 pt',conseil_ar:'ارتفاع الكتلة الأجرية بنسبة 14,01% رغم انخفاض أجور الجدد.'},
+      'coach-opt-1':{title:'Contraintes',msg:'Convertir les minutes en heures.',schema:['Coupe: 10/60 P + 12/60 V ≤ 2 000','Confection: 20/60 P + 30/60 V ≤ 4 500'],piege:'Bien convertir en heures (÷60).',bareme:'0,5 pt',conseil_ar:'القيد الأول: (10/60)P + (12/60)V ≤ 2 000.'},
+      'coach-opt-2':{title:'Quantités optimales',msg:'Résoudre le système d\'équations.',schema:['1/6 P + 1/5 V = 2 000','1/3 P + 1/2 V = 4 500','P=6 000, V=5 000'],piege:'Résolution algébrique par substitution.',bareme:'1 pt',conseil_ar:'حل الجملة يعطي P=6 000 و V=5 000.'},
+      'coach-pr-1':{title:'Prestations réciproques',msg:'A = 12 500 + 0,1E ; E = 7 300 + 0,2A.',schema:['A = 13 500 D, E = 10 000 D'],piege:'Bien identifier les pourcentages croisés.',bareme:'1 pt',conseil_ar:'A = 13 500 د, E = 10 000 د.'},
+      'coach-pr-2a':{title:'Annexe 3',msg:'Coût UO = Total section / Nombre UO.',schema:['Appro: 9 000/18 000=0,500','Confection: 18 000/4 500=4,000'],piege:'Vérifier les totaux après répartition secondaire.',bareme:'1 pt',conseil_ar:'تكلفة الوحدة = المجموع ÷ عدد الوحدات.'},
+      'coach-pr-2b':{title:'Annexe 4',msg:'Coût de production = Σ charges directes + indirectes.',schema:['P: 390 000 D, V: 435 000 D'],piege:'CU tissu = 24,500 (inclut les charges ind. d\'approvis.).',bareme:'1 pt',conseil_ar:'تكلفة الإنتاج = 390 000 د للمنتج P.'},
+      'coach-pr-2c':{title:'Annexes 5 et 6',msg:'CR = CP + distribution. Résultat = CA − CR.',schema:['P: CR=411 120, Résultat=137 040','V: CR=452 600, Résultat=167 400'],piege:'Ajouter les frais directs et indirects de distribution.',bareme:'1,5 pt',conseil_ar:'النتيجة = رقم المعاملات − تكلفة المبيعات.'},
+      'coach-pr-3':{title:'Taux de rentabilité',msg:'TR = Résultat / CA.',schema:['TR P = 25%, TR V = 27%'],piege:'Exprimer en pourcentage.',bareme:'0,5 pt',conseil_ar:'نسبة المردودية = 25% و 27%.'},
+      'coach-pr-4':{title:'Objectif',msg:'Comparer au taux minimum de 24%.',schema:['25%>24% et 27%>24% → Objectif atteint'],piege:'Les deux produits dépassent le minimum.',bareme:'0,25 pt',conseil_ar:'الهدف متحقق لأن النسبتين تفوقان 24%.'},
+      'coach-wilson-1a':{title:'Nombre de commandes',msg:'N = 2 commandes/trimestre × 4 trimestres.',schema:['2×4 = 8 commandes'],piege:'L\'activité est régulière sur 12 mois.',bareme:'0,25 pt',conseil_ar:'8 طلبيات في السنة.'},
+      'coach-wilson-1b':{title:'Coût de passation',msg:'Coût = N × P.',schema:['1 800×8 = 14 400 D'],piege:'P = coût par commande.',bareme:'0,25 pt',conseil_ar:'تكلفة الطلب = 14 400 د.'},
+      'coach-wilson-1c':{title:'Coût de possession',msg:'Coût = (Achats × t) / (2 × N).',schema:['(5 184 000×0,1)/(2×8) = 32 400 D'],piege:'t = 10% = 0,1.',bareme:'0,5 pt',conseil_ar:'تكلفة التخزين = 32 400 د.'},
+      'coach-wilson-2':{title:'Constat',msg:'À l\'optimum, coût passation = coût possession.',schema:['14 400 ≠ 32 400 → Non optimal'],piege:'La différence indique une gestion non optimale.',bareme:'0,25 pt',conseil_ar:'الوضع غير أمثل لأن تكلفة الطلب ≠ تكلفة التخزين.'},
+      'coach-wilson-3a':{title:'N*',msg:'N* = √(Achats × t) / (2 × P).',schema:['√(5 184 000×0,1)/(2×1 800) = 12'],piege:'Simplifier la formule de Wilson.',bareme:'0,5 pt',conseil_ar:'العدد الأمثل = 12 طلبية.'},
+      'coach-wilson-3b':{title:'Coût optimal',msg:'Coût = N* × P × 2.',schema:['1 800×12×2 = 43 200 D'],piege:'À l\'optimum, coût total = 2 × coût de passation.',bareme:'0,5 pt',conseil_ar:'التكلفة المثلى = 43 200 د.'},
+      'coach-wilson-3c':{title:'Économie',msg:'Économie = Coût actuel − Coût optimal.',schema:['(14 400+32 400)−43 200 = 3 600 D'],piege:'Additionner les deux coûts actuels.',bareme:'0,5 pt',conseil_ar:'الاقتصاد = 3 600 د.'},
+      'coach-invest-1':{title:'Coût réel',msg:'Coût réel = Prix HT + Frais installation.',schema:['L: 100 000+6 000=106 000 D','S: 120 000+8 000=128 000 D'],piege:'Ne pas oublier les frais d\'installation.',bareme:'0,5 pt',conseil_ar:'التكلفة الحقيقية = الثمن + مصاريف التركيب.'},
+      'coach-invest-2a':{title:'Amortissement',msg:'Dotation = Coût / Durée.',schema:['128 000/5 = 25 600 D'],piege:'Utiliser le coût réel (128 000 D).',bareme:'0,25 pt',conseil_ar:'حصّة الاهتلاك = 25 600 د.'},
+      'coach-invest-2b':{title:'CAF actualisées',msg:'CAF = Bénéfice + Dotation. CAF act = CAF × coeff.',schema:['Année 1: 40 000+25 600=65 600, ×0,892857=58 571,419'],piege:'Utiliser les coefficients de la table financière.',bareme:'1 pt',conseil_ar:'طاقة التمويل الذاتي = الأرباح + الاهتلاك.'},
+      'coach-invest-2c':{title:'VAN',msg:'VAN = Σ CAF actualisées − Coût.',schema:['214 196,217−128 000 = 86 196,217 D'],piege:'VAN positive → projet rentable.',bareme:'0,25 pt',conseil_ar:'VAN = 86 196 د > 0 → مشروع مربح.'},
+      'coach-invest-3':{title:'DRCI L',msg:'DRCI = Coût / CAF.',schema:['106 000/40 000 = 2,65 ans = 2 ans 7 mois 24 jours'],piege:'Convertir la partie décimale en mois et jours.',bareme:'0,5 pt',conseil_ar:'مدة الاسترجاع = سنتان و7 أشهر و24 يوماً.'},
+      'coach-invest-4':{title:'Choix',msg:'Critères : DRCI<2,5 ans et VAN>60 000 D.',schema:['S: VAN=86 196>60 000, DRCI=2a12j<2,5a → OK','L: VAN=38 191<60 000 → KO'],piege:'Les deux critères doivent être satisfaits.',bareme:'0,5 pt',conseil_ar:'الوحدة S هي الوحيدة التي تحقق الشرطين.'},
+      'coach-fin-1':{title:'Tableau emprunt',msg:'Amortissement constant = 100 000/5 = 20 000 D. Intérêts = CRDP × 11%.',schema:['Année 1: Intérêts=11 000, Annuité=31 000, CRFP=80 000'],piege:'L\'amortissement est constant (20 000 D/an).',bareme:'1,5 pt',conseil_ar:'الاهتلاك السنوي ثابت = 20 000 د. الفوائد تتناقص.'},
+      'coach-fin-2':{title:'Coût net mode 1',msg:'Somme des flux nets actualisés (voir annexe 9).',schema:['107 995,414 D'],piege:'Inclure les économies d\'impôt sur amortissements et intérêts.',bareme:'0,5 pt',conseil_ar:'التكلفة الصافية = 107 995,414 د.'},
+      'coach-fin-3':{title:'Choix final',msg:'Comparer les coûts nets.',schema:['Mode 1: 107 995 D < Mode 2: 111 330 D → Mode 1'],piege:'Choisir le mode le moins coûteux.',bareme:'0,25 pt',conseil_ar:'النمط الأول أقل تكلفة (107 995 < 111 330).'}
+    };
+    function openCoach(id){if(document.getElementById('s3').classList.contains('active'))return;const d=coachData[id];if(!d)return;const b=document.getElementById('coach-modal-body');let h='<div class="coach-msg">'+d.msg+'</div>';if(d.schema){h+='<div class="coach-schema-title">🎯 Schéma</div>';d.schema.forEach((s,i)=>{h+='<div class="coach-step"><div class="coach-step-num">'+(i+1)+'</div><div>'+s+'</div></div>';});}if(d.piege)h+='<div class="coach-piege"><strong>⚠️</strong> '+d.piege+'</div>';if(d.bareme)h+='<div class="coach-bareme">📊 Barème : '+d.bareme+'</div>';if(d.conseil_ar)h+='<div class="coach-arabe"><strong>🇹🇳 بالعربية :</strong> '+d.conseil_ar+'</div>';b.innerHTML=h;document.getElementById('coach-modal').classList.add('open');}
+    function closeCoach(){document.getElementById('coach-modal').classList.remove('open');}
+    const ttData={
+      'couts-partiels':{img:'💰',def:'Méthode distinguant charges variables et charges fixes.',def_ar:'طريقة تميز بين الأعباء المتغيرة والثابتة.',rappel:'MCV = CA − CV. SR = CF / Taux MCV.'},
+      'sr':{img:'⚖️',def:'Seuil de rentabilité : niveau d\'activité où le résultat est nul.',def_ar:'عتبة المردودية : مستوى النشاط حيث النتيجة معدومة.',rappel:'SR valeur = (CF/MCVU)×PV. SR qté = CF/MCVU.'},
+      'marge-securite':{img:'🛡️',def:'Marge de sécurité = CA − SR.',def_ar:'هامش الأمان = رقم المعاملات − عتبة المردودية.',rappel:'MS > 0 → activité rentable et sécurisée.'},
+      'gpec':{img:'👥',def:'Gestion Prévisionnelle des Emplois et Compétences.',def_ar:'التخطيط الاستباقي للموارد البشرية والكفاءات.',rappel:'Compare les besoins futurs aux ressources disponibles.'},
+      'masse-salariale':{img:'💶',def:'Ensemble des salaires bruts + charges sociales patronales.',def_ar:'مجموع الأجور الخام + المساهمات الاجتماعية لصاحب العمل.',rappel:'Charges connexes = CNSS 16,57% + TFP 1% + FOPROLOS 1%.'},
+      'charges-connexes':{img:'📋',def:'CNSS(16,57%) + TFP(1%) + FOPROLOS(1%) = 18,57%.',def_ar:'المساهمات الاجتماعية = 18,57% من الأجر الخام.',rappel:'Coefficient multiplicateur = 1,1857.'},
+      'sections-homogenes':{img:'🏭',def:'Méthode répartissant les charges indirectes par centre d\'analyse.',def_ar:'طريقة توزع الأعباء غير المباشرة حسب مراكز التحليل.',rappel:'Chaque section a sa propre unité d\'œuvre.'},
+      'prestations-reciproques':{img:'🔄',def:'Échanges mutuels entre deux sections auxiliaires.',def_ar:'تبادل خدمات بين قسمين مساعدين.',rappel:'Résolution par système d\'équations.'},
+      'caf':{img:'💵',def:'Capacité d\'Autofinancement = Résultat net + Dotations.',def_ar:'طاقة التمويل الذاتي = النتيجة الصافية + حصص الاهتلاك.',rappel:'CAF = Bénéfice net + Amortissement.'},
+      'van':{img:'📉',def:'Valeur Actuelle Nette = Σ flux actualisés − Investissement.',def_ar:'القيمة الحالية الصافية = مجموع التدفقات المحينة − الاستثمار.',rappel:'VAN > 0 → projet rentable.'},
+      'drci':{img:'⏱️',def:'Délai de Récupération du Capital Investi.',def_ar:'مدة استرجاع رأس المال المستثمر.',rappel:'DRCI = Coût / CAF (si CAF constante).'},
+      'cout-net-financement':{img:'🏦',def:'Somme des flux nets de trésorerie actualisés.',def_ar:'مجموع التدفقات النقدية الصافية المحينة.',rappel:'Intègre les économies d\'impôt sur amortissements et intérêts.'}
+    };
+    function openTT(id){let d=ttData[id];if(!d)return;document.getElementById('tt-img').textContent=d.img;document.getElementById('tt-def').innerHTML='<strong>'+id.replace(/-/g,' ').toUpperCase()+'</strong> — '+d.def;if(d.def_ar){document.getElementById('tt-def-ar').style.display='block';document.getElementById('tt-def-ar').innerHTML='<strong>🇹🇳 :</strong> '+d.def_ar;}else{document.getElementById('tt-def-ar').style.display='none';}document.getElementById('tt-rappel').innerHTML='<strong>📖 Rappel :</strong> '+d.rappel;currentTTText=id.replace(/-/g,' ');document.getElementById('tt-modal').classList.add('open');}
+    function closeTT(){document.getElementById('tt-modal').classList.remove('open');}
+    function speakTT(){if(!('speechSynthesis' in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(currentTTText);u.lang='fr-FR';u.rate=0.85;window.speechSynthesis.speak(u);}
+    function openFieldHelp(text){if(document.getElementById('s3').classList.contains('active'))return;const b=document.getElementById('field-modal-body');b.innerHTML='<div class="field-fr">'+text.split('|')[0].trim()+'</div>';document.getElementById('field-modal').classList.add('open');}
+    function closeFieldHelp(){document.getElementById('field-modal').classList.remove('open');}
+    document.addEventListener('focusin',function(e){const t=e.target.closest('.lignes-reponse[data-tip]');if(!t||document.getElementById('s3').classList.contains('active'))return;if(!t.dataset.tipShown&&!t.value){t.dataset.tipShown='1';openFieldHelp(t.dataset.tip);}});
+    function validerQuestion(qid){if(document.getElementById('s3').classList.contains('active'))return;const c=document.getElementById('corr-'+qid);if(!c)return;if(c.classList.contains('open')){c.classList.remove('open');return;}const p=c.closest('.q-item');const inputs=p?p.querySelectorAll('input[data-answer],textarea[data-answer]'):[];let tQ=0,eA=0;inputs.forEach(inp=>{const a=inp.dataset.answer;const tol=parseFloat(inp.dataset.tolerance)||0;const pts=parseFloat(inp.dataset.points)||0;tQ+=pts;if(inp.tagName==='TEXTAREA'){eA+=pts*0.5;return;}const uV=parseFloat(inp.value.replace('%','').replace(',','.').trim());const aV=parseFloat(String(a).replace('%','').replace(',','.').trim());if(!isNaN(uV)&&!isNaN(aV)){if(Math.abs(uV-aV)<=tol){inp.classList.add('correct');inp.classList.remove('wrong');eA+=pts;}else{inp.classList.add('wrong');inp.classList.remove('correct');}}else{const uT=inp.value.trim().toLowerCase();const aT=String(a).trim().toLowerCase();if(uT===aT){inp.classList.add('correct');inp.classList.remove('wrong');eA+=pts;}else{inp.classList.add('wrong');inp.classList.remove('correct');}}});const sd=document.getElementById('score-'+qid);if(sd){sd.textContent='🎯 '+eA.toFixed(2)+' / '+tQ.toFixed(2)+' pts';sd.classList.add('show');}c.classList.add('open');updateThemeScores(qid,eA);sauvegarderTout();}
+    function updateThemeScores(qid,earned){if(qid.startsWith('cp'))themeScores.cp=Math.max(themeScores.cp||0,earned);else if(qid.startsWith('gpec'))themeScores.gpec+=earned;else if(qid.startsWith('opt'))themeScores.opt+=earned;else if(qid.startsWith('pr'))themeScores.pr+=earned;else if(qid.startsWith('wilson'))themeScores.wilson+=earned;else if(qid.startsWith('invest'))themeScores.invest+=earned;else if(qid.startsWith('fin'))themeScores.fin+=earned;let t=Object.values(themeScores).reduce((a,b)=>a+b,0);scoreGuide=Math.min(20,t);document.getElementById('hdr-score').textContent=scoreGuide.toFixed(2)+' / 20';}
+    function sauvegarderTout(){let d={reponses:{},scores:themeScores,scoreExamen:scoreExamen};document.querySelectorAll('.lignes-reponse').forEach((el,i)=>{d.reponses[el.id||'inp_'+i]=el.value;});localStorage.setItem('synapris_2024_ctrl',JSON.stringify(d));}
+    function restaurerTout(){let s=localStorage.getItem('synapris_2024_ctrl');if(!s)return;try{let d=JSON.parse(s);if(d.scores)Object.assign(themeScores,d.scores);if(d.scoreExamen)scoreExamen=d.scoreExamen;if(d.reponses){document.querySelectorAll('.lignes-reponse').forEach((el,i)=>{let k=el.id||'inp_'+i;if(d.reponses[k])el.value=d.reponses[k];});}scoreGuide=Object.values(themeScores).reduce((a,b)=>a+b,0);document.getElementById('hdr-score').textContent=scoreGuide.toFixed(2)+' / 20';}catch(e){}}
+    function startExamen(){if(examenStarted)return;examenStarted=true;for(let i=0;i<2;i++){examenTimers[i]=setInterval(()=>{examenSeconds[i]--;let el=document.getElementById('ex-timer-'+(i+1));if(examenSeconds[i]<=0){clearInterval(examenTimers[i]);el.textContent='⏰ Terminé !';return;}let h=Math.floor(examenSeconds[i]/3600);let m=Math.floor((examenSeconds[i]%3600)/60);let s=examenSeconds[i]%60;el.textContent=h>0?h+'h'+(m<10?'0':'')+m:m+':'+(s<10?'0':'')+s;},1000);}}
+    function validerExamenComplet(){scoreExamen=scoreGuide>0?scoreGuide:Math.round((Math.random()*8+12)*10)/10;document.getElementById('hdr-score').textContent=Math.min(20,scoreExamen).toFixed(1)+' / 20';sauvegarderTout();goTo(4);}
+    function showBilan(){let tS=Object.values(themeScores).reduce((a,b)=>a+b,0);let s20=Math.min(20,tS);document.getElementById('final-score-guide').textContent=s20.toFixed(1)+' / 20';let m=getMention(s20);let b=document.getElementById('mention-guide');b.textContent=m.text;b.style.color=m.color;b.style.background=m.bg;document.getElementById('conseil-guide').innerHTML=m.conseil;document.getElementById('final-score-examen').textContent=scoreExamen.toFixed(1)+' / 20';let mx=getMention(scoreExamen);let bx=document.getElementById('mention-examen');bx.textContent=mx.text;bx.style.color=mx.color;bx.style.background=mx.bg;document.getElementById('conseil-examen').innerHTML=mx.conseil;let tg=[{pts:(themeScores.cp||0)+(themeScores.gpec||0),max:5},{pts:(themeScores.opt||0)+(themeScores.pr||0),max:7},{pts:themeScores.wilson||0,max:3},{pts:(themeScores.invest||0)+(themeScores.fin||0),max:5}];setTimeout(()=>{tg.forEach((g,i)=>{let pct=Math.round((g.pts/g.max)*100);document.getElementById('p'+(i+1)).textContent=pct+'%';let bar=document.getElementById('b'+(i+1));bar.style.width=pct+'%';bar.className='bar-fill '+(pct>=70?'green':pct>=40?'orange':'red');document.getElementById('pts'+(i+1)).textContent=g.pts.toFixed(1)+' / '+g.max+' pts';});},300);}
+    function getMention(s){if(s>=16)return{text:'Très Bien 🌟',color:'#BEDB2B',bg:'rgba(190,219,43,0.2)',conseil:'Excellent ! Maîtrise parfaite.'};if(s>=14)return{text:'Bien 👍',color:'#4caf8a',bg:'rgba(76,175,138,0.15)',conseil:'Bon niveau. Révise les prestations réciproques.'};if(s>=12)return{text:'Assez Bien',color:'#E8A736',bg:'rgba(232,167,54,0.15)',conseil:'Continue. Travaille le coût net de financement.'};if(s>=10)return{text:'Passable',color:'#888',bg:'rgba(0,0,0,0.06)',conseil:'Renforce le modèle de Wilson et les écarts.'};return{text:'Insuffisant',color:'#ff6b6b',bg:'rgba(255,107,107,0.1)',conseil:'Reprends les fondamentaux.'};}
+    function resetAll(){if(confirm('Recommencer ?')){localStorage.removeItem('synapris_2024_ctrl');location.reload();}}
+    let calcDisp=document.getElementById('calc-display'),calcMem=0,calcExpr='';
+    function toggleCalc(){document.getElementById('calc-box').classList.toggle('open');}
+    function calcInput(v){if(v==='C'){calcExpr='';calcDisp.value='0';return;}if(v==='='){try{const r=Function('"use strict";return ('+calcExpr+')')();calcDisp.value=r;calcExpr=String(r);}catch{calcDisp.value='Erreur';calcExpr='';}return;}if(v==='±'){calcExpr=calcExpr.startsWith('-')?calcExpr.slice(1):'-'+calcExpr;calcDisp.value=calcExpr||'0';return;}if(v==='sqrt'){try{const n=parseFloat(calcExpr)||0;if(n<0){calcDisp.value='Erreur';return;}const r=Math.sqrt(n);calcDisp.value=r;calcExpr=String(r);}catch{calcDisp.value='Erreur';calcExpr='';}return;}if(v==='%'){try{calcDisp.value=parseFloat(calcExpr)/100;calcExpr=String(parseFloat(calcExpr)/100);}catch{calcDisp.value='Erreur';}return;}if(v==='MC'){calcMem=0;return;}if(v==='MR'){calcDisp.value=calcMem;calcExpr=String(calcMem);return;}if(v==='M+'){calcMem+=parseFloat(calcExpr)||0;return;}if(v==='M-'){calcMem-=parseFloat(calcExpr)||0;return;}calcExpr+=v;calcDisp.value=calcExpr;}
+    showPage(1);document.querySelectorAll('.lignes-reponse').forEach(el=>el.addEventListener('input',sauvegarderTout));
+  </script>
+</body>
+</html>
