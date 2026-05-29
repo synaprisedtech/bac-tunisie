@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Synapris — Économie Bac 2022 | Session Principale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    /* ===== DESIGN SYSTEM ÉCONOMIE ===== */
+    :root {
+      --dark: #1A2517;
+      --primary: #5B0E14;
+      --accent: #F1E194;
+      --cream: #F7F3E3;
+      --white: #FFFFFF;
+      --text-dark: #1A2517;
+      --text-light: rgba(241,225,148,0.90);
+      --text-muted: rgba(241,225,148,0.50);
+      --ok: #2D5A27;
+      --ko: #8B1A1A;
+      --mid: #C4860A;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.15);
+      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      --font-ui: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-arabic: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+      --font-a4: 'Times New Roman', Times, serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); font-size: 1.05rem; background: var(--cream); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+
+    /* ===== LOGIN ===== */
+    #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, var(--cream), #f0ead6); padding: 20px; }
+    .login-header { text-align: center; max-width: 450px; margin-bottom: 24px; }
+    .login-header .epreuve-title { font-family: var(--font-ui); font-weight: 800; font-size: 1.2rem; color: var(--dark); margin-bottom: 12px; line-height: 1.3; }
+    .logo-placeholder-img { width: 120px; height: 120px; background: var(--primary); border-radius: 20px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--accent); box-shadow: var(--shadow); }
+    .login-video { width: 100%; max-width: 400px; border-radius: 16px; background: var(--dark); margin: 0 auto 24px; box-shadow: var(--shadow); }
+    .login-video video { width: 100%; border-radius: 16px; display: block; }
+    .login-card { background: var(--cream); padding: 32px 28px; border-radius: var(--radius-lg); max-width: 380px; width: 100%; box-shadow: var(--shadow-lg); text-align: center; margin-bottom: 24px; border: 1px solid rgba(26,37,23,0.08); }
+    .login-card .logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.8rem; color: var(--dark); margin-bottom: 2px; }
+    .login-card .slogan { font-size: 0.85rem; color: var(--dark); font-style: italic; margin-bottom: 20px; }
+    .login-card input { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: var(--radius); font-family: var(--font-body); font-size: 0.9rem; margin-bottom: 12px; outline: none; transition: var(--transition); }
+    .login-card input:focus { border-color: var(--dark); box-shadow: 0 0 0 2px rgba(26,37,23,0.15); }
+    .login-card .btn-login { width: 100%; padding: 12px; background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+    .login-card .btn-login:hover { background: #0e1a13; transform: translateY(-2px); }
+    .login-card .links { display: flex; justify-content: center; gap: 16px; margin-top: 14px; font-size: 0.75rem; }
+    .login-card .links a { color: rgba(26,37,23,0.5); text-decoration: none; transition: var(--transition); }
+    .login-card .links a:hover { color: var(--dark); }
+    .login-blocks { max-width: 450px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .login-block { background: var(--cream); border-radius: var(--radius); padding: 14px 10px; text-align: center; box-shadow: var(--shadow); transition: var(--transition); border: 1px solid rgba(26,37,23,0.06); }
+    .login-block:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .login-block .icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .login-block .arabic { font-size: 0.8rem; font-weight: 600; color: var(--dark); margin-bottom: 4px; font-family: var(--font-arabic); }
+    .login-block .french { font-size: 0.7rem; color: rgba(26,37,23,0.6); }
+
+    /* ===== NAVBAR ===== */
+    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--dark); padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .navbar-logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.2rem; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+    .navbar-steps { display: flex; align-items: center; gap: 16px; flex: 1; justify-content: center; max-width: 600px; }
+    .nav-step { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 10px 20px; border-radius: 50px; transition: var(--transition); font-size: 0.85rem; font-weight: 600; color: var(--text-muted); font-family: var(--font-body); }
+    .nav-step .icon { font-size: 1.6rem; }
+    .nav-step .label { font-size: 0.8rem; text-transform: none; letter-spacing: 0.04em; }
+    .nav-step.active { color: var(--accent); background: rgba(241,225,148,0.12); border: 1px solid var(--accent); box-shadow: 0 0 15px rgba(241,225,148,0.1); }
+    .nav-step:hover { color: var(--accent); transform: translateY(-2px); }
+    .navbar-score { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    .navbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--dark); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; margin-left: 8px; }
+
+    /* ===== CALCULATRICE ===== */
+    #calc-wrapper { position: fixed; bottom: 80px; right: 20px; z-index: 1500; }
+    #calc-toggle-btn { background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); padding: 10px 14px; font-size: 0.9rem; cursor: pointer; box-shadow: var(--shadow-lg); transition: var(--transition); display: flex; align-items: center; gap: 6px; animation: clignote 1.5s infinite; }
+    #calc-toggle-btn:hover { transform: scale(1.05); background: #0e1a13; }
+    @keyframes clignote { 0%, 100% { opacity: 1; background: var(--dark); } 50% { opacity: 0.6; background: var(--accent); color: var(--dark); } }
+    #calc-box { display: none; position: absolute; bottom: 60px; right: 0; background: var(--cream); border: 2px solid var(--dark); border-radius: var(--radius-lg); padding: 12px; width: 260px; box-shadow: var(--shadow-lg); }
+    #calc-box.open { display: block; }
+    #calc-display { width: 100%; padding: 6px; font-size: 1.2rem; text-align: right; border: 1px solid #ccc; border-radius: var(--radius); margin-bottom: 8px; font-family: var(--font-mono); }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .calc-grid button { padding: 8px 0; border: 1px solid #ccc; border-radius: var(--radius); background: #f9f9f9; font-size: 0.9rem; cursor: pointer; transition: var(--transition); font-weight: 600; min-height: 40px; }
+    .calc-grid button:hover { background: var(--dark); color: var(--accent); }
+    .calc-grid button.op { background: var(--primary); color: var(--accent); }
+    .calc-grid button.op:hover { background: #3a0a0d; }
+    .calc-grid button.fn { background: var(--cream); }
+    .calc-grid button.mem { background: var(--accent); }
+    .calc-close { position: absolute; top: -10px; right: -10px; background: var(--ko); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: 700; }
+
+    /* ===== MAIN ===== */
+    .main-wrap { display: none; max-width: 1100px; margin: 0 auto; padding: 20px 16px 80px; }
+    .screen-full { display: none; animation: fadeUp 0.4s ease-out; }
+    .screen-full.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .split-layout { display: none; flex-direction: column; min-height: calc(100vh - 60px); animation: fadeUp 0.4s ease-out; }
+    .split-layout.active { display: flex; }
+
+    /* ===== ACCUEIL ===== */
+    #s0 .accueil-coach { background: var(--cream); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s0 .accueil-coach .coach-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; color: var(--accent); }
+    #s0 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    #s0 .grid-2 .item { background: var(--cream); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s0 .grid-2 .item .label { font-size: 0.6rem; text-transform: uppercase; color: var(--dark); font-weight: 700; }
+    #s0 .grid-2 .item .value { font-size: 1.2rem; font-weight: 700; color: var(--dark); }
+    #s0 .grid-2 .item .desc { font-size: 0.75rem; color: rgba(26,37,23,0.5); }
+    #s0 .verbes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin: 10px 0; }
+    #s0 .verbe-card { background: var(--cream); border: 1px solid rgba(26,37,23,0.08); border-radius: var(--radius); padding: 12px; text-align: center; cursor: pointer; transition: var(--transition); }
+    #s0 .verbe-card:hover { border-color: var(--dark); transform: translateY(-2px); }
+    #s0 .verbe-card.on { border-color: var(--primary); background: var(--primary); color: var(--accent); }
+    #s0 .verbe-card.on .name { color: var(--accent); }
+    #s0 .verbe-card .emoji { font-size: 1.3rem; margin-bottom: 4px; }
+    #s0 .verbe-card .name { font-family: var(--font-ui); font-weight: 700; font-size: 0.75rem; }
+    #s0 .verbe-detail { display: none; padding: 12px; background: rgba(26,37,23,0.03); border-radius: var(--radius); margin-top: 10px; font-size: 0.85rem; line-height: 1.6; border-left: 3px solid var(--dark); }
+    #s0 .verbe-detail.show { display: block; }
+    #s0 .recommandations { background: var(--cream); border-left: 5px solid var(--primary); padding: 16px 20px; border-radius: var(--radius); margin-top: 8px; border: 1px solid rgba(26,37,23,0.06); }
+
+    /* ===== COURS ===== */
+    #s1 .cours-card { background: var(--cream); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 12px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s1 .cours-header { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; cursor: pointer; }
+    #s1 .cours-header .icon-box { width: 40px; height: 40px; border-radius: 10px; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; color: var(--accent); }
+    #s1 .cours-header .title { font-family: var(--font-ui); font-weight: 700; color: var(--dark); }
+    #s1 .cours-header .sub { font-size: 0.8rem; color: rgba(26,37,23,0.5); }
+    #s1 .cours-header .arrow { color: var(--dark); font-size: 0.8rem; }
+    #s1 .cours-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(26,37,23,0.06); font-size: 0.88rem; line-height: 1.7; color: rgba(26,37,23,0.7); }
+    #s1 .cours-detail.open { display: block; }
+    #s1 .cours-detail .piege { background: rgba(139,26,26,0.06); border-left: 3px solid var(--ko); padding: 6px 10px; margin: 6px 0; font-size: 0.85rem; }
+    #s1 .cours-detail .arabe { font-family: var(--font-arabic); font-size: 0.95rem; line-height: 1.6; margin-top: 8px; }
+    #s1 .cours-detail .formules { margin: 6px 0; padding: 8px; background: rgba(26,37,23,0.03); border-radius: 4px; font-family: var(--font-mono); font-size: 0.85rem; }
+    #s1 .cours-detail .exemple { margin: 6px 0; padding: 8px; background: rgba(45,90,39,0.06); border-left: 3px solid var(--ok); border-radius: 4px; }
+
+    /* ===== GUIDÉ ===== */
+    .entete-officiel { background: var(--cream); border: 2px solid var(--primary); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-a4); font-size: 12px; flex-wrap: wrap; gap: 12px; box-shadow: 0 2px 8px rgba(26,37,23,0.08); }
+    .entete-gauche { font-weight: 700; line-height: 1.5; font-size: 11px; color: var(--dark); }
+    .entete-centre { text-align: center; flex: 1; }
+    .entete-centre h1 { font-size: 16px; font-weight: 800; margin-bottom: 2px; color: var(--primary); }
+    .entete-centre .sous-titre { font-size: 12px; font-weight: 700; color: var(--primary); }
+    .entete-centre .details { font-size: 11px; margin-top: 4px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .entete-droit { text-align: right; font-size: 11px; }
+    .a4-page { display: none; font-family: var(--font-a4); padding: 0 0 60px 0; }
+    .a4-page.active { display: block; }
+    .titre-partie { font-weight: 700; font-size: 15px; border-bottom: 2px solid var(--primary); padding-bottom: 4px; margin: 16px 0 10px; color: var(--primary); }
+    .titre-section { font-weight: 700; font-size: 14px; margin: 14px 0 6px; color: var(--dark); }
+    .pts { font-weight: 400; font-size: 13px; color: var(--primary); }
+    .tableau-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; }
+    .tableau-off { width: 100%; border-collapse: collapse; font-family: var(--font-a4); font-size: 13px; min-width: 500px; }
+    .tableau-off th, .tableau-off td { border: 1px solid var(--text-dark); padding: 6px 8px; text-align: center; vertical-align: top; }
+    .tableau-off th { background: var(--cream); font-weight: 700; color: var(--dark); }
+    .tableau-off input[type="number"] { width: 100%; border: none; border-bottom: 1px dashed #aaa; background: transparent; font-family: var(--font-a4); font-size: 12px; padding: 2px 0; outline: none; text-align: center; color: var(--text-dark); }
+    .lignes-reponse { width: 100%; border: none; border-bottom: 1px dashed #999; padding: 6px 2px; font-family: var(--font-a4); font-size: 13px; background: transparent; resize: vertical; outline: none; min-height: 40px; margin: 6px 0 8px; color: var(--text-dark); }
+    .lignes-reponse.correct { border-bottom: 2px solid var(--ok); }
+    .lignes-reponse.wrong { border-bottom: 2px solid var(--ko); }
+    .q-item { margin-bottom: 16px; padding: 10px 14px; border: 1px solid rgba(26,37,23,0.1); border-radius: var(--radius); background: var(--cream); }
+    .q-item .q-num { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--dark); }
+    .nav-a4 { position: relative; top: 0; transform: none; background: var(--dark); border: 2px solid var(--accent); border-radius: 60px; padding: 8px 16px; display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 20px; width: 100%; min-width: 100%; z-index: 500; }
+    .nav-a4-btn { padding: 12px 28px; border: none; background: var(--primary); color: var(--accent); font-family: var(--font-ui); font-weight: 700; font-size: 1rem; border-radius: 50px; cursor: pointer; transition: var(--transition); }
+    .nav-a4-btn:hover { transform: scale(1.05); background: var(--dark); color: var(--accent); border: 1px solid var(--accent); }
+    .nav-a4-indicator { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--accent); min-width: 80px; text-align: center; }
+
+    /* ===== CORRECTION ===== */
+    .correction-box { display: none; margin-top: 12px; border: 2px solid var(--primary); border-radius: var(--radius); padding: 0; background: rgba(91,14,20,0.04); overflow: hidden; overflow-x: auto; max-width: 100%; }
+    .correction-box.open { display: block; }
+    .correction-row { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(91,14,20,0.1); padding: 6px 12px; }
+    .correction-row:last-child { border-bottom: none; }
+    .correction-contenu { width: 72%; font-size: 13px; line-height: 1.6; padding-right: 10px; }
+    .correction-bareme { width: 28%; font-size: 13px; font-weight: 700; color: var(--primary); padding-left: 10px; border-left: 1px solid rgba(91,14,20,0.1); text-align: right; }
+    .correction-title { font-weight: 700; font-size: 14px; color: var(--primary); margin-bottom: 6px; padding: 6px 12px; border-bottom: 1px solid rgba(91,14,20,0.1); background: rgba(91,14,20,0.08); }
+    .valider-btn { margin-top: 10px; padding: 6px 16px; background: var(--primary); color: var(--accent); border: none; border-radius: 6px; font-family: var(--font-ui); font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: var(--transition); display: none; }
+    .valider-btn.show { display: inline-flex; align-items: center; gap: 6px; }
+    .valider-btn:hover { background: #3a0a0d; transform: translateY(-1px); }
+    .score-display { display: none; margin-top: 8px; padding: 8px; background: rgba(241,225,148,0.12); border-left: 4px solid var(--accent); font-weight: 700; font-size: 0.9rem; }
+    .score-display.show { display: block; }
+
+    /* ===== BOUTONS SCORE ===== */
+    .score-btn-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .score-btn { padding: 6px 12px; border: 1px solid var(--primary); border-radius: 20px; background: transparent; color: var(--primary); font-family: var(--font-mono); font-size: 0.8rem; cursor: pointer; transition: var(--transition); min-height: 44px; min-width: 44px; }
+    .score-btn.selected { background: var(--primary); color: var(--accent); font-weight: 700; }
+    .score-btn:hover { background: var(--primary); color: var(--accent); }
+
+    /* ===== EXAMEN ===== */
+    .examen-mode .correction-box { display: none !important; }
+    .examen-mode .coach-btn { display: none !important; }
+    .examen-mode .valider-btn { display: none !important; }
+    .examen-mode .score-display { display: none !important; }
+    .examen-mode .field-modal { display: none !important; }
+    .examen-mode .tt-modal { display: none !important; }
+    .examen-mode .lignes-reponse { background: transparent; }
+    .examen-timer-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .examen-timer-box { flex: 1; min-width: 100px; background: var(--cream); border-radius: var(--radius); padding: 10px 14px; box-shadow: var(--shadow); text-align: center; border: 1px solid rgba(26,37,23,0.06); }
+    .examen-timer-box .label { font-size: 0.6rem; text-transform: uppercase; color: rgba(26,37,23,0.4); letter-spacing: 0.04em; }
+    .examen-timer-box .time { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 600; color: var(--dark); }
+    .examen-controls { text-align: center; margin-bottom: 16px; }
+    .examen-controls button { padding: 8px 24px; background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: var(--transition); }
+    .examen-controls button:hover { background: #0e1a13; }
+
+    /* ===== BILAN ===== */
+    .score-big { font-family: var(--font-ui); font-weight: 800; font-size: clamp(2.5rem, 5vw, 4rem); background: linear-gradient(135deg, var(--dark), #0e1a13); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+    .comp-bar { margin: 8px 0; }
+    .comp-head { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px; }
+    .comp-name { color: rgba(26,37,23,0.6); }
+    .comp-pct { font-family: var(--font-mono); color: var(--dark); }
+    .bar-track { height: 4px; background: rgba(26,37,23,0.08); border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--dark), var(--primary)); width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+    .bar-fill.green { background: linear-gradient(90deg, var(--dark), var(--ok)); }
+    .bar-fill.orange { background: linear-gradient(90deg, var(--dark), var(--mid)); }
+    .bar-fill.red { background: linear-gradient(90deg, var(--dark), var(--ko)); }
+    .conseil-box { padding: 12px; border-radius: var(--radius); margin-top: 8px; font-size: 0.85rem; line-height: 1.5; border-left: 4px solid var(--dark); background: rgba(26,37,23,0.03); }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: var(--dark); padding: 8px 0 env(safe-area-inset-bottom, 8px) 0; border-top: 1px solid rgba(241,225,148,0.2); justify-content: space-around; align-items: center; }
+    .bottom-nav .nav-step { flex: 1; padding: 6px 0; text-align: center; font-size: 0.6rem; color: rgba(241,225,148,0.5); cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bottom-nav .nav-step .icon { font-size: 1.3rem; }
+    .bottom-nav .nav-step span:not(.icon) { font-size: 0.65rem; }
+    .bottom-nav .nav-step.active { color: var(--accent); }
+
+    /* ===== TT MODAL ===== */
+    .tt-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .tt-modal.open { display: flex; }
+    .tt-modal-content { background: var(--cream); max-width: 400px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); position: relative; border: 1px solid rgba(26,37,23,0.06); }
+    .tt-modal-content .close-tt { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: rgba(26,37,23,0.3); }
+    .tt-modal-content .close-tt:hover { color: var(--dark); }
+    .tt-modal-content .tt-img { font-size: 2.5rem; text-align: center; margin-bottom: 8px; }
+    .tt-modal-content .tt-def { font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
+    .tt-modal-content .tt-def strong { color: var(--dark); }
+    .tt-modal-content .tt-audio { background: var(--dark); color: var(--accent); border: none; padding: 5px 14px; border-radius: 100px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: var(--transition); font-family: var(--font-body); }
+    .tt-modal-content .tt-audio:hover { background: #0e1a13; }
+    .tt-modal-content .tt-rappel { margin-top: 10px; padding: 8px 12px; background: rgba(26,37,23,0.05); border-radius: var(--radius); font-size: 0.85rem; color: rgba(26,37,23,0.7); }
+    .tt-modal-content .tt-rappel strong { color: var(--dark); }
+    .tt-trigger { display: inline; color: var(--dark); border-bottom: 1px dashed var(--dark); cursor: pointer; font-weight: 600; transition: var(--transition); }
+    .tt-trigger:hover { color: #0e1a13; border-color: #0e1a13; }
+
+    /* ===== FIELD HELP MODAL ===== */
+    .field-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .field-modal.open { display: flex; }
+    .field-modal-content { background: var(--cream); max-width: 400px; width: 100%; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); position: relative; border: 1px solid rgba(26,37,23,0.06); }
+    .field-modal-content .close-field-modal { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: rgba(26,37,23,0.3); }
+    .field-modal-content .close-field-modal:hover { color: var(--dark); }
+    .field-modal-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; color: var(--dark); }
+    .field-modal-body { font-size: 0.9rem; line-height: 1.6; color: var(--text-dark); }
+    .field-modal-body .field-fr { font-weight: 600; }
+    .field-modal-body .field-ar { font-family: var(--font-arabic); margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(26,37,23,0.08); }
+
+    /* ===== COACH MODAL ===== */
+    .coach-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+    .coach-modal.open { display: flex; }
+    .coach-modal-content { background: var(--dark); max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); color: var(--text-light); font-family: var(--font-body); box-shadow: var(--shadow-lg); border: 1px solid rgba(241,225,148,0.2); }
+    .coach-modal-content .close-modal { float: right; background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+    .coach-modal-content .close-modal:hover { color: var(--accent); }
+    .coach-modal-content .coach-title { font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; color: var(--accent); margin-bottom: 12px; }
+    .coach-modal-content .coach-msg { font-size: 0.88rem; line-height: 1.6; margin-bottom: 12px; }
+    .coach-modal-content .coach-msg strong { color: var(--accent); }
+    .coach-modal-content .coach-schema-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .coach-modal-content .coach-step { display: flex; gap: 10px; padding: 4px 0; font-size: 0.85rem; line-height: 1.5; }
+    .coach-modal-content .coach-step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(241,225,148,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .coach-modal-content .coach-piege { background: rgba(139,26,26,0.08); border-left: 3px solid var(--ko); padding: 8px 12px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; line-height: 1.5; margin: 10px 0; }
+    .coach-modal-content .coach-piege strong { color: var(--ko); }
+    .coach-modal-content .coach-bareme { padding: 8px 12px; background: rgba(241,225,148,0.1); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; font-weight: 600; color: var(--accent); margin-top: 10px; }
+    .coach-modal-content .coach-arabe { margin-top: 10px; padding: 8px; background: rgba(241,225,148,0.04); border-radius: 4px; text-align: right; font-family: var(--font-arabic); font-size: 0.85rem; line-height: 1.5; border-right: 3px solid var(--accent); }
+    .coach-btn { margin-top: 8px; padding: 4px 12px; background: transparent; border: 1px solid var(--dark); color: var(--dark); border-radius: 100px; font-family: var(--font-body); font-size: 0.7rem; cursor: pointer; transition: var(--transition); }
+    .coach-btn:hover { background: rgba(26,37,23,0.1); }
+
+    /* ===== COMPOSANTS GUIDÉS ===== */
+    .guided-text { font-family: var(--font-a4); font-size: 13px; line-height: 2.2; margin: 8px 0; }
+    .trou { border: none; border-bottom: 2px solid var(--primary); background: transparent; font-family: var(--font-a4); font-size: 13px; width: 120px; text-align: center; padding: 2px 4px; outline: none; transition: var(--transition); color: var(--dark); }
+    .trou:focus { border-color: var(--dark); background: rgba(26,37,23,0.04); border-radius: 4px; }
+    .trou.correct { border-color: var(--ok); color: var(--ok); background: rgba(45,90,39,0.06); border-radius: 4px; }
+    .trou.wrong { border-color: var(--ko); color: var(--ko); background: rgba(139,26,26,0.06); border-radius: 4px; }
+    .trou-select { border: none; border-bottom: 2px solid var(--primary); background: transparent; font-family: var(--font-a4); font-size: 13px; padding: 2px 4px; color: var(--dark); cursor: pointer; outline: none; transition: var(--transition); }
+    .trou-select:focus { border-color: var(--dark); }
+    .trou-select.correct { border-color: var(--ok); color: var(--ok); }
+    .trou-select.wrong { border-color: var(--ko); color: var(--ko); }
+
+    .schema-concentration { background: var(--cream); border: 1px solid rgba(91,14,20,0.1); border-radius: var(--radius); padding: 16px; margin: 10px 0; text-align: center; font-family: var(--font-a4); font-size: 13px; }
+    .schema-centre { background: var(--primary); color: var(--accent); padding: 8px 20px; border-radius: var(--radius); font-weight: 700; display: inline-block; margin-bottom: 12px; }
+    .schema-branches { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+    .schema-side { background: rgba(26,37,23,0.04); border-radius: var(--radius); padding: 10px; border: 1px solid rgba(26,37,23,0.08); }
+    .schema-arrow { font-size: 1.4rem; color: var(--primary); font-weight: 700; margin-bottom: 4px; }
+    .schema-desc { font-size: 12px; line-height: 1.8; margin-top: 4px; }
+    .diss-bloc { background: var(--cream); border: 1px solid rgba(91,14,20,0.1); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; }
+    .diss-titre { font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; color: var(--primary); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(91,14,20,0.1); }
+
+    /* ===== TROU DROPDOWN COMPOSANT ===== */
+    .trou-wrapper { position: relative; display: inline-block; }
+    .trou-field { display: inline-block; border-bottom: 2px solid var(--primary); min-width: 100px; padding: 2px 8px; cursor: pointer; font-family: var(--font-a4); font-size: 13px; color: var(--dark); text-align: center; transition: var(--transition); border-radius: 0; background: transparent; user-select: none; }
+    .trou-field:hover { background: rgba(91,14,20,0.04); border-radius: 4px 4px 0 0; }
+    .trou-field.filled { color: var(--dark); font-weight: 600; }
+    .trou-field.correct { border-color: var(--ok); color: var(--ok); background: rgba(45,90,39,0.06); border-radius: 4px; }
+    .trou-field.wrong { border-color: var(--ko); color: var(--ko); background: rgba(139,26,26,0.06); border-radius: 4px; }
+    .trou-dropdown { position: absolute; top: 100%; left: 0; min-width: 140px; background: var(--cream); border: 2px solid var(--primary); border-radius: 0 var(--radius) var(--radius) var(--radius); box-shadow: var(--shadow-lg); z-index: 9999; overflow: hidden; animation: fadeUp 0.15s ease-out; }
+    .trou-dropdown-item { padding: 8px 14px; font-family: var(--font-a4); font-size: 13px; cursor: pointer; color: var(--dark); transition: var(--transition); border-bottom: 1px solid rgba(26,37,23,0.06); }
+    .trou-dropdown-item:last-child { border-bottom: none; }
+    .trou-dropdown-item:hover { background: var(--primary); color: var(--accent); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) { .navbar-steps .nav-step .label { display: none; } .navbar-steps .nav-step { padding: 4px 6px; } .navbar-steps .nav-step .icon { font-size: 1.1rem; } .bottom-nav { display: flex; } .main-wrap { padding-bottom: 60px; } }
+    @media (max-width: 640px) {
+      .navbar { padding: 0 10px; height: 56px; }
+      .navbar-logo { font-size: 0.9rem; }
+      .navbar-score { font-size: 0.7rem; }
+      .navbar-avatar { width: 28px; height: 28px; font-size: 0.7rem; }
+      .navbar-steps { display: none; }
+      .nav-a4-btn { padding: 8px 16px; font-size: 0.8rem; }
+      .entete-officiel { flex-direction: column; align-items: center; text-align: center; padding: 12px; }
+      .correction-row { flex-direction: column; }
+      .correction-contenu { width: 100%; padding-right: 0; border-right: none; }
+      .correction-bareme { width: 100%; padding-left: 0; border-left: none; border-top: 1px solid rgba(91,14,20,0.1); padding-top: 6px; text-align: left; }
+      #calc-wrapper { bottom: 80px; right: 16px; left: auto; }
+      #calc-box { width: 240px; right: 0; left: auto; }
+      .q-item { overflow-x: auto; }
+      .tableau-wrapper { max-width: 100%; overflow-x: auto; }
+      .correction-box .tableau-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+      .correction-box .tableau-off { min-width: 500px; }
+      .score-btn { min-height: 44px; min-width: 44px; padding: 8px 14px; }
+    }
+    @media print { .navbar, .bottom-nav, .nav-a4, .coach-btn, .valider-btn, .examen-controls, .login-screen, #login-screen, #calc-wrapper, .mode-toggle { display: none !important; } .split-layout { display: block !important; padding-bottom: 0 !important; } .correction-box { border: 1px solid #ccc !important; background: white !important; } }
+
+    /* ===== CORRECTIONS APPLIQUÉES ===== */
+    #s0 .nav-a4, #s1 .nav-a4, #s4 .nav-a4 { display: none !important; }
+    #login-screen #calc-wrapper, #s0 #calc-wrapper { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-header">
+    <div class="logo-placeholder-img">🧠</div>
+    <div class="login-video"><video loop muted autoplay playsinline><source src="assets/intro.mp4" type="video/mp4"></video></div>
+  </div>
+  <div class="login-card">
+    <div class="logo">⚡ Synapris</div>
+    <div class="slogan">Éclairer l'intelligence</div>
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Mot de passe" />
+    <button class="btn-login" onclick="handleLogin()">Se connecter</button>
+    <div class="links">
+      <a href="#" onclick="alert('Inscription — bientôt disponible')">Créer un compte</a>
+      <a href="#" onclick="alert('Mot de passe oublié — bientôt disponible')">Mot de passe oublié</a>
+    </div>
+  </div>
+  <div class="login-blocks">
+    <div class="login-block"><div class="icon">🎯</div><div class="arabic">محاكاة الامتحان الرسمي</div><div class="french">Simulation officielle du bac – comme le jour J</div></div>
+    <div class="login-block"><div class="icon">🧑‍🏫</div><div class="arabic">الوضع الموجّه</div><div class="french">Mode guidé – correction officielle pas à pas</div></div>
+    <div class="login-block"><div class="icon">⏱️</div><div class="arabic">الوضع الامتحان</div><div class="french">Mode examen – chrono et conditions réelles</div></div>
+    <div class="login-block"><div class="icon">💾</div><div class="arabic">حفظ التقدّم</div><div class="french">Sauvegarde automatique – reprends où tu t’es arrêté</div></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar" style="display:none;">
+  <div class="navbar-logo">🧠 Synapris</div>
+  <div class="navbar-steps">
+    <div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span class="label">Accueil</span></div>
+    <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span class="label">Cours</span></div>
+    <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span class="label">Guidé</span></div>
+    <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span class="label">Examen</span></div>
+    <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span class="label">Bilan</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="navbar-score" id="hdr-score">0 / 20</span>
+    <div class="navbar-avatar" id="avatar">👤</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main-wrap" id="main-wrap" style="display:none;">
+
+  <!-- ACCUEIL -->
+  <div class="screen-full active" id="s0">
+    <div style="text-align:center;padding:4px 0 16px;">
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">📅 Jour 1 / 10</div>
+      <h1 style="font-family:var(--font-ui);font-weight:800;font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--dark);line-height:1.1;">Économie<br><span style="color:var(--primary);">Bac 2022 – Session Principale</span></h1>
+      <p style="font-size:0.85rem;color:rgba(26,37,23,0.5);margin-top:4px;">Épreuve officielle simulée — Section Économie &amp; Gestion</p>
+    </div>
+    <div class="accueil-coach">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div class="coach-avatar">🧑‍🏫</div>
+        <div>
+          <div style="font-family:var(--font-ui);font-weight:700;font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Ton Coach Synapris</div>
+          <div style="font-size:0.85rem;line-height:1.6;color:rgba(26,37,23,0.7);">Tu vas simuler l'épreuve officielle du baccalauréat 2022. Le layout que tu vois est <strong style="color:var(--dark);">identique à l'épreuve réelle</strong>. Je suis là pour t'aider à <strong style="color:var(--dark);">construire ton raisonnement</strong> — jamais te donner la réponse.</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="item"><div class="label">Partie 1</div><div class="value">10 pts</div><div class="desc">3 questions (DIPP, Concentration, Tableau)</div></div>
+      <div class="item"><div class="label">Partie 2</div><div class="value">10 pts</div><div class="desc">Dissertation économique (Croissance &amp; Développement)</div></div>
+      <div class="item"><div class="label">Durée</div><div class="value">3h</div><div class="desc">Coefficient 3</div></div>
+      <div class="item"><div class="label">Format</div><div class="value">7 pages</div><div class="desc">Navigation ← → par page</div></div>
+    </div>
+    <div style="background:var(--cream);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-family:var(--font-ui);font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:10px;">🎯 Verbes d'action — Économie</div>
+      <p style="font-size:0.8rem;color:rgba(26,37,23,0.5);margin-bottom:10px;">Clique sur chaque verbe pour comprendre ce qu'attend le correcteur.</p>
+      <div class="verbes-grid">
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-identifier')"><div class="emoji">🔍</div><div class="name">IDENTIFIER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-distinguer')"><div class="emoji">⚖️</div><div class="name">DISTINGUER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-caracteriser')"><div class="emoji">📝</div><div class="name">CARACTÉRISER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-analyser')"><div class="emoji">📊</div><div class="name">ANALYSER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-justifier')"><div class="emoji">✍️</div><div class="name">JUSTIFIER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-disserter')"><div class="emoji">📖</div><div class="name">DISSERTER</div></div>
+      </div>
+      <div id="v-identifier" class="verbe-detail"><strong>IDENTIFIER</strong> = Nommer et définir précisément le concept ou le mécanisme.<br><span style="color:var(--ko);">⚠️</span> Ne pas confondre avec "décrire".</div>
+      <div id="v-distinguer" class="verbe-detail"><strong>DISTINGUER</strong> = Montrer les différences entre deux notions (amont vs aval, croissance vs développement).<br><span style="color:var(--ko);">⚠️</span> Toujours préciser les critères de distinction.</div>
+      <div id="v-caracteriser" class="verbe-detail"><strong>CARACTÉRISER</strong> = Décrire les traits essentiels d'un phénomène ou d'une structure.<br><span style="color:var(--ko);">⚠️</span> Ne pas se limiter à une énumération.</div>
+      <div id="v-analyser" class="verbe-detail"><strong>ANALYSER</strong> = Décomposer + interpréter les éléments d'un document ou d'une situation.<br><span style="color:var(--ko);">⚠️</span> Décrire sans interpréter = 0 pt.</div>
+      <div id="v-justifier" class="verbe-detail"><strong>JUSTIFIER</strong> = Prouver par des arguments + données chiffrées ou des documents.<br><span style="color:var(--ko);">⚠️</span> Affirmer sans justifier = non recevable.</div>
+      <div id="v-disserter" class="verbe-detail"><strong>DISSERTER</strong> = Construire un raisonnement structuré : introduction, développement (2 parties), conclusion.<br><span style="color:var(--ko);">⚠️</span> Le plan doit être annoncé en introduction.</div>
+    </div>
+    <div class="recommandations">
+      <h3 style="color:var(--dark);font-weight:800;font-size:0.9rem;">📌 Recommandations officielles – Épreuve d'Économie</h3>
+      <ul style="list-style:none;padding:0;line-height:1.8;font-size:0.85rem;">
+        <li>✅ Lire attentivement chaque question.</li>
+        <li>✅ Commencer par la question la plus facile.</li>
+        <li>✅ Pour la dissertation : dégager la problématique.</li>
+        <li>✅ Rédiger introduction, développement (2 parties), conclusion.</li>
+        <li>✅ Utiliser les documents fournis.</li>
+        <li>✅ Présenter les calculs sur la copie.</li>
+        <li>✅ Soigner la présentation et l'écriture.</li>
+        <li>✅ Vérifier les unités (millions de dinars, pourcentage, etc.).</li>
+      </ul>
+      <div style="margin-top:12px;text-align:right;font-style:italic;color:var(--dark);font-weight:600;">Bon courage ! 🍀</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+      <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:10px 28px;font-size:0.85rem;border:none;" onclick="goTo(1)">Commencer →</button>
+    </div>
+  </div>
+
+  <!-- COURS -->
+  <div class="screen-full" id="s1">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 2 — Rappel cours</div>
+    <h2 style="font-family:var(--font-ui);font-weight:800;font-size:1.4rem;color:var(--dark);margin-bottom:4px;">Ce que tu dois savoir</h2>
+    <p style="font-size:0.85rem;color:rgba(26,37,23,0.5);margin-bottom:16px;">Notions ciblées pour <em>cette</em> épreuve uniquement</p>
+
+    <!-- Fiche 1 : DIPP -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🌍</div>
+        <div><div class="title">DIPP et échanges internationaux</div><div class="sub">Décomposition internationale du processus productif</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> La DIPP consiste à <strong>scinder la production à l'échelle mondiale</strong>. Le processus de production d'un bien est divisé en plusieurs sous-ensembles réalisés dans des pays différents par des filiales-ateliers.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> DIPP تعني <strong>تقسيم الإنتاج على المستوى العالمي</strong>، حيث يتم تنفيذ مراحل الإنتاج في بلدان مختلفة.</div>
+        <div class="exemple"><strong>Exemple :</strong> Airbus assemble en France des ailes fabriquées au Royaume-Uni et des fuselages en Allemagne.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Ne pas confondre DIPP et délocalisation. La DIPP est un <strong>partage du processus</strong>, pas un simple transfert d'usine.</div>
+        <div class="formules"><strong>À retenir :</strong><br>• Échanges intra-firmes (filiale mère ↔ filiales)<br>• Flux de composants, pièces détachées, biens d'équipement</div>
+      </div>
+    </div>
+
+    <!-- Fiche 2 : Concentration -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🏢</div>
+        <div><div class="title">Concentration des entreprises</div><div class="sub">Verticale (amont / aval) et horizontale</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> La concentration verticale est le regroupement d'entreprises situées à des <strong>stades différents</strong> de la même filière de production.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> التركز العمودي هو تجميع الشركات الموجودة في <strong>مراحل مختلفة</strong> من نفس سلسلة الإنتاج.</div>
+        <div class="exemple"><strong>Distinction amont / aval :</strong><br>
+          • <strong>Amont</strong> : Intégration des fournisseurs (ex : constructeur automobile rachète un fabricant de pneus).<br>
+          • <strong>Aval</strong> : Intégration des clients (ex : constructeur automobile rachète un réseau de concessionnaires).</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Ne pas confondre concentration verticale et concentration horizontale (même stade).</div>
+        <div class="formules"><strong>À retenir :</strong><br>• Amont = maîtrise des approvisionnements<br>• Aval = maîtrise des débouchés</div>
+      </div>
+    </div>
+
+    <!-- Fiche 3 : Croissance -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📈</div>
+        <div><div class="title">Croissance économique</div><div class="sub">PIB, taux de croissance, PIB réel</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> La croissance économique est l'<strong>augmentation durable</strong> de la production de biens et services d'un pays, mesurée par le PIB.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> النمو الاقتصادي هو <strong>الزيادة المستدامة</strong> في إنتاج السلع والخدمات، ويقاس بالناتج المحلي الإجمالي.</div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • Taux de croissance = ((PIBn - PIBn-1) / PIBn-1) × 100<br>
+          • PIB réel = PIB nominal / Indice des prix × 100<br>
+          • Indice du PIB = (PIBn / PIBn-1) × 100</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Ne pas confondre croissance (augmentation du PIB) et développement (amélioration du bien-être).</div>
+      </div>
+    </div>
+
+    <!-- Fiche 4 : IDH -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🧑‍🤝‍🧑</div>
+        <div><div class="title">Développement humain et IDH</div><div class="sub">Indice de développement humain, composantes</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> Le développement humain est un processus d'<strong>élargissement des choix</strong> des individus (santé, éducation, revenu). L'IDH le mesure entre 0 et 1.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> التنمية البشرية هي عملية <strong>توسيع الخيارات</strong> المتاحة للأفراد.</div>
+        <div class="formules"><strong>Composantes de l'IDH :</strong><br>
+          • Santé : espérance de vie à la naissance<br>
+          • Éducation : durée moyenne de scolarisation<br>
+          • Revenu : RNB par habitant (en PPA)</div>
+        <div class="exemple"><strong>Exemple :</strong> Norvège : IDH 0,957 (espérance de vie 82,4 ans, scolarisation 12,9 ans, RNB 166 494 $ PPA).</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> L'IDH ne mesure pas les inégalités ni la qualité de l'environnement.</div>
+      </div>
+    </div>
+
+    <!-- Fiche 5 : Indicateurs -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📊</div>
+        <div><div class="title">Indicateurs économiques</div><div class="sub">Solde commercial, déficit, importations/exportations</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <p><strong>Définition :</strong> Les indicateurs économiques servent à <strong>évaluer la performance</strong> d'une économie.</p>
+        <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> المؤشرات الاقتصادية تهدف إلى <strong>تقييم أداء</strong> الاقتصاد.</div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • Solde commercial = Exportations - Importations<br>
+          • Part des biens de production = (Importations biens de production / Total importations) × 100<br>
+          • Taux de croissance du PIB = ((PIBn - PIBn-1) / PIBn-1) × 100</div>
+        <div class="exemple"><strong>Exemple Tunisie 2019 :</strong> Déficit 19 436,2 MDT, part des biens de production 67,45%.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Un déficit commercial n'est pas toujours un signe de faiblesse — tout dépend de la nature des importations.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,37,23,0.06);">
+      <button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="goTo(0)">← Accueil</button>
+      <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:10px 28px;font-size:0.85rem;border:none;" onclick="goTo(2)">Mode Guidé →</button>
+    </div>
+  </div>
+
+  <!-- GUIDÉ -->
+  <div class="split-layout active" id="s2">
+    <div class="nav-a4">
+      <button class="nav-a4-btn" onclick="pgPrev()">← Précédent</button>
+      <span class="nav-a4-indicator" id="pg-indicator">Page 1 / 7</span>
+      <button class="nav-a4-btn" onclick="pgNext()">Suivant →</button>
+    </div>
+
+    <div style="padding:0 16px 20px; max-width:980px; margin:0 auto; width:100%;">
+      <div class="entete-officiel">
+        <div class="entete-gauche">République Tunisienne<br>Ministère de l'Éducation</div>
+        <div class="entete-centre">
+          <h1>EXAMEN DU BACCALAURÉAT</h1>
+          <div class="sous-titre">SESSION 2022 — Session principale</div>
+          <div class="details"><span>Épreuve : <strong>Économie</strong></span><span>Section : <strong>Économie &amp; Gestion</strong></span><span>Durée : <strong>3h</strong></span><span>Coefficient : <strong>3</strong></span></div>
+        </div>
+        <div class="entete-droit">N° d’inscription :<br><span style="font-family:var(--font-mono);">[ ][ ][ ][ ][ ][ ][ ][ ]</span></div>
+      </div>
+
+      <!-- PAGE 1 – Q1 DIPP -->
+      <div class="a4-page active" id="pg1">
+        <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(10 points)</span></div>
+        <div class="q-item" data-qid="q1">
+          <div class="q-num">Question 1 (3 points)</div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            Identifiez la décomposition internationale du processus productif puis caractérisez les échanges internationaux de biens et services qui en découlent.
+          </div>
+          <div class="guided-text">
+            <p>
+              La DIPP consiste à <span class="trou-wrapper"><span class="trou-field" data-answer="scinder|diviser" data-choices="scinder,concentrer,exporter,diviser" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> la production à l'échelle <span class="trou-wrapper"><span class="trou-field" data-answer="mondiale" data-choices="nationale,mondiale,régionale,locale" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>. Chaque filiale devient une unité <span class="trou-wrapper"><span class="trou-field" data-answer="spécialisée" data-choices="spécialisée,autonome,indépendante,diversifiée" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> dans la fabrication d'un <span class="trou-wrapper"><span class="trou-field" data-answer="composant" data-choices="composant,produit,service,marchandise" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> du produit final.
+            </p>
+            <p>
+              Les échanges qui en découlent sont appelés échanges <span class="trou-wrapper"><span class="trou-field" data-answer="intra-firmes" data-choices="inter-étatiques,intra-firmes,bilatéraux,multilatéraux" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> car ils s'opèrent entre la <span class="trou-wrapper"><span class="trou-field" data-answer="firme mère" data-choices="firme mère,société,entreprise,filiale" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> et ses <span class="trou-wrapper"><span class="trou-field" data-answer="filiales" data-choices="filiales,succursales,agents,distributeurs" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q1')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q1')">Valider →</button>
+          </div>
+          <div class="correction-box" id="corr-q1">
+            <div class="correction-title">📋 Correction officielle — Q1 (3 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>Identification de la DIPP :</strong><br>
+                La DIPP consiste à scinder la production à l'échelle mondiale. Le processus de production d'un bien est divisé en plusieurs sous-ensembles réalisés chacun dans un pays différent par une filiale atelier. La filiale devient une unité spécialisée dans la fabrication d'un ou de quelques composant(s) du produit final.<br><br>
+                <strong>Caractéristiques des échanges :</strong><br>
+                Les échanges internationaux de biens et services issus de la DIPP sont dits des échanges intra-firmes :<br>
+                • Flux internes à l'espace économique de la multinationale (firme mère ↔ filiales)<br>
+                • Flux portant sur des biens d'équipement, pièces détachées, composants<br>
+                • Flux qui prennent de plus en plus d'importance dans les échanges internationaux
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème détaillé :</strong><br>
+                • Identification DIPP : 1,5 pt<br>
+                &nbsp;&nbsp;- Définition complète : 0,75 pt<br>
+                &nbsp;&nbsp;- Explication du mécanisme : 0,75 pt<br>
+                • Caractéristiques échanges : 1,5 pt<br>
+                &nbsp;&nbsp;- Échanges intra-firmes : 0,5 pt<br>
+                &nbsp;&nbsp;- Nature des flux : 0,5 pt<br>
+                &nbsp;&nbsp;- Importance croissante : 0,5 pt
+              </div>
+            </div>
+            <div style="padding:8px 12px; border-top:1px solid rgba(91,14,20,0.1);">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">🎯 Ma note :</div>
+              <div class="score-btn-group" data-qid="q1" data-theme="partie1" data-max="3">
+                <button class="score-btn" data-pts="0">0</button>
+                <button class="score-btn" data-pts="0.5">0,5</button>
+                <button class="score-btn" data-pts="1">1</button>
+                <button class="score-btn" data-pts="1.5">1,5</button>
+                <button class="score-btn" data-pts="2">2</button>
+                <button class="score-btn" data-pts="2.5">2,5</button>
+                <button class="score-btn" data-pts="3">3</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q1"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 2 – Q2 Concentration -->
+      <div class="a4-page" id="pg2">
+        <div class="q-item" data-qid="q2">
+          <div class="q-num">Question 2 (3 points)</div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            Distinguez la concentration verticale des entreprises en amont de celle en aval.
+          </div>
+          <div class="schema-concentration">
+            <div class="schema-centre">ENTREPRISE</div>
+            <div class="schema-branches">
+              <div class="schema-side">
+                <div class="schema-arrow">↑</div>
+                <div class="schema-label">
+                  <span class="trou-wrapper"><span class="trou-field" data-answer="amont" data-choices="amont,aval,croissance,verticale" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>
+                </div>
+                <div class="schema-desc">
+                  Intègre les <span class="trou-wrapper"><span class="trou-field" data-answer="fournisseurs" data-choices="fournisseurs,clients,distributeurs,concurrents" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>
+                </div>
+                <div class="schema-desc">
+                  Objectif : maîtriser les <span class="trou-wrapper"><span class="trou-field" data-answer="approvisionnements" data-choices="approvisionnements,débouchés,ventes,coûts" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>
+                </div>
+              </div>
+              <div class="schema-side">
+                <div class="schema-arrow">↓</div>
+                <div class="schema-label">
+                  <span class="trou-wrapper"><span class="trou-field" data-answer="aval" data-choices="aval,amont,développement,horizontale" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>
+                </div>
+                <div class="schema-desc">
+                  Intègre les <span class="trou-wrapper"><span class="trou-field" data-answer="clients" data-choices="clients,fournisseurs,producteurs,transporteurs" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>
+                </div>
+                <div class="schema-desc">
+                  Objectif : maîtriser <span class="trou-wrapper"><span class="trou-field" data-answer="l'écoulement" data-choices="l'écoulement,l'approvisionnement,la qualité,les prix" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q2')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q2')">Valider →</button>
+          </div>
+          <div class="correction-box" id="corr-q2">
+            <div class="correction-title">📋 Correction officielle — Q2 (3 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>Concentration verticale en amont :</strong><br>
+                Regroupement d'une entreprise avec d'autres qui fournissent les produits situés à des stades antérieurs à son activité. L'entreprise intègre les activités de ses fournisseurs en remontant la filière. Par ce regroupement, les entreprises visent à maîtriser les approvisionnements (coûts, qualité, délais) et à ne plus dépendre des fournisseurs.<br><br>
+                <strong>Concentration verticale en aval :</strong><br>
+                Regroupement d'une entreprise avec d'autres ayant des activités à des stades postérieurs à son activité. L'entreprise intègre les activités de ses clients en descendant la filière. Par ce regroupement, les entreprises visent à maîtriser les conditions d'écoulement de la production (coûts, promotion, etc.) et à ne plus dépendre des clients.
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème détaillé :</strong><br>
+                • Distinction amont : 1,5 pt<br>
+                &nbsp;&nbsp;- Définition : 0,75 pt<br>
+                &nbsp;&nbsp;- Objectif : 0,75 pt<br>
+                • Distinction aval : 1,5 pt<br>
+                &nbsp;&nbsp;- Définition : 0,75 pt<br>
+                &nbsp;&nbsp;- Objectif : 0,75 pt
+              </div>
+            </div>
+            <div style="padding:8px 12px; border-top:1px solid rgba(91,14,20,0.1);">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">🎯 Ma note :</div>
+              <div class="score-btn-group" data-qid="q2" data-theme="partie1" data-max="3">
+                <button class="score-btn" data-pts="0">0</button>
+                <button class="score-btn" data-pts="0.5">0,5</button>
+                <button class="score-btn" data-pts="1">1</button>
+                <button class="score-btn" data-pts="1.5">1,5</button>
+                <button class="score-btn" data-pts="2">2</button>
+                <button class="score-btn" data-pts="2.5">2,5</button>
+                <button class="score-btn" data-pts="3">3</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q2"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 3 – Q3a Tableau -->
+      <div class="a4-page" id="pg3">
+        <div class="q-item" data-qid="q3a">
+          <div class="q-num">Question 3a (calculs – 2 pts)</div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            Complétez le tableau et interprétez les résultats obtenus.
+          </div>
+          <div class="tableau-wrapper">
+          <table class="tableau-off" style="font-size:12px;">
+            <tr><th></th><th>2018</th><th>2019</th></tr>
+            <tr><td>Exportations (en millions de dinars)</td><td>40 987,4</td><td>43 855,4</td></tr>
+            <tr><td>Importations (en millions de dinars)</td><td>60 010,3</td><td>63 291,6</td></tr>
+            <tr><td>Dont :<br>- Biens de production<br>- Biens de consommation</td>
+                <td>40 301,6<br>19 708,7</td>
+                <td>42 687,7<br>20 603,9</td></tr>
+            <tr><td>Part des biens de production dans les importations (en %)</td>
+                <td>67,16</td>
+                <td><input type="number" class="lignes-reponse" style="width:80px;" data-answer="67.45" data-tolerance="0.1" data-points="0.5" data-tip="(42 687,7 / 63 291,6) × 100 = 67,45%" /></td></tr>
+            <tr><td>Solde commercial (en millions de dinars)</td>
+                <td><input type="number" class="lignes-reponse" style="width:80px;" data-answer="-19022.9" data-tolerance="0.5" data-points="0.5" data-tip="40 987,4 - 60 010,3 = -19 022,9 MDT" /></td>
+                <td>-19 436,2</td></tr>
+            <tr><td>Indice du produit intérieur brut</td>
+                <td>100</td>
+                <td><input type="number" class="lignes-reponse" style="width:80px;" data-answer="101.3" data-tolerance="0.1" data-points="0.5" data-tip="100 + 1,3 = 101,3" /></td></tr>
+          </table>
+          </div>
+          <div style="font-size:13px; line-height:1.6; margin:8px 0;">
+            <strong>Interprétation :</strong>
+            <div class="guided-text">
+              <p>
+                Le solde commercial de la Tunisie est <select class="trou-select" data-answer="négatif"><option value="">choisir...</option><option value="positif">positif</option><option value="négatif">négatif</option></select>
+                donc le commerce extérieur est <select class="trou-select" data-answer="déficitaire"><option value="">choisir...</option><option value="excédentaire">excédentaire</option><option value="déficitaire">déficitaire</option></select>.
+                Le déficit a <select class="trou-select" data-answer="augmenté"><option value="">choisir...</option><option value="augmenté">augmenté</option><option value="diminué">diminué</option></select>
+                de <span class="trou-wrapper"><span class="trou-field" data-answer="2.17" data-choices="2.17,1.3,5.92,0.5" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> %.
+                Cependant cet accroissement n'est pas un signe de faiblesse car les importations sont majoritairement des biens de <span class="trou-wrapper"><span class="trou-field" data-answer="production" data-choices="production,consommation,équipement,matières premières" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+              </p>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q3a')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q3a')">Valider les calculs →</button>
+          </div>
+          <div class="correction-box" id="corr-q3a">
+            <div class="correction-title">📋 Correction — Q3a (4 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>Tableau complété :</strong><br>
+                Part des biens de production 2019 = 42 687,7 / 63 291,6 = <strong>67,45%</strong><br>
+                Solde commercial 2018 = 40 987,4 - 60 010,3 = <strong>-19 022,9 MDT</strong><br>
+                Indice du PIB 2019 = 100 + 1,3 = <strong>101,3</strong><br><br>
+                <strong>Interprétation :</strong> En Tunisie, les importations des biens de production représentent 67,45% des importations totales en 2019, ce qui témoigne d'une économie qui investit dans ses capacités productives. Le solde commercial est déficitaire (19 436,2 MDT en 2019). Le PIB a augmenté de 1,3%.
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème :</strong><br>
+                • Part biens de production : 0,5 pt<br>
+                • Solde commercial : 0,5 pt<br>
+                • Indice PIB : 0,5 pt<br>
+                • Interprétation : 0,5 pt
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q3a"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 4 – Q3b Justification -->
+      <div class="a4-page" id="pg4">
+        <div class="q-item" data-qid="q3b">
+          <div class="q-num">Question 3b (justification – 2 pts)</div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            L'accroissement du déficit commercial entre 2018 et 2019 constitue-t-il un signe de faiblesse de l'économie tunisienne ? Justifiez votre réponse.
+          </div>
+          <div class="guided-text">
+            <p>
+              Le déficit a augmenté de <span class="trou-wrapper"><span class="trou-field" data-answer="2.17" data-choices="2.17,1.3,5.92,0.5" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> %.
+              Cet accroissement <select class="trou-select" data-answer="ne constitue pas"><option value="">choisir...</option><option value="constitue">constitue</option><option value="ne constitue pas">ne constitue pas</option></select>
+              un signe de faiblesse car les importations sont majoritairement des biens de <span class="trou-wrapper"><span class="trou-field" data-answer="production" data-choices="production,consommation,équipement,matières premières" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> (plus que les deux tiers) nécessaires à la <span class="trou-wrapper"><span class="trou-field" data-answer="croissance économique" data-choices="croissance économique,développement,exportation,investissement" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q3b')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q3b')">Valider →</button>
+          </div>
+          <div class="correction-box" id="corr-q3b">
+            <div class="correction-title">📋 Correction officielle — Q3b (2 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                Le déficit commercial de la Tunisie a augmenté de 2,17% en passant de 19 022,9 millions de dinars en 2018 à 19 436,2 millions de dinars en 2019. Cet accroissement du déficit commercial en 2019 ne constitue pas un signe de faiblesse de l'économie tunisienne dans la mesure où les importations sont, pour la majorité (plus que les deux tiers), des biens de production (matières premières, énergie et biens d'équipement) nécessaires à la croissance économique (1,3%). En outre, la part des biens de production dans les importations a augmenté. La hausse des importations des biens de production (5,92%) est donc favorable à l'accroissement des richesses créées (1,3%).
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème :</strong><br>
+                • Non (pas un signe de faiblesse) : 0,5 pt<br>
+                • Justification par nature des importations (biens de production) : 1 pt<br>
+                • Lien avec la croissance (1,3%) : 0,5 pt
+              </div>
+            </div>
+            <div style="padding:8px 12px; border-top:1px solid rgba(91,14,20,0.1);">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">🎯 Ma note :</div>
+              <div class="score-btn-group" data-qid="q3b" data-theme="partie1" data-max="2">
+                <button class="score-btn" data-pts="0">0</button>
+                <button class="score-btn" data-pts="0.5">0,5</button>
+                <button class="score-btn" data-pts="1">1</button>
+                <button class="score-btn" data-pts="1.5">1,5</button>
+                <button class="score-btn" data-pts="2">2</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q3b"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 5 – Dissertation Introduction -->
+      <div class="a4-page" id="pg5">
+        <div class="titre-partie">☞ DEUXIEME PARTIE <span class="pts">(10 points)</span></div>
+        <div style="font-size:14px; font-weight:700; margin-bottom:8px; color:var(--dark);">Sujet : La croissance économique est-elle toujours favorable au développement humain ?</div>
+        <div style="font-size:13px; line-height:1.6; margin-bottom:12px; background:var(--cream); padding:12px; border-radius:var(--radius); border:1px solid rgba(26,37,23,0.06);">
+          <strong>Document 1 :</strong> Indicateurs économiques et sociaux en 2019<br>
+          Norvège : taux de croissance 1,6%, RNB/hab 166 494 $ PPA, espérance de vie 82,4 ans, scolarisation 12,9 ans, IDH 0,957<br>
+          Belgique : taux de croissance 1,45%, RNB/hab 52 085 $ PPA, espérance de vie 81,6 ans, scolarisation 12,1 ans, IDH 0,931<br><br>
+          <strong>Document 2 :</strong> OCDE — "La croissance du PIB est désormais largement associée à un creusement des inégalités. Au cours des 40 dernières années, la part du revenu national allant aux salaires a diminué, tandis que s'accroissait la part allant aux détenteurs du capital. La croissance du PIB n'est plus corrélée à l'amélioration du bien-être."
+        </div>
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Introduction</div>
+          <div class="guided-text">
+            <p><strong>Amorce + définition :</strong><br>
+              La croissance économique, définie comme <span class="trou-wrapper"><span class="trou-field" data-answer="augmentation durable" data-choices="augmentation durable,augmentation passagère,hausse ponctuelle,progression" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> de la production, reste au cœur des préoccupations des gouvernements.
+            </p>
+            <p><strong>Problématique :</strong><br>
+              On s'interroge si la croissance économique est <span class="trou-wrapper"><span class="trou-field" data-answer="toujours favorable" data-choices="toujours favorable,toujours néfaste,parfois favorable,sans impact" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> au <span class="trou-wrapper"><span class="trou-field" data-answer="développement humain" data-choices="développement humain,développement durable,croissance sociale,progrès technique" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+            <p><strong>Plan :</strong><br>
+              Dans une première partie, nous montrerons que la croissance est <span class="trou-wrapper"><span class="trou-field" data-answer="favorable" data-choices="favorable,défavorable,neutre,insuffisante" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> au développement humain, puis dans une seconde qu'elle ne l'est <span class="trou-wrapper"><span class="trou-field" data-answer="pas toujours" data-choices="pas toujours,jamais,toujours,rarement" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-intro')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 6 – Dissertation Partie I -->
+      <div class="a4-page" id="pg6">
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Partie I — La croissance économique est favorable au développement humain</div>
+          <div class="guided-text">
+            <p>
+              La croissance génère l'accroissement du <span class="trou-wrapper"><span class="trou-field" data-answer="revenu national" data-choices="revenu national,PIB,capital,bénéfice" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> nécessaire à l'amélioration du <span class="trou-wrapper"><span class="trou-field" data-answer="niveau de vie" data-choices="niveau de vie,classe sociale,revenu,épargne" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+            <p>
+              Elle facilite le financement des investissements dans la <span class="trou-wrapper"><span class="trou-field" data-answer="santé" data-choices="santé,éducation,industrie,agriculture" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> et l'<span class="trou-wrapper"><span class="trou-field" data-answer="éducation" data-choices="éducation,formation,transport,communication" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+            <p><strong>Exploitation doc 1 :</strong><br>
+              La Norvège avec un IDH de <span class="trou-wrapper"><span class="trou-field" data-answer="0.957" data-choices="0.957,0.931,1.6,1.45" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> supérieur à celui de la Belgique (<span class="trou-wrapper"><span class="trou-field" data-answer="0.931" data-choices="0.931,0.957,1.6,1.45" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>) montre que la croissance favorise le <span class="trou-wrapper"><span class="trou-field" data-answer="développement humain" data-choices="développement humain,développement durable,croissance économique,progrès social" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-p1')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Partie II — La croissance économique peut ne pas être favorable au développement humain</div>
+          <div class="guided-text">
+            <p>
+              La croissance creuse les <span class="trou-wrapper"><span class="trou-field" data-answer="inégalités" data-choices="inégalités,richesses,emplois,revenus" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> sociales. La part du revenu allant aux <span class="trou-wrapper"><span class="trou-field" data-answer="travailleurs" data-choices="travailleurs,capitalistes,propriétaires,patrons" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> a <span class="trou-wrapper"><span class="trou-field" data-answer="diminué" data-choices="diminué,augmenté,stagné,disparu" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> tandis que celle allant aux <span class="trou-wrapper"><span class="trou-field" data-answer="détenteurs du capital" data-choices="détenteurs du capital,travailleurs,chômeurs,agriculteurs" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> a augmenté.
+            </p>
+            <p>
+              La croissance n'est plus corrélée à l'amélioration du <span class="trou-wrapper"><span class="trou-field" data-answer="bien-être" data-choices="bien-être,PIB,revenu,consommation" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>. D'autres facteurs entrent en jeu : <span class="trou-wrapper"><span class="trou-field" data-answer="santé" data-choices="santé,capital,industrie,exportation" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, <span class="trou-wrapper"><span class="trou-field" data-answer="éducation" data-choices="éducation,commerce,défense,transport" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, <span class="trou-wrapper"><span class="trou-field" data-answer="sécurité" data-choices="sécurité,logement,alimentation,loisirs" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-p2')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 7 – Dissertation Conclusion + Corrigé complet -->
+      <div class="a4-page" id="pg7">
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Conclusion</div>
+          <div class="guided-text">
+            <p><strong>Synthèse :</strong><br>
+              La croissance économique n'est <span class="trou-wrapper"><span class="trou-field" data-answer="pas toujours" data-choices="pas toujours,jamais,toujours,rarement" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> favorable au développement humain.
+            </p>
+            <p><strong>Ouverture :</strong><br>
+              On peut s'interroger sur l'impact de la croissance sur <span class="trou-wrapper"><span class="trou-field" data-answer="l'environnement naturel" data-choices="l'environnement naturel,la technologie,les inégalités,le commerce" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-concl')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('diss')">📋 Voir le corrigé complet</button>
+          </div>
+        </div>
+        <div class="correction-box" id="corr-diss">
+          <div class="correction-title">📋 Corrigé modèle — Dissertation (10 pts)</div>
+          <div style="padding:12px; font-size:13px; line-height:1.6;">
+            <strong>Introduction :</strong><br>
+            La croissance économique, en tant qu'augmentation durable de la production, reste au cœur des préoccupations des gouvernements. Cependant, on s'interroge si elle est toujours favorable au développement humain, qui englobe la santé, l'éducation et le niveau de vie. Nous montrerons dans une première partie que la croissance économique est favorable au développement humain, puis dans une seconde qu'elle ne l'est pas toujours.<br><br>
+            <strong>Partie I — Croissance favorable au développement humain :</strong><br>
+            La croissance économique constitue la base économique du développement. Elle génère l'accroissement du revenu national nécessaire à l'amélioration du niveau de vie. Elle se traduit par une hausse des richesses créées et des revenus de tous les acteurs économiques, améliorant le pouvoir d'achat. En outre, elle facilite le financement des investissements dans la santé et l'éducation. Les statistiques montrent que la Norvège, avec un taux de croissance supérieur à celui de la Belgique, a un IDH plus élevé.<br><br>
+            <strong>Partie II — Croissance défavorable au développement humain :</strong><br>
+            La croissance ne favorise pas le développement humain en raison du creusement des inégalités. Dans les pays de l'OCDE, la part du revenu national allant aux travailleurs a diminué, tandis que celle allant aux détenteurs du capital a augmenté. En outre, la croissance peut être à l'origine de la suppression d'emplois, touchant surtout les jeunes et les travailleurs peu qualifiés. Enfin, elle n'est plus corrélée à l'amélioration du bien-être.<br><br>
+            <strong>Conclusion :</strong><br>
+            La croissance économique n'est pas toujours favorable au développement humain. Elle l'est lorsqu'elle est inclusive et investit dans la santé et l'éducation. Elle ne l'est pas lorsqu'elle génère des inégalités. On peut s'interroger sur l'impact de la croissance sur l'environnement naturel.
+          </div>
+          <div style="padding:8px 12px; border-top:1px solid rgba(91,14,20,0.1);">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">📊 Grille officielle /10 pts</div>
+            <div style="font-size:13px; line-height:1.8;">
+              • Introduction (1,5 pt) : Amorce + définition (0,5) — Problématique (0,5) — Plan (0,5)<br>
+              • Développement (6 pts) : Partie I (3 pts) — Partie II (3 pts)<br>
+              • Conclusion (1 pt) : Synthèse (0,5) — Ouverture (0,5)<br>
+              • Présentation (0,5 pt) : Écriture lisible, copie aérée
+            </div>
+            <div style="margin-top:8px;">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">🎯 Ma note :</div>
+              <div class="score-btn-group" data-qid="diss" data-theme="partie2" data-max="10" style="display:flex;flex-wrap:wrap;gap:6px;">
+                <button class="score-btn" data-pts="0">0</button>
+                <button class="score-btn" data-pts="0.5">0,5</button>
+                <button class="score-btn" data-pts="1">1</button>
+                <button class="score-btn" data-pts="1.5">1,5</button>
+                <button class="score-btn" data-pts="2">2</button>
+                <button class="score-btn" data-pts="2.5">2,5</button>
+                <button class="score-btn" data-pts="3">3</button>
+                <button class="score-btn" data-pts="3.5">3,5</button>
+                <button class="score-btn" data-pts="4">4</button>
+                <button class="score-btn" data-pts="4.5">4,5</button>
+                <button class="score-btn" data-pts="5">5</button>
+                <button class="score-btn" data-pts="5.5">5,5</button>
+                <button class="score-btn" data-pts="6">6</button>
+                <button class="score-btn" data-pts="6.5">6,5</button>
+                <button class="score-btn" data-pts="7">7</button>
+                <button class="score-btn" data-pts="7.5">7,5</button>
+                <button class="score-btn" data-pts="8">8</button>
+                <button class="score-btn" data-pts="8.5">8,5</button>
+                <button class="score-btn" data-pts="9">9</button>
+                <button class="score-btn" data-pts="9.5">9,5</button>
+                <button class="score-btn" data-pts="10">10</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="score-display" id="score-diss"></div>
+        <div style="margin-top:16px; text-align:center;">
+          <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:12px 28px;font-size:0.9rem;border:none;" onclick="calculerTotalPartie2()">📊 Enregistrer ma note</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMEN -->
+  <div class="screen-full" id="s3">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div class="examen-badge">🔒 Mode Examen</div><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ko);">Conditions réelles — Zéro aide</span></div>
+    <div class="examen-timer-container"><div class="examen-timer-box"><div class="label">Partie 1</div><div class="time" id="ex-timer-1">1:00:00</div></div><div class="examen-timer-box"><div class="label">Partie 2</div><div class="time" id="ex-timer-2">2:00:00</div></div></div>
+    <div class="examen-controls"><button onclick="startExamen()">▶ Lancer l'examen</button></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;background:var(--cream);border-radius:var(--radius);border:1px solid rgba(26,37,23,0.06);">
+      <button class="nav-a4-btn" onclick="examPagePrev()">← Précédent</button>
+      <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--dark);" id="epg-indicator">Page 1 / 7</span>
+      <button class="nav-a4-btn" onclick="examPageNext()">Suivant →</button>
+    </div>
+
+    <div class="exam-page active" id="epg1" style="background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(10 points)</span></div>
+      <div class="q-item">
+        <div class="q-num">Question 1 (3 points)</div>
+        <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+          Identifiez la décomposition internationale du processus productif puis caractérisez les échanges internationaux de biens et services qui en découlent.
+        </div>
+        <textarea class="lignes-reponse" rows="6" placeholder="..." style="width:100%;"></textarea>
+      </div>
+    </div>
+
+    <div class="exam-page" id="epg2" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div class="q-item">
+        <div class="q-num">Question 2 (3 points)</div>
+        <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+          Distinguez la concentration verticale des entreprises en amont de celle en aval.
+        </div>
+        <textarea class="lignes-reponse" rows="6" placeholder="..." style="width:100%;"></textarea>
+      </div>
+    </div>
+
+    <div class="exam-page" id="epg3" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div class="q-item">
+        <div class="q-num">Question 3a (calculs – 2 pts)</div>
+        <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+          Complétez le tableau et interprétez les résultats obtenus.
+        </div>
+        <div class="tableau-wrapper">
+        <table class="tableau-off" style="font-size:12px;">
+          <tr><th></th><th>2018</th><th>2019</th></tr>
+          <tr><td>Exportations (MDT)</td><td>40 987,4</td><td>43 855,4</td></tr>
+          <tr><td>Importations (MDT)</td><td>60 010,3</td><td>63 291,6</td></tr>
+          <tr><td>Part biens de production (%)</td><td>67,16</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+          <tr><td>Solde commercial (MDT)</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td><td>-19 436,2</td></tr>
+          <tr><td>Indice du PIB</td><td>100</td><td><input type="text" class="lignes-reponse" style="width:80px;" /></td></tr>
+        </table>
+        </div>
+        <textarea class="lignes-reponse" rows="4" placeholder="Interprétation..." style="width:100%;"></textarea>
+      </div>
+    </div>
+
+    <div class="exam-page" id="epg4" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div class="q-item">
+        <div class="q-num">Question 3b (justification – 2 pts)</div>
+        <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+          L'accroissement du déficit commercial entre 2018 et 2019 constitue-t-il un signe de faiblesse de l'économie tunisienne ? Justifiez votre réponse.
+        </div>
+        <textarea class="lignes-reponse" rows="6" placeholder="..." style="width:100%;"></textarea>
+      </div>
+    </div>
+
+    <div class="exam-page" id="epg5" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div class="titre-partie">☞ DEUXIEME PARTIE <span class="pts">(10 points)</span></div>
+      <div style="font-size:14px; font-weight:700; margin-bottom:8px; color:var(--dark);">Sujet : La croissance économique est-elle toujours favorable au développement humain ?</div>
+      <div style="font-size:13px; line-height:1.6; margin-bottom:12px; background:rgba(26,37,23,0.03); padding:12px; border-radius:var(--radius); border:1px solid rgba(26,37,23,0.06);">
+        <strong>Document 1 :</strong> Norvège vs Belgique — IDH, scolarisation, espérance de vie<br>
+        <strong>Document 2 :</strong> OCDE — Inégalités, part des salaires, bien-être
+      </div>
+      <div style="font-weight:700; color:var(--primary); margin-bottom:4px;">📝 Introduction</div>
+      <textarea class="lignes-reponse" rows="4" placeholder="..." style="width:100%;"></textarea>
+    </div>
+
+    <div class="exam-page" id="epg6" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-weight:700; color:var(--primary); margin-bottom:4px;">📝 Partie I — Croissance favorable au développement humain</div>
+      <textarea class="lignes-reponse" rows="8" placeholder="..." style="width:100%;"></textarea>
+      <div style="margin-top:12px; border-top:1px solid rgba(26,37,23,0.06); padding-top:12px;">
+        <div style="font-weight:700; color:var(--primary); margin-bottom:4px;">📝 Partie II — Croissance défavorable au développement humain</div>
+        <textarea class="lignes-reponse" rows="8" placeholder="..." style="width:100%;"></textarea>
+      </div>
+    </div>
+
+    <div class="exam-page" id="epg7" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-weight:700; color:var(--primary); margin-bottom:4px;">📝 Conclusion</div>
+      <textarea class="lignes-reponse" rows="3" placeholder="..." style="width:100%;"></textarea>
+      <div style="margin-top:16px;text-align:center;padding-top:16px;border-top:1px solid rgba(26,37,23,0.08);">
+        <button class="valider-btn show" style="background:var(--ko);color:var(--cream);padding:12px 28px;font-size:0.9rem;border:none;" onclick="validerExamenComplet()">📋 Remettre la copie</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BILAN -->
+  <div class="screen-full" id="s4">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 5 — Bilan</div>
+    <div class="ui-card" style="text-align:center;padding:24px;background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-bottom:4px;">SCORE GUIDÉ</div>
+      <div class="score-big" id="final-score-guide">--</div>
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-top:2px;">/ 20 points</div>
+      <div id="mention-guide" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(26,37,23,0.08);color:var(--dark);">--</div>
+      <div class="conseil-box" id="conseil-guide" style="background:rgba(26,37,23,0.03);border-color:var(--dark);margin-top:8px;"></div>
+    </div>
+    <div class="ui-card" style="text-align:center;padding:24px;background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-bottom:4px;">SCORE EXAMEN</div>
+      <div class="score-big" id="final-score-examen">--</div>
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-top:2px;">/ 20 points</div>
+      <div id="mention-examen" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(26,37,23,0.08);color:var(--dark);">--</div>
+      <div class="conseil-box" id="conseil-examen" style="background:rgba(26,37,23,0.03);border-color:var(--dark);margin-top:8px;"></div>
+    </div>
+    <div class="ui-card" style="background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);padding:16px;">
+      <div class="ui-card-title" style="font-family:var(--font-ui);font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:8px;">📊 Bilan de points – Mode Guidé</div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📋 Partie 1 — Questions</span><span class="comp-pct" id="p1">0%</span></div><div class="bar-track"><div class="bar-fill" id="b1"></div></div><div style="font-size:0.7rem;color:rgba(26,37,23,0.4);margin-top:2px;" id="pts1">0 / 10 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📖 Partie 2 — Dissertation</span><span class="comp-pct" id="p2">0%</span></div><div class="bar-track"><div class="bar-fill" id="b2"></div></div><div style="font-size:0.7rem;color:rgba(26,37,23,0.4);margin-top:2px;" id="pts2">0 / 10 pts</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,37,23,0.06);">
+      <button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="resetAll()">↺ Recommencer</button>
+    </div>
+  </div>
+</main>
+
+<!-- ===== CALCULATRICE ===== -->
+<div id="calc-wrapper">
+  <button id="calc-toggle-btn" onclick="toggleCalc()">🧮 Calculatrice</button>
+  <div id="calc-box">
+    <button class="calc-close" onclick="toggleCalc()">✕</button>
+    <input type="text" id="calc-display" readonly value="0" />
+    <div class="calc-grid">
+      <button class="fn" onclick="calcInput('MC')">MC</button>
+      <button class="fn" onclick="calcInput('MR')">MR</button>
+      <button class="fn" onclick="calcInput('M+')">M+</button>
+      <button class="fn" onclick="calcInput('M-')">M-</button>
+      <button onclick="calcInput('7')">7</button>
+      <button onclick="calcInput('8')">8</button>
+      <button onclick="calcInput('9')">9</button>
+      <button class="op" onclick="calcInput('/')">÷</button>
+      <button onclick="calcInput('4')">4</button>
+      <button onclick="calcInput('5')">5</button>
+      <button onclick="calcInput('6')">6</button>
+      <button class="op" onclick="calcInput('*')">×</button>
+      <button onclick="calcInput('1')">1</button>
+      <button onclick="calcInput('2')">2</button>
+      <button onclick="calcInput('3')">3</button>
+      <button class="op" onclick="calcInput('-')">−</button>
+      <button onclick="calcInput('0')">0</button>
+      <button onclick="calcInput('.')">.</button>
+      <button onclick="calcInput('sqrt')">√</button>
+      <button class="op" onclick="calcInput('+')">+</button>
+      <button onclick="calcInput('C')" style="background:var(--ko);color:white;">C</button>
+      <button onclick="calcInput('±')">±</button>
+      <button onclick="calcInput('%')">%</button>
+      <button onclick="calcInput('=')" style="background:var(--primary);color:var(--accent);">=</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COACH MODAL ===== -->
+<div class="coach-modal" id="coach-modal">
+  <div class="coach-modal-content">
+    <button class="close-modal" onclick="closeCoach()">✕</button>
+    <div class="coach-title">🧑‍🏫 Coach Synapris</div>
+    <div id="coach-modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== TT MODAL ===== -->
+<div class="tt-modal" id="tt-modal">
+  <div class="tt-modal-content">
+    <button class="close-tt" onclick="closeTT()">✕</button>
+    <div class="tt-img" id="tt-img">🧠</div>
+    <div class="tt-def" id="tt-def"><strong>Terme</strong> — Définition courte.</div>
+    <button class="tt-audio" id="tt-audio-btn" onclick="speak(document.getElementById('tt-def').textContent.split('—')[0].trim())">🔊 Écouter</button>
+    <div class="tt-rappel" id="tt-rappel"><strong>📖 Rappel cours :</strong> Notion à réviser.</div>
+  </div>
+</div>
+
+<!-- ===== FIELD HELP MODAL ===== -->
+<div class="field-modal" id="field-modal">
+  <div class="field-modal-content">
+    <button class="close-field-modal" onclick="closeFieldHelp()">✕</button>
+    <div class="field-modal-title">💡 Aide pour la réponse</div>
+    <div class="field-modal-body" id="field-modal-body"></div>
+    <div style="margin-top:12px;font-size:0.8rem;color:rgba(26,37,23,0.5);text-align:center;">Cliquez à l'extérieur pour fermer</div>
+  </div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span>Accueil</span></div>
+  <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span>Cours</span></div>
+  <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span>Guidé</span></div>
+  <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span>Examen</span></div>
+  <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span>Bilan</span></div>
+</nav>
+
+<script>
+  // ===== GLOBALES =====
+  let currentStep = 0, currentPage = 1, totalPages = 7, scoreGuide = 0, scoreExamen = 0;
+  let examenStarted = false, examPage = 1, examTotalPages = 7;
+  let examenSeconds = [3600, 7200];
+  let examenTimers = [];
+  let themeScores = { partie1: 0, partie2: 0 };
+  const themeMax = { partie1: 10, partie2: 10 };
+  let qcmValidated = false;
+
+  // ===== LOGIN =====
+  function handleLogin() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('navbar').style.display = 'flex';
+    document.getElementById('main-wrap').style.display = 'block';
+    document.getElementById('bottom-nav').style.display = 'flex';
+    document.getElementById('avatar').textContent = '👤';
+    restaurerTout();
+    gsap.from('#navbar', { y: -50, duration: 0.4, ease: 'power2.out' });
+  }
+
+  // ===== NAVIGATION =====
+  function goTo(step) {
+    let screens = ['s0','s1','s2','s3','s4'];
+    document.querySelectorAll('.screen-full, .split-layout').forEach(el => el.classList.remove('active'));
+    document.getElementById(screens[step]).classList.add('active');
+    currentStep = step;
+    document.querySelectorAll('.navbar-steps .nav-step, .bottom-nav .nav-step').forEach((el, i) => el.classList.toggle('active', i === step));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (step === 4) setTimeout(showBilan, 400);
+  }
+
+  function showPage(n) {
+    for (let i = 1; i <= totalPages; i++) {
+      let p = document.getElementById('pg' + i);
+      if (p) p.classList.remove('active');
+    }
+    document.getElementById('pg' + n).classList.add('active');
+    document.getElementById('pg-indicator').textContent = 'Page ' + n + ' / ' + totalPages;
+    currentPage = n;
+  }
+  function pgNext() { if (currentPage < totalPages) showPage(currentPage + 1); }
+  function pgPrev() { if (currentPage > 1) showPage(currentPage - 1); }
+
+  function showExamPage(n) {
+    for (let i = 1; i <= examTotalPages; i++) {
+      let p = document.getElementById('epg' + i);
+      if (p) p.style.display = 'none';
+    }
+    document.getElementById('epg' + n).style.display = 'block';
+    examPage = n;
+    document.getElementById('epg-indicator').textContent = 'Page ' + n + ' / ' + examTotalPages;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function examPageNext() { if (examPage < examTotalPages) showExamPage(examPage + 1); }
+  function examPagePrev() { if (examPage > 1) showExamPage(examPage - 1); }
+
+  // ===== COURS =====
+  function toggleCours(el) {
+    let detail = el.closest('.cours-card').querySelector('.cours-detail');
+    if (detail.style.display === 'none' || detail.style.display === '') {
+      detail.style.display = 'block';
+      gsap.from(detail, { opacity: 0, y: 8, duration: 0.2, ease: 'power2.out' });
+    } else {
+      detail.style.display = 'none';
+    }
+  }
+
+  // ===== VERBES =====
+  function toggleVerbe(card, id) {
+    document.querySelectorAll('.verbe-card').forEach(c => c.classList.remove('on'));
+    document.querySelectorAll('.verbe-detail').forEach(d => d.classList.remove('show'));
+    card.classList.add('on');
+    document.getElementById(id).classList.add('show');
+    gsap.from('#' + id, { opacity: 0, y: 10, duration: 0.3, ease: 'power2.out' });
+  }
+
+  // ===== COACH =====
+  const coachData = {
+    'coach-eco-q1': {
+      title: 'Q1 — DIPP et échanges intra-firmes',
+      msg: 'Pour cette question, tu dois d\'abord définir la DIPP (décomposition internationale du processus productif), puis montrer comment elle se traduit dans les échanges internationaux.',
+      methode: [
+        'Étape 1 : Définir la DIPP (division du processus productif en plusieurs sous-ensembles réalisés dans différents pays).',
+        'Étape 2 : Expliquer le rôle des filiales-ateliers et la spécialisation par composant.',
+        'Étape 3 : Caractériser les échanges qui en découlent (échanges intra-firmes, flux de composants, importance croissante).'
+      ],
+      piege: 'Ne pas confondre DIPP et délocalisation. La DIPP est un partage du processus productif, pas un simple transfert d\'usine.',
+      bareme: '3 pts (1,5 pour l\'identification + 1,5 pour les caractéristiques)',
+      arabe: 'عرّف DIPP ثم اشرح كيف تظهر في التبادلات الدولية.'
+    },
+    'coach-eco-q2': {
+      title: 'Q2 — Concentration verticale amont / aval',
+      msg: 'Il faut distinguer deux types de concentration verticale selon la position dans la filière.',
+      methode: [
+        'Étape 1 : Définir la concentration verticale en amont (intégration des fournisseurs, remontée de la filière).',
+        'Étape 2 : Définir la concentration verticale en aval (intégration des clients, descente de la filière).',
+        'Étape 3 : Illustrer par des exemples pour chaque cas.'
+      ],
+      piege: 'Ne pas confondre avec la concentration horizontale (même stade de production).',
+      bareme: '3 pts (1,5 pour l\'amont + 1,5 pour l\'aval)',
+      arabe: 'ميز بين التركز العمودي في المراحل السابقة والمراحل اللاحقة.'
+    },
+    'coach-eco-q3a': {
+      title: 'Q3a — Tableau et interprétation',
+      msg: 'Pour compléter le tableau, applique les formules suivantes. Pour l\'interprétation, dis ce que les chiffres révèlent sur l\'économie tunisienne.',
+      methode: [
+        'Étape 1 : Calculer la part des biens de production 2019 = 42 687,7 / 63 291,6 × 100.',
+        'Étape 2 : Calculer le solde commercial 2018 = 40 987,4 - 60 010,3.',
+        'Étape 3 : Calculer l\'indice du PIB 2019 = 100 + 1,3 = 101,3.',
+        'Étape 4 : Interpréter (nature des importations, déficit, croissance).'
+      ],
+      piege: 'Ne pas oublier les unités (millions de dinars, pourcentage).',
+      bareme: '4 pts (0,5 par calcul + 0,5 pour l\'interprétation)',
+      arabe: 'طبق المعادلات ثم فسر النتائج.'
+    },
+    'coach-eco-q3b': {
+      title: 'Q3b — Déficit commercial : signe de faiblesse ?',
+      msg: 'Ta réponse doit nuancer : le déficit n\'est pas un signe de faiblesse si les importations sont des biens de production.',
+      methode: [
+        'Étape 1 : Dire si c\'est un signe de faiblesse ou non (réponse : non).',
+        'Étape 2 : Justifier par la nature des importations (plus des deux tiers sont des biens de production).',
+        'Étape 3 : Lier à la croissance économique (1,3% de croissance).'
+      ],
+      piege: 'Ne pas répondre simplement "oui" ou "non" sans justification.',
+      bareme: '2 pts (0,5 pour la réponse + 1 pour la justification + 0,5 pour le lien avec la croissance)',
+      arabe: 'هل العجز التجاري علامة ضعف؟ برر إجابتك.'
+    },
+    'coach-eco-diss-intro': {
+      title: 'Dissertation — Introduction',
+      msg: 'L\'introduction doit comporter trois éléments : amorce, problématique, plan.',
+      methode: [
+        'Étape 1 : Rédiger une amorce (phrase d\'accroche sur la croissance et le développement).',
+        'Étape 2 : Définir la problématique (la croissance est-elle toujours favorable au développement humain ?).',
+        'Étape 3 : Annoncer le plan (2 parties : favorable / défavorable).'
+      ],
+      piege: 'Ne pas oublier la définition d\'un terme clé (croissance ou développement).',
+      bareme: '1,5 pt (amorce 0,5 + problématique 0,5 + plan 0,5)',
+      arabe: 'المقدمة يجب أن تحتوي على تمهيد وإشكالية وخطة.'
+    },
+    'coach-eco-diss-p1': {
+      title: 'Dissertation — Partie I (croissance favorable)',
+      msg: 'Montre comment la croissance contribue au développement humain.',
+      methode: [
+        'Étape 1 : La croissance génère des richesses qui améliorent le niveau de vie (pouvoir d\'achat, consommation).',
+        'Étape 2 : Elle finance les investissements sociaux (santé, éducation, culture).',
+        'Étape 3 : Utiliser le document 1 (Norvège vs Belgique) pour illustrer.'
+      ],
+      piege: 'Ne pas se limiter à des généralités — utilise les documents.',
+      bareme: '3 pts',
+      arabe: 'بين كيف يساهم النمو في التنمية البشرية.'
+    },
+    'coach-eco-diss-p2': {
+      title: 'Dissertation — Partie II (croissance défavorable)',
+      msg: 'Montre que la croissance peut générer des inégalités et ne pas améliorer le bien-être.',
+      methode: [
+        'Étape 1 : La croissance creuse les inégalités (part des salaires en baisse, part du capital en hausse).',
+        'Étape 2 : Elle supprime des emplois précaires (jeunes, peu qualifiés).',
+        'Étape 3 : Elle n\'est plus corrélée au bien-être (document 2).'
+      ],
+      piege: 'Ne pas nier les bienfaits de la croissance — montrer les limites.',
+      bareme: '3 pts',
+      arabe: 'بين أن النمو قد لا يكون دائماً مفيداً للتنمية البشرية.'
+    },
+    'coach-eco-diss-concl': {
+      title: 'Dissertation — Conclusion',
+      msg: 'La conclusion doit faire la synthèse et proposer une ouverture.',
+      methode: [
+        'Étape 1 : Répondre à la problématique (la croissance n\'est pas toujours favorable).',
+        'Étape 2 : Synthétiser les deux parties (favorable / défavorable).',
+        'Étape 3 : Proposer une ouverture (impact sur l\'environnement, qualité de la croissance).'
+      ],
+      piege: 'Ne pas introduire de nouvelles idées dans la conclusion.',
+      bareme: '1 pt (synthèse 0,5 + ouverture 0,5)',
+      arabe: 'الخاتمة تجمع الإجابات وتفتح آفاقاً جديدة.'
+    }
+  };
+
+  function openCoach(id) {
+    if (document.getElementById('s3').classList.contains('active')) return;
+    const data = coachData[id];
+    if (!data) return;
+    const body = document.getElementById('coach-modal-body');
+    let html = '<div class="coach-msg">' + data.msg + '</div>';
+    if (data.methode) {
+      html += '<div class="coach-schema-title">🎯 Méthodologie</div>';
+      data.methode.forEach((step, i) => {
+        html += '<div class="coach-step"><div class="coach-step-num">' + (i + 1) + '</div><div>' + step + '</div></div>';
+      });
+    }
+    if (data.piege) html += '<div class="coach-piege"><strong>⚠️ Piège classique :</strong> ' + data.piege + '</div>';
+    if (data.bareme) html += '<div class="coach-bareme">📊 Barème : ' + data.bareme + '</div>';
+    if (data.arabe) {
+      html += '<div class="coach-arabe" dir="rtl"><strong>🇹🇳 Conseil en arabe :</strong><br>' + data.arabe + '</div>';
+    }
+    body.innerHTML = html;
+    document.getElementById('coach-modal').classList.add('open');
+  }
+  function closeCoach() { document.getElementById('coach-modal').classList.remove('open'); }
+
+  // ===== TT TOOLTIP =====
+  const ttData = {
+    'dipp': { img: '🌍', def: 'Décomposition internationale du processus productif. Division de la production en sous-ensembles réalisés dans différents pays.', rappel: 'DIPP' },
+    'filiale-atelier': { img: '🏭', def: 'Filiale spécialisée dans la fabrication d\'un ou de quelques composants d\'un produit final.', rappel: 'DIPP' },
+    'echanges-intra-firmes': { img: '🔗', def: 'Échanges entre la firme mère et ses filiales ou entre filiales d\'une même multinationale.', rappel: 'DIPP' },
+    'concentration-verticale': { img: '🏢', def: 'Regroupement d\'entreprises situées à des stades différents de la même filière de production.', rappel: 'Concentration' },
+    'croissance': { img: '📈', def: 'Augmentation durable de la production de biens et services d\'un pays, mesurée par le PIB.', rappel: 'Croissance' },
+    'developpement-humain': { img: '🧑‍🤝‍🧑', def: 'Processus d\'élargissement des choix des individus (santé, éducation, revenu).', rappel: 'IDH' },
+    'idh': { img: '📊', def: 'Indice de développement humain. Mesure le développement entre 0 et 1.', rappel: 'IDH' },
+    'solde-commercial': { img: '💰', def: 'Exportations - Importations. Positif = excédent, négatif = déficit.', rappel: 'Indicateurs' }
+  };
+
+  function openTT(id) {
+    let data = ttData[id];
+    if (!data) return;
+    document.getElementById('tt-img').textContent = data.img;
+    document.getElementById('tt-def').innerHTML = '<strong>' + id.replace(/-/g, ' ').toUpperCase() + '</strong> — ' + data.def;
+    document.getElementById('tt-rappel').innerHTML = '<strong>📖 Rappel cours :</strong> ' + data.rappel;
+    document.getElementById('tt-modal').classList.add('open');
+  }
+  function closeTT() { document.getElementById('tt-modal').classList.remove('open'); }
+
+  // ===== FIELD HELP =====
+  function openFieldHelp(text) {
+    if (document.getElementById('s3').classList.contains('active')) return;
+    const body = document.getElementById('field-modal-body');
+    const parts = text.split('|');
+    let html = '<div class="field-fr">' + parts[0].trim() + '</div>';
+    if (parts.length > 1) {
+      html += '<div class="field-ar" dir="rtl">' + parts[1].trim() + '</div>';
+    }
+    body.innerHTML = html;
+    document.getElementById('field-modal').classList.add('open');
+  }
+  function closeFieldHelp() { document.getElementById('field-modal').classList.remove('open'); }
+  document.getElementById('field-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeFieldHelp();
+  });
+  document.addEventListener('focusin', function(e) {
+    const target = e.target.closest('.lignes-reponse[data-tip]');
+    if (!target) return;
+    if (document.getElementById('s3').classList.contains('active')) return;
+    if (!target.dataset.tipShown && !target.value) {
+      target.dataset.tipShown = '1';
+      openFieldHelp(target.dataset.tip);
+    }
+  });
+
+  // ===== SPEECH =====
+  function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    let u = new SpeechSynthesisUtterance(text);
+    u.lang = 'fr-FR';
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+
+  // ===== OUVERTURE TROU DROPDOWN =====
+  function ouvrirChoix(el) {
+    document.querySelectorAll('.trou-dropdown').forEach(d => d.style.display = 'none');
+    const wrapper = el.closest('.trou-wrapper');
+    const dropdown = wrapper.querySelector('.trou-dropdown');
+    const choices = el.dataset.choices ? el.dataset.choices.split(',').map(c => c.trim()) : [];
+
+    dropdown.innerHTML = choices.map(choice =>
+      '<div class="trou-dropdown-item" onclick="choisirReponse(this,\'' + choice.replace(/'/g, "\\'") + '\')">' + choice + '</div>'
+    ).join('');
+
+    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+      dropdown.style.display = 'block';
+    } else {
+      dropdown.style.display = 'none';
+    }
+  }
+
+  function choisirReponse(item, valeur) {
+    const dropdown = item.closest('.trou-dropdown');
+    const wrapper = dropdown.closest('.trou-wrapper');
+    const field = wrapper.querySelector('.trou-field');
+
+    field.textContent = valeur;
+    field.dataset.value = valeur;
+    field.classList.add('filled');
+    field.classList.remove('correct', 'wrong');
+
+    dropdown.style.display = 'none';
+    sauvegarderTout();
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.trou-wrapper')) {
+      document.querySelectorAll('.trou-dropdown').forEach(d => d.style.display = 'none');
+    }
+  });
+
+  // ===== VALIDATION TROUS =====
+  function validerTrous(qid) {
+    let container = document.querySelector('.q-item[data-qid="' + qid + '"]');
+    if (!container) {
+      const inner = document.querySelector('[data-qid="' + qid + '"]');
+      container = inner ? inner.closest('.q-item') || inner : null;
+    }
+    if (!container) return;
+
+    let correct = 0, total = 0;
+
+    container.querySelectorAll('.trou-field[data-answer]').forEach(field => {
+      total++;
+      const rep = (field.dataset.value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const answers = field.dataset.answer.split('|').map(a => a.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));
+      const ok = answers.some(ans => rep === ans || (rep.length > 3 && ans.includes(rep)) || (ans.length > 3 && rep.includes(ans)));
+      field.classList.toggle('correct', ok);
+      field.classList.toggle('wrong', !ok);
+      if (ok) correct++;
+    });
+
+    container.querySelectorAll('.trou[data-answer]').forEach(input => {
+      total++;
+      const rep = input.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const answers = input.dataset.answer.split('|').map(a => a.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));
+      const ok = answers.some(ans => rep === ans || (rep.length > 3 && ans.includes(rep)) || (ans.length > 3 && rep.includes(ans)));
+      input.classList.toggle('correct', ok);
+      input.classList.toggle('wrong', !ok);
+      if (ok) correct++;
+    });
+
+    container.querySelectorAll('.trou-select[data-answer]').forEach(sel => {
+      total++;
+      const ok = sel.value.toLowerCase() === sel.dataset.answer.toLowerCase();
+      sel.classList.toggle('correct', ok);
+      sel.classList.toggle('wrong', !ok);
+      if (ok) correct++;
+    });
+
+    const corrBox = document.getElementById('corr-' + qid);
+    if (corrBox) {
+      corrBox.classList.add('open');
+      gsap.from(corrBox, { opacity: 0, y: 10, duration: 0.3, ease: 'power2.out' });
+    }
+    const scoreEl = document.getElementById('score-' + qid);
+    if (scoreEl && total > 0) {
+      const pct = Math.round((correct / total) * 100);
+      scoreEl.textContent = '🎯 ' + correct + ' / ' + total + ' éléments corrects (' + pct + '%)';
+      scoreEl.classList.add('show');
+    }
+    sauvegarderTout();
+  }
+
+  // ===== VALIDATION CALCULS (Q3a) =====
+  function validerCalculs(qid) {
+    let container = document.querySelector('.q-item[data-qid="' + qid + '"]');
+    if (!container) {
+      const inner = document.querySelector('[data-qid="' + qid + '"]');
+      container = inner ? inner.closest('.q-item') || inner : null;
+    }
+    if (!container) return;
+    const inputs = container.querySelectorAll('input[data-answer]');
+    let totalQ = 0, earned = 0;
+    inputs.forEach(input => {
+      const answer = parseFloat(input.dataset.answer);
+      const tolerance = parseFloat(input.dataset.tolerance) || 0;
+      const points = parseFloat(input.dataset.points) || 0;
+      const userVal = parseFloat(input.value);
+      if (!isNaN(userVal) && !isNaN(answer)) {
+        if (Math.abs(userVal - answer) <= tolerance) {
+          input.classList.add('correct'); input.classList.remove('wrong'); earned += points;
+        } else {
+          input.classList.add('wrong'); input.classList.remove('correct');
+        }
+      }
+      totalQ += points;
+    });
+    const scoreDisplay = document.getElementById('score-' + qid);
+    if (scoreDisplay) {
+      const pct = totalQ > 0 ? Math.round((earned / totalQ) * 100) : 0;
+      scoreDisplay.textContent = '🎯 ' + earned.toFixed(2) + ' / ' + totalQ.toFixed(2) + ' pts (' + pct + '%)';
+      scoreDisplay.classList.add('show');
+    }
+    const corrBox = document.getElementById('corr-'+qid);
+    if (corrBox) corrBox.classList.add('open');
+    sauvegarderTout();
+  }
+
+  // ===== SET SCORE (pour questions ouvertes) =====
+  function setScore(qid, points, theme) {
+    const group = document.querySelector('.score-btn-group[data-qid="' + qid + '"]');
+    if (!group) return;
+    const oldBtn = group.querySelector('.score-btn.selected');
+    const oldPts = oldBtn ? parseFloat(oldBtn.dataset.pts) : 0;
+    themeScores[theme] = Math.max(0, (themeScores[theme] || 0) - oldPts + points);
+    let total = (themeScores.partie1 || 0) + (themeScores.partie2 || 0);
+    document.getElementById('hdr-score').textContent = Math.min(20, total).toFixed(1) + ' / 20';
+    group.querySelectorAll('.score-btn').forEach(b => b.classList.remove('selected'));
+    const newBtn = group.querySelector('.score-btn[data-pts="' + points + '"]');
+    if (newBtn) newBtn.classList.add('selected');
+    sauvegarderTout();
+  }
+
+  // ===== SAUVEGARDE =====
+  function sauvegarderTout() {
+    let data = {
+      reponses: {},
+      scores: themeScores,
+      scoreExamen: scoreExamen
+    };
+    document.querySelectorAll('.lignes-reponse').forEach((el, idx) => {
+      data.reponses[el.id || 'input_' + idx] = el.value;
+    });
+    document.querySelectorAll('.trou').forEach((el, idx) => {
+      data.reponses['trou_' + idx] = el.value;
+    });
+    document.querySelectorAll('.trou-select').forEach((el, idx) => {
+      data.reponses['select_' + idx] = el.value;
+    });
+    document.querySelectorAll('.trou-field').forEach((el, idx) => {
+      data.reponses['trou_field_' + idx] = el.dataset.value || '';
+    });
+    document.querySelectorAll('.score-btn.selected').forEach(btn => {
+      let qid = btn.dataset.qid;
+      let pts = btn.dataset.pts;
+      data['selected_' + qid] = pts;
+    });
+    localStorage.setItem('synapris_eco_2022', JSON.stringify(data));
+  }
+
+  function restaurerTout() {
+    let saved = localStorage.getItem('synapris_eco_2022');
+    if (!saved) return;
+    try {
+      let data = JSON.parse(saved);
+      if (data.scores) Object.assign(themeScores, data.scores);
+      if (data.scoreExamen) scoreExamen = data.scoreExamen;
+      if (data.reponses) {
+        document.querySelectorAll('.lignes-reponse').forEach((el, idx) => {
+          let key = el.id || 'input_' + idx;
+          if (data.reponses[key]) el.value = data.reponses[key];
+        });
+        document.querySelectorAll('.trou').forEach((el, idx) => {
+          let key = 'trou_' + idx;
+          if (data.reponses[key]) el.value = data.reponses[key];
+        });
+        document.querySelectorAll('.trou-select').forEach((el, idx) => {
+          let key = 'select_' + idx;
+          if (data.reponses[key]) el.value = data.reponses[key];
+        });
+        document.querySelectorAll('.trou-field').forEach((el, idx) => {
+          let key = 'trou_field_' + idx;
+          if (data.reponses && data.reponses[key]) {
+            el.textContent = data.reponses[key];
+            el.dataset.value = data.reponses[key];
+            el.classList.add('filled');
+          }
+        });
+      }
+      Object.keys(data).forEach(key => {
+        if (key.startsWith('selected_')) {
+          let qid = key.replace('selected_', '');
+          let pts = data[key];
+          let btn = document.querySelector('.score-btn[data-qid="' + qid + '"][data-pts="' + pts + '"]');
+          if (btn) btn.classList.add('selected');
+        }
+      });
+      let total = (themeScores.partie1 || 0) + (themeScores.partie2 || 0);
+      let scoreOn20 = Math.min(20, total);
+      document.getElementById('hdr-score').textContent = scoreOn20.toFixed(1) + ' / 20';
+    } catch (e) {}
+  }
+
+  // ===== EXAMEN =====
+  function startExamen() {
+    if (examenStarted) return;
+    examenStarted = true;
+    for (let i = 0; i < 2; i++) {
+      examenTimers[i] = setInterval(() => {
+        examenSeconds[i]--;
+        let el = document.getElementById('ex-timer-' + (i + 1));
+        if (examenSeconds[i] <= 0) {
+          clearInterval(examenTimers[i]);
+          el.textContent = '⏰ Terminé !';
+          return;
+        }
+        let h = Math.floor(examenSeconds[i] / 3600);
+        let m = Math.floor((examenSeconds[i] % 3600) / 60);
+        let s = examenSeconds[i] % 60;
+        if (h > 0) el.textContent = h + 'h' + (m < 10 ? '0' : '') + m;
+        else el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+      }, 1000);
+    }
+  }
+
+  function validerExamenComplet() {
+    let total = 0;
+    document.querySelectorAll('#s3 input[data-answer]').forEach(input => {
+      const answer = input.dataset.answer.trim();
+      const tolerance = parseFloat(input.dataset.tolerance) || 0;
+      const points = parseFloat(input.dataset.points) || 0;
+      const userVal = parseFloat(input.value);
+      const answerNum = parseFloat(answer);
+      if (!isNaN(userVal) && !isNaN(answerNum)) {
+        if (Math.abs(userVal - answerNum) <= tolerance) total += points;
+      } else {
+        if (input.value.trim().toLowerCase() === answer.toLowerCase()) total += points;
+      }
+    });
+    scoreExamen = Math.min(20, total);
+    document.getElementById('hdr-score').textContent = scoreExamen.toFixed(1) + ' / 20';
+    sauvegarderTout();
+    goTo(4);
+  }
+
+  function calculerTotalPartie2() {
+    let total = themeScores.partie2 || 0;
+    if (total === 0) {
+      alert('Veuillez noter la dissertation avant d\'enregistrer.');
+      return;
+    }
+    let scoreFinal = (themeScores.partie1 || 0) + total;
+    document.getElementById('hdr-score').textContent = Math.min(20, scoreFinal).toFixed(1) + ' / 20';
+    sauvegarderTout();
+    alert('✅ Note enregistrée !');
+  }
+
+  // ===== BILAN =====
+  function showBilan() {
+    let totalScore = (themeScores.partie1 || 0) + (themeScores.partie2 || 0);
+    let scoreOn20 = Math.min(20, totalScore);
+    document.getElementById('final-score-guide').textContent = scoreOn20.toFixed(1) + ' / 20';
+    let mention = getMention(scoreOn20);
+    let badge = document.getElementById('mention-guide');
+    badge.textContent = mention.text;
+    badge.style.color = mention.color;
+    badge.style.background = mention.bg;
+    document.getElementById('conseil-guide').innerHTML = mention.conseil;
+
+    document.getElementById('final-score-examen').textContent = scoreExamen.toFixed(1) + ' / 20';
+    let mentionEx = getMention(scoreExamen);
+    let badgeEx = document.getElementById('mention-examen');
+    badgeEx.textContent = mentionEx.text;
+    badgeEx.style.color = mentionEx.color;
+    badgeEx.style.background = mentionEx.bg;
+    document.getElementById('conseil-examen').innerHTML = mentionEx.conseil;
+
+    let themeGroups = [
+      { label: 'Partie 1 — Questions', pts: themeScores.partie1 || 0, max: 10 },
+      { label: 'Partie 2 — Dissertation', pts: themeScores.partie2 || 0, max: 10 }
+    ];
+    setTimeout(() => {
+      themeGroups.forEach((g, i) => {
+        let pct = Math.round((g.pts / g.max) * 100);
+        document.getElementById('p' + (i + 1)).textContent = pct + '%';
+        let bar = document.getElementById('b' + (i + 1));
+        bar.style.width = pct + '%';
+        bar.className = 'bar-fill ' + getBarColor(pct);
+        let ptsEl = document.getElementById('pts' + (i + 1));
+        if (ptsEl) ptsEl.textContent = g.pts.toFixed(1) + ' / ' + g.max + ' pts';
+      });
+    }, 300);
+  }
+
+  function getMention(score) {
+    if (score >= 16) return { text: 'Très Bien 🌟', color: '#2D5A27', bg: 'rgba(45,90,39,0.15)', conseil: 'Excellent travail ! Continue à approfondir les mécanismes économiques.' };
+    if (score >= 14) return { text: 'Bien 👍', color: '#2D5A27', bg: 'rgba(45,90,39,0.15)', conseil: 'Bon niveau. Révise bien la distinction amont/aval et la DIPP.' };
+    if (score >= 12) return { text: 'Assez Bien', color: '#C4860A', bg: 'rgba(196,134,10,0.15)', conseil: 'Tu es sur la bonne voie. Travaille davantage la dissertation.' };
+    if (score >= 10) return { text: 'Passable', color: '#888', bg: 'rgba(0,0,0,0.06)', conseil: 'Attention : améliore tes calculs et l\'utilisation des documents.' };
+    return { text: 'Insuffisant', color: '#8B1A1A', bg: 'rgba(139,26,26,0.1)', conseil: 'Reprends les fondamentaux : DIPP, concentration, croissance et développement.' };
+  }
+
+  function getBarColor(pct) {
+    if (pct >= 70) return 'green';
+    if (pct >= 40) return 'orange';
+    return 'red';
+  }
+
+  function resetAll() {
+    if (confirm('Recommencer ?')) {
+      localStorage.removeItem('synapris_eco_2022');
+      location.reload();
+    }
+  }
+
+  // ===== CALCULATRICE =====
+  let calcDisplay = document.getElementById('calc-display');
+  let calcMemory = 0, hasMemory = false, calcExpr = '';
+
+  function toggleCalc() { document.getElementById('calc-box').classList.toggle('open'); }
+
+  function calcInput(val) {
+    if (val === 'C') { calcExpr = ''; calcDisplay.value = '0'; return; }
+    if (val === '=') {
+      try {
+        const result = Function('"use strict"; return (' + calcExpr + ')')();
+        calcDisplay.value = result;
+        calcExpr = String(result);
+      } catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === '±') {
+      if (calcExpr.startsWith('-')) calcExpr = calcExpr.slice(1);
+      else calcExpr = '-' + calcExpr;
+      calcDisplay.value = calcExpr || '0';
+      return;
+    }
+    if (val === 'sqrt') {
+      try {
+        const num = parseFloat(calcExpr) || 0;
+        if (num < 0) { calcDisplay.value = 'Erreur'; return; }
+        const res = Math.sqrt(num);
+        calcDisplay.value = res;
+        calcExpr = String(res);
+      } catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === '%') {
+      try {
+        const num = parseFloat(calcExpr) || 0;
+        const res = num / 100;
+        calcDisplay.value = res;
+        calcExpr = String(res);
+      } catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === 'MC') { calcMemory = 0; hasMemory = false; return; }
+    if (val === 'MR') { calcDisplay.value = calcMemory; calcExpr = String(calcMemory); return; }
+    if (val === 'M+') { calcMemory += parseFloat(calcExpr) || 0; hasMemory = true; return; }
+    if (val === 'M-') { calcMemory -= parseFloat(calcExpr) || 0; hasMemory = true; return; }
+    calcExpr += val;
+    calcDisplay.value = calcExpr;
+  }
+
+  // ===== INIT =====
+  showPage(1);
+  document.querySelectorAll('.lignes-reponse, .trou, .trou-select, .trou-field').forEach(el => el.addEventListener('input', sauvegarderTout));
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.score-btn');
+    if (!btn) return;
+    const group = btn.closest('.score-btn-group');
+    if (!group) return;
+    setScore(group.dataset.qid, parseFloat(btn.dataset.pts), group.dataset.theme);
+  });
+</script>
+</body>
+</html>

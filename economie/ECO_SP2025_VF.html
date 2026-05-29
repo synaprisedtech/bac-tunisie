@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Synapris — Économie Bac 2025 | Session principale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
+  </script>
+  <style>
+    :root {
+      --dark: #1A2517;
+      --primary: #5B0E14;
+      --accent: #F1E194;
+      --cream: #F7F3E3;
+      --white: #FFFFFF;
+      --text-dark: #1A2517;
+      --text-light: rgba(241,225,148,0.90);
+      --text-muted: rgba(241,225,148,0.50);
+      --ok: #2D5A27;
+      --ko: #8B1A1A;
+      --mid: #C4860A;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.15);
+      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      --font-ui: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-arabic: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+      --font-a4: 'Times New Roman', Times, serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); font-size: 1.05rem; background: var(--cream); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+
+    #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, var(--cream), #f0ead6); padding: 20px; }
+    .login-header { text-align: center; max-width: 450px; margin-bottom: 24px; }
+    .login-header .epreuve-title { font-family: var(--font-ui); font-weight: 800; font-size: 1.2rem; color: var(--dark); margin-bottom: 12px; line-height: 1.3; }
+    .logo-placeholder-img { width: 120px; height: 120px; background: var(--primary); border-radius: 20px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--accent); box-shadow: var(--shadow); }
+    .login-video { width: 100%; max-width: 400px; border-radius: 16px; background: var(--dark); margin: 0 auto 24px; box-shadow: var(--shadow); }
+    .login-video video { width: 100%; border-radius: 16px; display: block; }
+    .login-card { background: var(--cream); padding: 32px 28px; border-radius: var(--radius-lg); max-width: 380px; width: 100%; box-shadow: var(--shadow-lg); text-align: center; margin-bottom: 24px; border: 1px solid rgba(26,37,23,0.08); }
+    .login-card .logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.8rem; color: var(--dark); margin-bottom: 2px; }
+    .login-card .slogan { font-size: 0.85rem; color: var(--dark); font-style: italic; margin-bottom: 20px; }
+    .login-card input { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: var(--radius); font-family: var(--font-body); font-size: 0.9rem; margin-bottom: 12px; outline: none; transition: var(--transition); }
+    .login-card input:focus { border-color: var(--dark); box-shadow: 0 0 0 2px rgba(26,37,23,0.15); }
+    .login-card .btn-login { width: 100%; padding: 12px; background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+    .login-card .btn-login:hover { background: #0e1a13; transform: translateY(-2px); }
+    .login-card .links { display: flex; justify-content: center; gap: 16px; margin-top: 14px; font-size: 0.75rem; }
+    .login-card .links a { color: rgba(26,37,23,0.5); text-decoration: none; transition: var(--transition); }
+    .login-card .links a:hover { color: var(--dark); }
+    .login-blocks { max-width: 450px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .login-block { background: var(--cream); border-radius: var(--radius); padding: 14px 10px; text-align: center; box-shadow: var(--shadow); transition: var(--transition); border: 1px solid rgba(26,37,23,0.06); }
+    .login-block:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .login-block .icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .login-block .arabic { font-size: 0.8rem; font-weight: 600; color: var(--dark); margin-bottom: 4px; font-family: var(--font-arabic); }
+    .login-block .french { font-size: 0.7rem; color: rgba(26,37,23,0.6); }
+
+    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--dark); padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .navbar-logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.2rem; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+    .navbar-steps { display: flex; align-items: center; gap: 16px; flex: 1; justify-content: center; max-width: 600px; }
+    .nav-step { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 10px 20px; border-radius: 50px; transition: var(--transition); font-size: 0.85rem; font-weight: 600; color: var(--text-muted); font-family: var(--font-body); }
+    .nav-step .icon { font-size: 1.6rem; }
+    .nav-step .label { font-size: 0.8rem; text-transform: none; letter-spacing: 0.04em; }
+    .nav-step.active { color: var(--accent); background: rgba(241,225,148,0.12); border: 1px solid var(--accent); box-shadow: 0 0 15px rgba(241,225,148,0.1); }
+    .nav-step:hover { color: var(--accent); transform: translateY(-2px); }
+    .navbar-score { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    .navbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--dark); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; margin-left: 8px; }
+
+    #calc-wrapper { position: fixed; bottom: 80px; right: 20px; z-index: 1500; }
+    #calc-toggle-btn { background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); padding: 10px 14px; font-size: 0.9rem; cursor: pointer; box-shadow: var(--shadow-lg); transition: var(--transition); display: flex; align-items: center; gap: 6px; animation: clignote 1.5s infinite; }
+    #calc-toggle-btn:hover { transform: scale(1.05); background: #0e1a13; }
+    @keyframes clignote { 0%, 100% { opacity: 1; background: var(--dark); } 50% { opacity: 0.6; background: var(--accent); color: var(--dark); } }
+    #calc-box { display: none; position: absolute; bottom: 60px; right: 0; background: var(--cream); border: 2px solid var(--dark); border-radius: var(--radius-lg); padding: 12px; width: 260px; box-shadow: var(--shadow-lg); }
+    #calc-box.open { display: block; }
+    #calc-display { width: 100%; padding: 6px; font-size: 1.2rem; text-align: right; border: 1px solid #ccc; border-radius: var(--radius); margin-bottom: 8px; font-family: var(--font-mono); }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .calc-grid button { padding: 8px 0; border: 1px solid #ccc; border-radius: var(--radius); background: #f9f9f9; font-size: 0.9rem; cursor: pointer; transition: var(--transition); font-weight: 600; min-height: 40px; }
+    .calc-grid button:hover { background: var(--dark); color: var(--accent); }
+    .calc-grid button.op { background: var(--primary); color: var(--accent); }
+    .calc-grid button.op:hover { background: #3a0a0d; }
+    .calc-grid button.fn { background: var(--cream); }
+    .calc-grid button.mem { background: var(--accent); }
+    .calc-close { position: absolute; top: -10px; right: -10px; background: var(--ko); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: 700; }
+
+    .main-wrap { display: none; max-width: 1100px; margin: 0 auto; padding: 20px 16px 80px; }
+    .screen-full { display: none; animation: fadeUp 0.4s ease-out; }
+    .screen-full.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .split-layout { display: none; flex-direction: column; min-height: calc(100vh - 60px); animation: fadeUp 0.4s ease-out; }
+    .split-layout.active { display: flex; }
+
+    #s0 .accueil-coach { background: var(--cream); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s0 .accueil-coach .coach-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; color: var(--accent); }
+    #s0 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    #s0 .grid-2 .item { background: var(--cream); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s0 .grid-2 .item .label { font-size: 0.6rem; text-transform: uppercase; color: var(--dark); font-weight: 700; }
+    #s0 .grid-2 .item .value { font-size: 1.2rem; font-weight: 700; color: var(--dark); }
+    #s0 .grid-2 .item .desc { font-size: 0.75rem; color: rgba(26,37,23,0.5); }
+    #s0 .verbes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin: 10px 0; }
+    #s0 .verbe-card { background: var(--cream); border: 1px solid rgba(26,37,23,0.08); border-radius: var(--radius); padding: 12px; text-align: center; cursor: pointer; transition: var(--transition); }
+    #s0 .verbe-card:hover { border-color: var(--dark); transform: translateY(-2px); }
+    #s0 .verbe-card.on { border-color: var(--primary); background: var(--primary); color: var(--accent); }
+    #s0 .verbe-card.on .name { color: var(--accent); }
+    #s0 .verbe-card .emoji { font-size: 1.3rem; margin-bottom: 4px; }
+    #s0 .verbe-card .name { font-family: var(--font-ui); font-weight: 700; font-size: 0.75rem; }
+    #s0 .verbe-detail { display: none; padding: 12px; background: rgba(26,37,23,0.03); border-radius: var(--radius); margin-top: 10px; font-size: 0.85rem; line-height: 1.6; border-left: 3px solid var(--dark); }
+    #s0 .verbe-detail.show { display: block; }
+    #s0 .recommandations { background: var(--cream); border-left: 5px solid var(--primary); padding: 16px 20px; border-radius: var(--radius); margin-top: 8px; border: 1px solid rgba(26,37,23,0.06); }
+
+    #s1 .cours-card { background: var(--cream); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 12px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s1 .cours-header { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; cursor: pointer; }
+    #s1 .cours-header .icon-box { width: 40px; height: 40px; border-radius: 10px; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; color: var(--accent); }
+    #s1 .cours-header .title { font-family: var(--font-ui); font-weight: 700; color: var(--dark); }
+    #s1 .cours-header .sub { font-size: 0.8rem; color: rgba(26,37,23,0.5); }
+    #s1 .cours-header .arrow { color: var(--dark); font-size: 0.8rem; }
+    #s1 .cours-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(26,37,23,0.06); font-size: 0.88rem; line-height: 1.7; color: rgba(26,37,23,0.7); }
+    #s1 .cours-detail.open { display: block; }
+    #s1 .cours-detail .piege { background: rgba(139,26,26,0.06); border-left: 3px solid var(--ko); padding: 6px 10px; margin: 6px 0; font-size: 0.85rem; }
+    #s1 .cours-detail .arabe { font-family: var(--font-arabic); font-size: 0.95rem; line-height: 1.6; margin-top: 8px; }
+    #s1 .cours-detail .formules { margin: 6px 0; padding: 8px; background: rgba(26,37,23,0.03); border-radius: 4px; font-family: var(--font-mono); font-size: 0.85rem; }
+    #s1 .cours-detail .exemple { margin: 6px 0; padding: 8px; background: rgba(45,90,39,0.06); border-left: 3px solid var(--ok); border-radius: 4px; }
+    #s1 .cours-detail .def-block { margin-bottom: 8px; }
+    #s1 .cours-detail .retenir { margin: 6px 0; padding: 8px; background: rgba(91,14,20,0.04); border-left: 3px solid var(--primary); border-radius: 4px; }
+
+    .entete-officiel { background: var(--cream); border: 2px solid var(--primary); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-a4); font-size: 12px; flex-wrap: wrap; gap: 12px; box-shadow: 0 2px 8px rgba(26,37,23,0.08); }
+    .entete-gauche { font-weight: 700; line-height: 1.5; font-size: 11px; color: var(--dark); }
+    .entete-centre { text-align: center; flex: 1; }
+    .entete-centre h1 { font-size: 16px; font-weight: 800; margin-bottom: 2px; color: var(--primary); }
+    .entete-centre .sous-titre { font-size: 12px; font-weight: 700; color: var(--primary); }
+    .entete-centre .details { font-size: 11px; margin-top: 4px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .entete-droit { text-align: right; font-size: 11px; }
+    .a4-page { display: none; font-family: var(--font-a4); padding: 0 0 60px 0; }
+    .a4-page.active { display: block; }
+    .titre-partie { font-weight: 700; font-size: 15px; border-bottom: 2px solid var(--primary); padding-bottom: 4px; margin: 16px 0 10px; color: var(--primary); }
+    .titre-section { font-weight: 700; font-size: 14px; margin: 14px 0 6px; color: var(--dark); }
+    .pts { font-weight: 400; font-size: 13px; color: var(--primary); }
+    .tableau-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; }
+    .tableau-off { width: 100%; border-collapse: collapse; font-family: var(--font-a4); font-size: 13px; min-width: 500px; }
+    .tableau-off th, .tableau-off td { border: 1px solid var(--text-dark); padding: 6px 8px; text-align: center; vertical-align: top; }
+    .tableau-off th { background: var(--cream); font-weight: 700; color: var(--dark); }
+    .tableau-off input[type="text"] { width: 100%; border: none; border-bottom: 1px dashed #aaa; background: transparent; font-family: var(--font-a4); font-size: 12px; padding: 2px 0; outline: none; text-align: center; color: var(--text-dark); }
+    .lignes-reponse { width: 100%; border: none; border-bottom: 1px dashed #999; padding: 6px 2px; font-family: var(--font-a4); font-size: 13px; background: transparent; resize: vertical; outline: none; min-height: 40px; margin: 6px 0 8px; color: var(--text-dark); }
+    .lignes-reponse.correct { border-bottom: 2px solid var(--ok); }
+    .lignes-reponse.wrong { border-bottom: 2px solid var(--ko); }
+    .q-item { margin-bottom: 16px; padding: 10px 14px; border: 1px solid rgba(26,37,23,0.1); border-radius: var(--radius); background: var(--cream); }
+    .q-item .q-num { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--dark); }
+    .nav-a4 { position: relative; top: 0; transform: none; background: var(--dark); border: 2px solid var(--accent); border-radius: 60px; padding: 8px 16px; display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 20px; width: 100%; min-width: 100%; z-index: 500; }
+    .nav-a4-btn { padding: 12px 28px; border: none; background: var(--primary); color: var(--accent); font-family: var(--font-ui); font-weight: 700; font-size: 1rem; border-radius: 50px; cursor: pointer; transition: var(--transition); }
+    .nav-a4-btn:hover { transform: scale(1.05); background: var(--dark); color: var(--accent); border: 1px solid var(--accent); }
+    .nav-a4-indicator { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--accent); min-width: 80px; text-align: center; }
+
+    .correction-box { display: none; margin-top: 12px; border: 2px solid var(--primary); border-radius: var(--radius); padding: 0; background: rgba(91,14,20,0.04); overflow: hidden; overflow-x: auto; max-width: 100%; }
+    .correction-box.open { display: block; }
+    .correction-row { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(91,14,20,0.1); padding: 6px 12px; }
+    .correction-row:last-child { border-bottom: none; }
+    .correction-contenu { width: 72%; font-size: 13px; line-height: 1.6; padding-right: 10px; }
+    .correction-bareme { width: 28%; font-size: 13px; font-weight: 700; color: var(--primary); padding-left: 10px; border-left: 1px solid rgba(91,14,20,0.1); text-align: right; }
+    .correction-title { font-weight: 700; font-size: 14px; color: var(--primary); margin-bottom: 6px; padding: 6px 12px; border-bottom: 1px solid rgba(91,14,20,0.1); background: rgba(91,14,20,0.08); }
+    .valider-btn { margin-top: 10px; padding: 6px 16px; background: var(--primary); color: var(--accent); border: none; border-radius: 6px; font-family: var(--font-ui); font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: var(--transition); display: none; }
+    .valider-btn.show { display: inline-flex; align-items: center; gap: 6px; }
+    .valider-btn:hover { background: #3a0a0d; transform: translateY(-1px); }
+    .score-display { display: none; margin-top: 8px; padding: 8px; background: rgba(241,225,148,0.12); border-left: 4px solid var(--accent); font-weight: 700; font-size: 0.9rem; }
+    .score-display.show { display: block; }
+
+    .score-btn-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .score-btn { padding: 6px 12px; border: 1px solid var(--primary); border-radius: 20px; background: transparent; color: var(--primary); font-family: var(--font-mono); font-size: 0.8rem; cursor: pointer; transition: var(--transition); min-height: 44px; min-width: 44px; }
+    .score-btn.selected { background: var(--primary); color: var(--accent); font-weight: 700; }
+    .score-btn:hover { background: var(--primary); color: var(--accent); }
+
+    .examen-mode .correction-box { display: none !important; }
+    .examen-mode .coach-btn { display: none !important; }
+    .examen-mode .valider-btn { display: none !important; }
+    .examen-mode .score-display { display: none !important; }
+    .examen-mode .field-modal { display: none !important; }
+    .examen-mode .tt-modal { display: none !important; }
+    .examen-mode .lignes-reponse { background: transparent; }
+    .examen-timer-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .examen-timer-box { flex: 1; min-width: 100px; background: var(--cream); border-radius: var(--radius); padding: 10px 14px; box-shadow: var(--shadow); text-align: center; border: 1px solid rgba(26,37,23,0.06); }
+    .examen-timer-box .label { font-size: 0.6rem; text-transform: uppercase; color: rgba(26,37,23,0.4); letter-spacing: 0.04em; }
+    .examen-timer-box .time { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 600; color: var(--dark); }
+    .examen-controls { text-align: center; margin-bottom: 16px; }
+    .examen-controls button { padding: 8px 24px; background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: var(--transition); }
+    .examen-controls button:hover { background: #0e1a13; }
+
+    .score-big { font-family: var(--font-ui); font-weight: 800; font-size: clamp(2.5rem, 5vw, 4rem); background: linear-gradient(135deg, var(--dark), #0e1a13); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+    .comp-bar { margin: 8px 0; }
+    .comp-head { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px; }
+    .comp-name { color: rgba(26,37,23,0.6); }
+    .comp-pct { font-family: var(--font-mono); color: var(--dark); }
+    .bar-track { height: 4px; background: rgba(26,37,23,0.08); border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--dark), var(--primary)); width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+    .bar-fill.green { background: linear-gradient(90deg, var(--dark), var(--ok)); }
+    .bar-fill.orange { background: linear-gradient(90deg, var(--dark), var(--mid)); }
+    .bar-fill.red { background: linear-gradient(90deg, var(--dark), var(--ko)); }
+    .conseil-box { padding: 12px; border-radius: var(--radius); margin-top: 8px; font-size: 0.85rem; line-height: 1.5; border-left: 4px solid var(--dark); background: rgba(26,37,23,0.03); }
+
+    .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: var(--dark); padding: 8px 0 env(safe-area-inset-bottom, 8px) 0; border-top: 1px solid rgba(241,225,148,0.2); justify-content: space-around; align-items: center; }
+    .bottom-nav .nav-step { flex: 1; padding: 6px 0; text-align: center; font-size: 0.6rem; color: rgba(241,225,148,0.5); cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bottom-nav .nav-step .icon { font-size: 1.3rem; }
+    .bottom-nav .nav-step span:not(.icon) { font-size: 0.65rem; }
+    .bottom-nav .nav-step.active { color: var(--accent); }
+
+    .tt-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .tt-modal.open { display: flex; }
+    .tt-modal-content { background: var(--cream); max-width: 400px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); position: relative; border: 1px solid rgba(26,37,23,0.06); }
+    .tt-modal-content .close-tt { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: rgba(26,37,23,0.3); }
+    .tt-modal-content .close-tt:hover { color: var(--dark); }
+    .tt-modal-content .tt-img { font-size: 2.5rem; text-align: center; margin-bottom: 8px; }
+    .tt-modal-content .tt-def { font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
+    .tt-modal-content .tt-def strong { color: var(--dark); }
+    .tt-modal-content .tt-audio { background: var(--dark); color: var(--accent); border: none; padding: 5px 14px; border-radius: 100px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: var(--transition); font-family: var(--font-body); }
+    .tt-modal-content .tt-audio:hover { background: #0e1a13; }
+    .tt-modal-content .tt-rappel { margin-top: 10px; padding: 8px 12px; background: rgba(26,37,23,0.05); border-radius: var(--radius); font-size: 0.85rem; color: rgba(26,37,23,0.7); }
+    .tt-modal-content .tt-rappel strong { color: var(--dark); }
+    .tt-modal-content .tt-arabe { font-family: var(--font-arabic); font-size: 0.9rem; line-height: 1.6; margin-top: 10px; padding: 8px 12px; background: rgba(26,37,23,0.04); border-radius: var(--radius); border-right: 3px solid var(--primary); text-align: right; display: none; }
+    .tt-trigger { display: inline; color: var(--dark); border-bottom: 1px dashed var(--dark); cursor: pointer; font-weight: 600; transition: var(--transition); }
+    .tt-trigger:hover { color: #0e1a13; border-color: #0e1a13; }
+
+    .field-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .field-modal.open { display: flex; }
+    .field-modal-content { background: var(--cream); max-width: 400px; width: 100%; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); position: relative; border: 1px solid rgba(26,37,23,0.06); }
+    .field-modal-content .close-field-modal { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: rgba(26,37,23,0.3); }
+    .field-modal-content .close-field-modal:hover { color: var(--dark); }
+    .field-modal-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; color: var(--dark); }
+    .field-modal-body { font-size: 0.9rem; line-height: 1.6; color: var(--text-dark); }
+    .field-modal-body .field-fr { font-weight: 600; }
+    .field-modal-body .field-ar { font-family: var(--font-arabic); margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(26,37,23,0.08); }
+
+    .coach-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+    .coach-modal.open { display: flex; }
+    .coach-modal-content { background: var(--dark); max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); color: var(--text-light); font-family: var(--font-body); box-shadow: var(--shadow-lg); border: 1px solid rgba(241,225,148,0.2); }
+    .coach-modal-content .close-modal { float: right; background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+    .coach-modal-content .close-modal:hover { color: var(--accent); }
+    .coach-modal-content .coach-title { font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; color: var(--accent); margin-bottom: 12px; }
+    .coach-modal-content .coach-msg { font-size: 0.88rem; line-height: 1.6; margin-bottom: 12px; }
+    .coach-modal-content .coach-msg strong { color: var(--accent); }
+    .coach-modal-content .coach-schema-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .coach-modal-content .coach-step { display: flex; gap: 10px; padding: 4px 0; font-size: 0.85rem; line-height: 1.5; }
+    .coach-modal-content .coach-step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(241,225,148,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .coach-modal-content .coach-piege { background: rgba(139,26,26,0.08); border-left: 3px solid var(--ko); padding: 8px 12px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; line-height: 1.5; margin: 10px 0; }
+    .coach-modal-content .coach-piege strong { color: var(--ko); }
+    .coach-modal-content .coach-bareme { padding: 8px 12px; background: rgba(241,225,148,0.1); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; font-weight: 600; color: var(--accent); margin-top: 10px; }
+    .coach-modal-content .coach-arabe { margin-top: 10px; padding: 8px; background: rgba(241,225,148,0.04); border-radius: 4px; text-align: right; font-family: var(--font-arabic); font-size: 0.85rem; line-height: 1.5; border-right: 3px solid var(--accent); }
+    .coach-btn { margin-top: 8px; padding: 4px 12px; background: transparent; border: 1px solid var(--dark); color: var(--dark); border-radius: 100px; font-family: var(--font-body); font-size: 0.7rem; cursor: pointer; transition: var(--transition); }
+    .coach-btn:hover { background: rgba(26,37,23,0.1); }
+
+    .guided-text { font-family: var(--font-a4); font-size: 13px; line-height: 2.2; margin: 8px 0; }
+    .trou { border: none; border-bottom: 2px solid var(--primary); background: transparent; font-family: var(--font-a4); font-size: 13px; width: 120px; text-align: center; padding: 2px 4px; outline: none; transition: var(--transition); color: var(--dark); }
+    .trou:focus { border-color: var(--dark); background: rgba(26,37,23,0.04); border-radius: 4px; }
+    .trou.correct { border-color: var(--ok); color: var(--ok); background: rgba(45,90,39,0.06); border-radius: 4px; }
+    .trou.wrong { border-color: var(--ko); color: var(--ko); background: rgba(139,26,26,0.06); border-radius: 4px; }
+    .trou-select { border: none; border-bottom: 2px solid var(--primary); background: transparent; font-family: var(--font-a4); font-size: 13px; padding: 2px 4px; color: var(--dark); cursor: pointer; outline: none; transition: var(--transition); }
+    .trou-select:focus { border-color: var(--dark); }
+    .trou-select.correct { border-color: var(--ok); color: var(--ok); }
+    .trou-select.wrong { border-color: var(--ko); color: var(--ko); }
+    .diss-bloc { background: var(--cream); border: 1px solid rgba(91,14,20,0.1); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; }
+    .diss-titre { font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; color: var(--primary); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(91,14,20,0.1); }
+
+    .trou-wrapper { position: relative; display: inline-block; }
+    .trou-field { display: inline-block; border-bottom: 2px solid var(--primary); min-width: 100px; padding: 2px 8px; cursor: pointer; font-family: var(--font-a4); font-size: 13px; color: var(--dark); text-align: center; transition: var(--transition); border-radius: 0; background: transparent; user-select: none; }
+    .trou-field:hover { background: rgba(91,14,20,0.04); border-radius: 4px 4px 0 0; }
+    .trou-field.filled { color: var(--dark); font-weight: 600; }
+    .trou-field.correct { border-color: var(--ok); color: var(--ok); background: rgba(45,90,39,0.06); border-radius: 4px; }
+    .trou-field.wrong { border-color: var(--ko); color: var(--ko); background: rgba(139,26,26,0.06); border-radius: 4px; }
+    .trou-dropdown { position: absolute; top: 100%; left: 0; min-width: 140px; background: var(--cream); border: 2px solid var(--primary); border-radius: 0 var(--radius) var(--radius) var(--radius); box-shadow: var(--shadow-lg); z-index: 9999; overflow: hidden; animation: fadeUp 0.15s ease-out; }
+    .trou-dropdown-item { padding: 8px 14px; font-family: var(--font-a4); font-size: 13px; cursor: pointer; color: var(--dark); transition: var(--transition); border-bottom: 1px solid rgba(26,37,23,0.06); }
+    .trou-dropdown-item:last-child { border-bottom: none; }
+    .trou-dropdown-item:hover { background: var(--primary); color: var(--accent); }
+
+    .qcm-item { margin-bottom: 16px; padding: 12px; background: rgba(26,37,23,0.02); border-radius: var(--radius); border-left: 3px solid var(--primary); }
+    .qcm-choices { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+    .qcm-choices label { display: flex; align-items: flex-start; gap: 8px; font-family: var(--font-a4); font-size: 13px; cursor: pointer; padding: 7px 10px; border-radius: 6px; border: 1px solid transparent; transition: var(--transition); line-height: 1.5; }
+    .qcm-choices label:hover { background: rgba(91,14,20,0.04); border-color: rgba(91,14,20,0.1); }
+    .qcm-choices input[type="radio"] { margin-top: 2px; accent-color: var(--primary); flex-shrink: 0; width: 16px; height: 16px; }
+    .qcm-choices label.qcm-correct { background: rgba(45,90,39,0.08); border-color: var(--ok); color: var(--ok); font-weight: 600; }
+    .qcm-choices label.qcm-wrong { background: rgba(139,26,26,0.08); border-color: var(--ko); color: var(--ko); text-decoration: line-through; }
+    .qcm-justif { display: none; margin-top: 8px; padding: 10px 12px; background: rgba(241,225,148,0.08); border-radius: var(--radius); border-top: 1px dashed rgba(91,14,20,0.15); }
+    .qcm-justif.show { display: block; }
+    .btn-verif-item { margin-top: 6px; padding: 5px 14px; background: var(--primary); color: var(--accent); border: none; border-radius: 20px; font-family: var(--font-ui); font-weight: 700; font-size: 0.75rem; cursor: pointer; transition: var(--transition); min-height: 36px; }
+    .btn-verif-item:hover { background: #3a0a0d; transform: translateY(-1px); }
+
+    @media (max-width: 900px) { .navbar-steps .nav-step .label { display: none; } .navbar-steps .nav-step { padding: 4px 6px; } .navbar-steps .nav-step .icon { font-size: 1.1rem; } .bottom-nav { display: flex; } .main-wrap { padding-bottom: 60px; } }
+    @media (max-width: 640px) {
+      .navbar { padding: 0 10px; height: 56px; }
+      .navbar-logo { font-size: 0.9rem; }
+      .navbar-score { font-size: 0.7rem; }
+      .navbar-avatar { width: 28px; height: 28px; font-size: 0.7rem; }
+      .navbar-steps { display: none; }
+      .nav-a4-btn { padding: 8px 16px; font-size: 0.8rem; }
+      .entete-officiel { flex-direction: column; align-items: center; text-align: center; padding: 12px; }
+      .correction-row { flex-direction: column; }
+      .correction-contenu { width: 100%; padding-right: 0; border-right: none; }
+      .correction-bareme { width: 100%; padding-left: 0; border-left: none; border-top: 1px solid rgba(91,14,20,0.1); padding-top: 6px; text-align: left; }
+      #calc-wrapper { bottom: 80px; right: 16px; left: auto; }
+      #calc-box { width: 240px; right: 0; left: auto; }
+      .q-item { overflow-x: auto; }
+      .tableau-wrapper { max-width: 100%; overflow-x: auto; }
+      .correction-box .tableau-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+      .correction-box .tableau-off { min-width: 500px; }
+      .score-btn { min-height: 44px; min-width: 44px; padding: 8px 14px; }
+      .qcm-choices { grid-template-columns: 1fr; }
+    }
+    @media print { .navbar, .bottom-nav, .nav-a4, .coach-btn, .valider-btn, .examen-controls, .login-screen, #login-screen, #calc-wrapper, .mode-toggle { display: none !important; } .split-layout { display: block !important; padding-bottom: 0 !important; } .correction-box { border: 1px solid #ccc !important; background: white !important; } }
+
+    #s0 .nav-a4, #s1 .nav-a4, #s4 .nav-a4 { display: none !important; }
+    #login-screen #calc-wrapper, #s0 #calc-wrapper { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-header">
+    <div class="logo-placeholder-img">🧠</div>
+    <div class="login-video"><video loop muted autoplay playsinline><source src="assets/intro.mp4" type="video/mp4"></video></div>
+  </div>
+  <div class="login-card">
+    <div class="logo">⚡ Synapris</div>
+    <div class="slogan">Éclairer l'intelligence</div>
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Mot de passe" />
+    <button class="btn-login" onclick="handleLogin()">Se connecter</button>
+    <div class="links">
+      <a href="#" onclick="alert('Inscription — bientôt disponible')">Créer un compte</a>
+      <a href="#" onclick="alert('Mot de passe oublié — bientôt disponible')">Mot de passe oublié</a>
+    </div>
+  </div>
+  <div class="login-blocks">
+    <div class="login-block"><div class="icon">🎯</div><div class="arabic">محاكاة الامتحان الرسمي</div><div class="french">Simulation officielle du bac – comme le jour J</div></div>
+    <div class="login-block"><div class="icon">🧑‍🏫</div><div class="arabic">الوضع الموجّه</div><div class="french">Mode guidé – correction officielle pas à pas</div></div>
+    <div class="login-block"><div class="icon">⏱️</div><div class="arabic">الوضع الامتحان</div><div class="french">Mode examen – chrono et conditions réelles</div></div>
+    <div class="login-block"><div class="icon">💾</div><div class="arabic">حفظ التقدّم</div><div class="french">Sauvegarde automatique – reprends où tu t'es arrêté</div></div>
+  </div>
+</div>
+
+<nav class="navbar" id="navbar" style="display:none;">
+  <div class="navbar-logo">🧠 Synapris</div>
+  <div class="navbar-steps">
+    <div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span class="label">Accueil</span></div>
+    <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span class="label">Cours</span></div>
+    <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span class="label">Guidé</span></div>
+    <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span class="label">Examen</span></div>
+    <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span class="label">Bilan</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="navbar-score" id="hdr-score">0 / 20</span>
+    <div class="navbar-avatar" id="avatar">👤</div>
+  </div>
+</nav>
+
+<main class="main-wrap" id="main-wrap" style="display:none;">
+
+  <div class="screen-full active" id="s0">
+    <div style="text-align:center;padding:4px 0 16px;">
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">📅 Jour 1 / 10</div>
+      <h1 style="font-family:var(--font-ui);font-weight:800;font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--dark);line-height:1.1;">Économie<br><span style="color:var(--primary);">Bac 2025 – Session Principale</span></h1>
+      <p style="font-size:0.85rem;color:rgba(26,37,23,0.5);margin-top:4px;">Épreuve officielle simulée — Section Économie &amp; Gestion</p>
+    </div>
+    <div class="accueil-coach">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div class="coach-avatar">🧑‍🏫</div>
+        <div>
+          <div style="font-family:var(--font-ui);font-weight:700;font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Ton Coach Synapris</div>
+          <div style="font-size:0.85rem;line-height:1.6;color:rgba(26,37,23,0.7);">Tu vas simuler l'épreuve officielle du baccalauréat 2025. Le layout que tu vois est <strong style="color:var(--dark);">identique à l'épreuve réelle</strong>. Je suis là pour t'aider à <strong style="color:var(--dark);">construire ton raisonnement</strong> — jamais te donner la réponse.</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="item"><div class="label">Partie 1</div><div class="value">10 pts</div><div class="desc">4 items QCM + Étude de cas (utilité)</div></div>
+      <div class="item"><div class="label">Partie 2</div><div class="value">10 pts</div><div class="desc">Dissertation économique (Croissance &amp; Environnement)</div></div>
+      <div class="item"><div class="label">Durée</div><div class="value">3h</div><div class="desc">Coefficient 3</div></div>
+      <div class="item"><div class="label">Format</div><div class="value">5 pages</div><div class="desc">Navigation ← → par page</div></div>
+    </div>
+    <div style="background:var(--cream);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-family:var(--font-ui);font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:10px;">🎯 Verbes d'action — Économie</div>
+      <p style="font-size:0.8rem;color:rgba(26,37,23,0.5);margin-bottom:10px;">Clique sur chaque verbe pour comprendre ce qu'attend le correcteur.</p>
+      <div class="verbes-grid">
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-identifier')"><div class="emoji">🔍</div><div class="name">IDENTIFIER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-distinguer')"><div class="emoji">⚖️</div><div class="name">DISTINGUER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-caracteriser')"><div class="emoji">📝</div><div class="name">CARACTÉRISER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-analyser')"><div class="emoji">📊</div><div class="name">ANALYSER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-justifier')"><div class="emoji">✍️</div><div class="name">JUSTIFIER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-disserter')"><div class="emoji">📖</div><div class="name">DISSERTER</div></div>
+      </div>
+      <div id="v-identifier" class="verbe-detail"><strong>IDENTIFIER</strong> = Nommer et définir précisément le concept ou le mécanisme.<br><span style="color:var(--ko);">⚠️</span> Ne pas confondre avec "décrire".</div>
+      <div id="v-distinguer" class="verbe-detail"><strong>DISTINGUER</strong> = Montrer les différences entre deux notions (amont vs aval, croissance vs développement).<br><span style="color:var(--ko);">⚠️</span> Toujours préciser les critères de distinction.</div>
+      <div id="v-caracteriser" class="verbe-detail"><strong>CARACTÉRISER</strong> = Décrire les traits essentiels d'un phénomène ou d'une structure.<br><span style="color:var(--ko);">⚠️</span> Ne pas se limiter à une énumération.</div>
+      <div id="v-analyser" class="verbe-detail"><strong>ANALYSER</strong> = Décomposer + interpréter les éléments d'un document ou d'une situation.<br><span style="color:var(--ko);">⚠️</span> Décrire sans interpréter = 0 pt.</div>
+      <div id="v-justifier" class="verbe-detail"><strong>JUSTIFIER</strong> = Prouver par des arguments + données chiffrées ou des documents.<br><span style="color:var(--ko);">⚠️</span> Affirmer sans justifier = non recevable.</div>
+      <div id="v-disserter" class="verbe-detail"><strong>DISSERTER</strong> = Construire un raisonnement structuré : introduction, développement (2 parties), conclusion.<br><span style="color:var(--ko);">⚠️</span> Le plan doit être annoncé en introduction.</div>
+    </div>
+    <div class="recommandations">
+      <h3 style="color:var(--dark);font-weight:800;font-size:0.9rem;">📌 Recommandations officielles – Épreuve d'Économie</h3>
+      <ul style="list-style:none;padding:0;line-height:1.8;font-size:0.85rem;">
+        <li>✅ Lire attentivement chaque question.</li>
+        <li>✅ Commencer par la question la plus facile.</li>
+        <li>✅ Pour la dissertation : dégager la problématique.</li>
+        <li>✅ Rédiger introduction, développement (2 parties), conclusion.</li>
+        <li>✅ Utiliser les documents fournis.</li>
+        <li>✅ Présenter les calculs sur la copie.</li>
+        <li>✅ Soigner la présentation et l'écriture.</li>
+        <li>✅ Vérifier les unités (millions de dinars, pourcentage, etc.).</li>
+      </ul>
+      <div style="margin-top:12px;text-align:right;font-style:italic;color:var(--dark);font-weight:600;">Bon courage ! 🍀</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+      <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:10px 28px;font-size:0.85rem;border:none;" onclick="goTo(1)">Commencer →</button>
+    </div>
+  </div>
+    <!-- COURS -->
+  <div class="screen-full" id="s1">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 2 — Rappel cours</div>
+    <h2 style="font-family:var(--font-ui);font-weight:800;font-size:1.4rem;color:var(--dark);margin-bottom:4px;">Ce que tu dois savoir</h2>
+    <p style="font-size:0.85rem;color:rgba(26,37,23,0.5);margin-bottom:16px;">Notions ciblées pour <em>cette</em> épreuve uniquement</p>
+
+    <!-- Fiche 1 : Microéconomie -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🛒</div>
+        <div><div class="title">Comportement du consommateur</div><div class="sub">Utilité, TMS, panier d'équilibre</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>La <span class="tt-trigger" onclick="openTT('utilite')">théorie de l'utilité</span> explique comment un consommateur choisit le <span class="tt-trigger" onclick="openTT('panier-equilibre')">panier d'équilibre</span> qui maximise sa satisfaction sous contrainte de revenu.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> نظرية المنفعة تشرح كيف يختار المستهلك سلّة التوازن التي تعظّم إشباعه في حدود دخله.</div>
+        </div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • U(x,y) = fonction d'utilité du consommateur<br>
+          • <span class="tt-trigger" onclick="openTT('tms')">TMS</span> = Umx / Umy = (∂U/∂x) / (∂U/∂y)<br>
+          • À l'équilibre : TMS = Px / Py<br>
+          • Contrainte budgétaire : R = x.Px + y.Py<br>
+          • Panier : résoudre TMS = Px/Py + R = xPx+yPy</div>
+        <div class="exemple"><strong>Exemple (sujet 2025) :</strong><br>
+          U(x,y) = 10 . x¹/⁵ . y⁴/⁵<br>
+          Px=10, Py=20, R=200 → TMS = y/4x = 10/20 = 1/2 → y=2x<br>
+          x* = 4 kg, y* = 8 kg, U* = 80 . 2⁴/⁵</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> TMS = Umx/Umy (et non Umy/Umx). Toujours vérifier R = x*.Px + y*.Py.</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • Maximiser U sous contrainte = TMS = Px/Py<br>
+          • Panier hausse prix → substitution vers le bien moins cher<br>
+          • Hausse d'un seul prix ≠ <span class="tt-trigger" onclick="openTT('inflation')">inflation</span></div>
+      </div>
+    </div>
+
+    <!-- Fiche 2 : DIPP -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🌐</div>
+        <div><div class="title"><span class="tt-trigger" onclick="openTT('dipp')">DIPP</span> et échanges internationaux</div><div class="sub">Décomposition internationale du processus productif</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>La <span class="tt-trigger" onclick="openTT('dipp')">DIPP</span> consiste à scinder la production d'un bien à l'échelle mondiale. Le processus est divisé en sous-ensembles réalisés chacun dans un pays différent par une filiale atelier.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> التفكيك الدولي للعملية الإنتاجية يتمثل في تجزئة إنتاج سلعة على المستوى العالمي بين فروع متخصصة في مكونات مختلفة.</div>
+        </div>
+        <div class="formules"><strong>Mécanisme :</strong><br>
+          • Filiale atelier → spécialisée dans 1 composant<br>
+          • Échanges générés = échanges intra-firmes<br>
+          • Flux : firme mère ↔ filiales (biens équipement, pièces détachées, composants)</div>
+        <div class="exemple"><strong>Exemple :</strong> Un constructeur automobile (firme mère France) a une filiale en Tunisie pour les câblages, une autre au Maroc pour les sièges. Les composants s'échangent entre filiales → échanges intra-firmes.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Échanges intra-firmes ≠ échanges internationaux classiques. Ils se font DANS l'espace de la multinationale.</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • DIPP = fragmentation mondiale de la production<br>
+          • Génère des échanges intra-firmes<br>
+          • Prend de l'importance dans le commerce mondial</div>
+      </div>
+    </div>
+
+    <!-- Fiche 3 : Concentration -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🏢</div>
+        <div><div class="title"><span class="tt-trigger" onclick="openTT('concentration-verticale')">Concentration verticale</span></div><div class="sub">Amont / Aval — Distinction</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>La <span class="tt-trigger" onclick="openTT('concentration-verticale')">concentration verticale</span> est le regroupement d'entreprises situées à des stades DIFFÉRENTS de la même filière de production. En amont (fournisseurs) ou en aval (clients).</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> التركز الرأسي هو تجميع مؤسسات في مراحل مختلفة من نفس سلسلة الإنتاج. صعوداً (موردون) أو نزولاً (عملاء).</div>
+        </div>
+        <div class="formules"><strong>Distinction :</strong><br>
+          • <strong>AMONT</strong> : intègre fournisseurs → Objectif : maîtriser approvisionnements<br>
+          • <strong>AVAL</strong> : intègre clients → Objectif : maîtriser conditions d'écoulement</div>
+        <div class="exemple"><strong>Exemple :</strong> Amont : constructeur auto rachète fabricant pneus. Aval : constructeur auto rachète réseau garages.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Ne pas confondre avec concentration horizontale (même stade) ni avec diversification (filières différentes).</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • Amont = maîtriser les entrées<br>
+          • Aval = maîtriser les sorties<br>
+          • Les deux → réduire dépendance fournisseurs/clients</div>
+      </div>
+    </div>
+
+    <!-- Fiche 4 : Croissance -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📈</div>
+        <div><div class="title"><span class="tt-trigger" onclick="openTT('croissance-economique')">Croissance économique</span></div><div class="sub">PIB, TCA, PIB réel par habitant</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>La <span class="tt-trigger" onclick="openTT('croissance-economique')">croissance économique</span> est l'augmentation durable de la production de biens et services, mesurée par le <span class="tt-trigger" onclick="openTT('pib')">PIB</span>.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> النمو الاقتصادي هو الزيادة المستدامة في الإنتاج ويقاس بالناتج المحلي الإجمالي الحقيقي.</div>
+        </div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • TCA du PIB = ((PIBn − PIBn-1) / PIBn-1) × 100<br>
+          • Coefficient multiplicateur = PIBn / PIBn-1<br>
+          • TCA = (CM − 1) × 100<br>
+          • PIB réel par habitant : TCA PIB réel/hab = TCA PIB réel − TCA population<br>
+          • <span class="tt-trigger" onclick="openTT('fbcf')">FBCF</span> = (FBCF% × PIB nominal) / 100</div>
+        <div class="exemple"><strong>Exemple (sujet 2025) :</strong><br>
+          CM PIB réel = 1,043 → TCA = 4,3%<br>
+          Population +0,644% → TCA PIB réel/hab = 4,3 − 0,644 = 3,65%<br>
+          → Amélioration du niveau de vie de 3,65%<br>
+          Sources : <span class="tt-trigger" onclick="openTT('pgf')">PGF</span> (progrès technique) + Accumulation des facteurs K et L</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> PIB nominal ≠ PIB réel. Croissance ≠ développement (IDH).</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • TCA = (CM−1)×100<br>
+          • PIB réel/hab = mesure niveau de vie<br>
+          • PGF + facteurs = sources de croissance</div>
+      </div>
+    </div>
+
+    <!-- Fiche 5 : Environnement et croissance -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🌍</div>
+        <div><div class="title">Environnement et croissance</div><div class="sub">Croissance verte, économie circulaire</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>La <span class="tt-trigger" onclick="openTT('croissance-economique')">croissance économique</span> peut menacer l'environnement naturel (pollution, épuisement ressources) mais une <span class="tt-trigger" onclick="openTT('croissance-verte')">croissance verte</span> et l'<span class="tt-trigger" onclick="openTT('economie-circulaire')">économie circulaire</span> permettent de le préserver.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> النمو الاقتصادي قد يهدد البيئة (تلوث، نفاد موارد) لكن النمو الأخضر والاقتصاد الدائري يمكنهما الحفاظ عليها.</div>
+        </div>
+        <div class="formules"><strong>Mécanismes de dégradation :</strong><br>
+          • Pollution eau, air, sol<br>
+          • Épuisement ressources non renouvelables<br>
+          • Déforestation, désertification, crise climatique, perte biodiversité</div>
+        <div class="exemple"><strong>Exemple (sujet 2025 — doc 1) :</strong> Depuis 2000 : perte 10% couvert forestier, pollution atmosphérique réduit vie de 2,2 ans, 40% terres dégradées.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Croissance peut menacer ET préserver l'environnement → ne pas répondre de façon absolue. Plan dialectique (oui / mais).</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • Croissance traditionnelle → dégradation<br>
+          • Croissance verte + éco-circulaire → préservation<br>
+          • <span class="tt-trigger" onclick="openTT('developpement-durable')">Développement durable</span> = équilibre éco/soc/envir</div>
+      </div>
+    </div>
+
+    <!-- Fiche 6 : Indicateurs -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📊</div>
+        <div><div class="title">Indicateurs économiques</div><div class="sub"><span class="tt-trigger" onclick="openTT('solde-commercial')">Solde commercial</span>, FBCF, PIB</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>Les indicateurs économiques servent à évaluer la performance d'une économie.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> المؤشرات الاقتصادية تهدف إلى تقييم أداء الاقتصاد.</div>
+        </div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • <span class="tt-trigger" onclick="openTT('solde-commercial')">Solde commercial</span> = Exportations - Importations<br>
+          • <span class="tt-trigger" onclick="openTT('fbcf')">FBCF</span> = (FBCF% × PIB nominal) / 100<br>
+          • Taux de croissance du PIB = ((PIBn - PIBn-1) / PIBn-1) × 100</div>
+        <div class="exemple"><strong>Exemple (sujet 2025) :</strong><br>
+          FBCF 2022 = (18 × 44 580) / 100 = 8 024,4 M$<br>
+          FBCF 2023 = (16 × 48 530) / 100 = 7 764,8 M$<br>
+          TCA FBCF = ((7 764,8 − 8 024,4) / 8 024,4) × 100 = −3,23%</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Un déficit commercial n'est pas toujours un signe de faiblesse — tout dépend de la nature des importations.</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • Solde commercial = Exports − Imports<br>
+          • FBCF mesure l'investissement<br>
+          • Toujours vérifier les unités (millions, %, points)</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,37,23,0.06);">
+      <button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="goTo(0)">← Accueil</button>
+      <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:10px 28px;font-size:0.85rem;border:none;" onclick="goTo(2)">Mode Guidé →</button>
+    </div>
+  </div>
+
+  <!-- GUIDÉ -->
+  <div class="split-layout" id="s2">
+    <div class="nav-a4">
+      <button class="nav-a4-btn" onclick="pgPrev()">← Précédent</button>
+      <span class="nav-a4-indicator" id="pg-indicator">Page 1 / 5</span>
+      <button class="nav-a4-btn" onclick="pgNext()">Suivant →</button>
+    </div>
+
+    <div style="padding:0 16px 20px; max-width:980px; margin:0 auto; width:100%;">
+      <div class="entete-officiel">
+        <div class="entete-gauche">République Tunisienne<br>Ministère de l'Éducation</div>
+        <div class="entete-centre">
+          <h1>EXAMEN DU BACCALAURÉAT</h1>
+          <div class="sous-titre">SESSION 2025 — Session principale</div>
+          <div class="details"><span>Épreuve : <strong>Économie</strong></span><span>Section : <strong>Économie &amp; Gestion</strong></span><span>Durée : <strong>3h</strong></span><span>Coefficient : <strong>3</strong></span></div>
+        </div>
+        <div class="entete-droit">N° d'inscription :<br><span style="font-family:var(--font-mono);">[ ][ ][ ][ ][ ][ ][ ][ ]</span></div>
+      </div>
+
+      <!-- PAGE 1 – Q1 QCM -->
+      <div class="a4-page active" id="pg1">
+        <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(10 points)</span></div>
+        <div class="q-item" data-qid="q1">
+          <div class="q-num">Question 1 (4 points)</div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            Pour chacun des items suivants, choisissez la proposition correcte puis justifiez votre réponse.
+            Reportez sur votre copie le numéro de l'item et indiquez la lettre correspondante à la proposition correcte.
+          </div>
+
+          <!-- Item 1 -->
+          <div class="qcm-item">
+            <p><strong>Item 1 :</strong> Selon le rapport annuel de la BCT 2022 et les statistiques de l'INS, le <span class="tt-trigger" onclick="openTT('pib')">PIB</span> réel de la Tunisie a été multiplié par 1,043 et la population a augmenté de 0,644 %, entre 2020 et 2021. Ceci se traduit par :</p>
+            <div class="qcm-choices">
+              <label><input type="radio" name="q1-1" value="a" /> a- Une dégradation du niveau de vie moyen de la population de 0,60 %.</label>
+              <label><input type="radio" name="q1-1" value="b" /> b- Une amélioration du niveau de vie moyen de la population de 0,39 %.</label>
+              <label><input type="radio" name="q1-1" value="c" /> c- Une dégradation du niveau de vie moyen de la population de 3,65 %.</label>
+              <label><input type="radio" name="q1-1" value="d" /> d- Une amélioration du niveau de vie moyen de la population de 3,65 %.</label>
+            </div>
+            <button class="btn-verif-item" onclick="verifierItem('q1-1','d')">✓ Vérifier</button>
+            <div class="qcm-justif">
+              <p><strong>Justification :</strong> Coefficient multiplicateur (CM) du PIB réel = 1,043. TCA du PIB réel = (CM − 1) × 100 = 4,3 %. PIB réel par habitant = TCA PIB réel − TCA population = 4,3 % − 0,644 % = <strong>3,65 %</strong>. → Amélioration du niveau de vie de 3,65 %.</p>
+              <div class="guided-text">
+                <p>CM du PIB réel = <span class="trou-wrapper"><span class="trou-field" data-answer="1.043" data-choices="1.043,0.043,1.006,0.006" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> ; TCA du PIB réel = <span class="trou-wrapper"><span class="trou-field" data-answer="4.3" data-choices="4.3,0.43,1.3,3.65" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> %.<br>
+                PIB réel par habitant = TCA PIB réel – TCA population = <span class="trou-wrapper"><span class="trou-field" data-answer="3.65" data-choices="3.65,0.39,0.60,4.3" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> %.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="qcm-item">
+            <p><strong>Item 2 :</strong> Le tableau suivant illustre l'évolution du PIB nominal et de la <span class="tt-trigger" onclick="openTT('fbcf')">formation brute du capital fixe (FBCF)</span> en pourcentage du PIB entre 2022 et 2023.</p>
+            <div style="font-size:12px; margin:4px 0;">
+              <table style="border-collapse:collapse;width:100%;"><tr><th>Années</th><th>PIB aux prix courants (en millions de dollars US)</th><th>FBCF en % du PIB</th></tr>
+              <tr><td>2022</td><td>44 580</td><td>18</td></tr>
+              <tr><td>2023</td><td>48 530</td><td>16</td></tr></table>
+            </div>
+            <p style="font-size:11px;">Source : Banque Mondiale</p>
+            <p>Entre 2022 et 2023, la FBCF en Tunisie a :</p>
+            <div class="qcm-choices">
+              <label><input type="radio" name="q1-2" value="a" /> a- diminué de 2 %</label>
+              <label><input type="radio" name="q1-2" value="b" /> b- diminué de 11,11 %</label>
+              <label><input type="radio" name="q1-2" value="c" /> c- diminué de 12,50 %</label>
+              <label><input type="radio" name="q1-2" value="d" /> d- diminué de 3,23 %</label>
+            </div>
+            <button class="btn-verif-item" onclick="verifierItem('q1-2','d')">✓ Vérifier</button>
+            <div class="qcm-justif">
+              <p><strong>Justification :</strong> FBCF = (FBCF en % du PIB × PIB nominal) / 100. FBCF 2022 = (18 × 44 580) / 100 = 8 024,4 M$. FBCF 2023 = (16 × 48 530) / 100 = 7 764,8 M$. TCA FBCF = ((7 764,8 − 8 024,4) / 8 024,4) × 100 = <strong>−3,23 %</strong>.</p>
+              <div class="guided-text">
+                <p>FBCF 2022 = <span class="trou-wrapper"><span class="trou-field" data-answer="8024.4" data-choices="8024.4,44580,48530,18" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> ; FBCF 2023 = <span class="trou-wrapper"><span class="trou-field" data-answer="7764.8" data-choices="7764.8,8024.4,48530,16" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.<br>
+                TCA FBCF = <span class="trou-wrapper"><span class="trou-field" data-answer="-3.23" data-choices="-3.23,-2,-11.11,-12.50" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> %.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="qcm-item">
+            <p><strong>Item 3 :</strong> Pour produire 8 articles sanitaires, l'entreprise « Succès » utilise la fonction de production de la forme : Q (L, K) = 2 . L²/³ . K¹/³. L'équation de la <span class="tt-trigger" onclick="openTT('isoquant')">courbe d'isoquant</span> est :</p>
+            <div class="qcm-choices">
+              <label><input type="radio" name="q1-3" value="a" /> a- K = 64 / L²</label>
+              <label><input type="radio" name="q1-3" value="b" /> b- K = 46 / L²</label>
+              <label><input type="radio" name="q1-3" value="c" /> c- K = 64 / L²/³</label>
+              <label><input type="radio" name="q1-3" value="d" /> d- K = 46 / L²/³</label>
+            </div>
+            <button class="btn-verif-item" onclick="verifierItem('q1-3','a')">✓ Vérifier</button>
+            <div class="qcm-justif">
+              <p><strong>Justification :</strong> 2 . L²/³ . K¹/³ = 8 → K¹/³ = 4 / L²/³ → K = <strong>64 / L²</strong>.</p>
+              <div class="guided-text">
+                <p>Q = 8 → 2 . L²/³ . K¹/³ = 8 → K¹/³ = <span class="trou-wrapper"><span class="trou-field" data-answer="4/L²/³" data-choices="4/L²/³,8/L²/³,2/L²/³,16/L²/³" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> → K = <span class="trou-wrapper"><span class="trou-field" data-answer="64/L²" data-choices="64/L²,46/L²,64/L²/³,46/L²/³" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="qcm-item">
+            <p><strong>Item 4 :</strong> Selon les données de l'OCDE en Allemagne, l'accroissement des richesses créées de 2 % en 2016 est expliqué à hauteur de 60 % par la <span class="tt-trigger" onclick="openTT('pgf')">productivité globale des facteurs (PGF)</span> ; alors la contribution de l'accumulation des facteurs de production à cette croissance économique est égale à :</p>
+            <div class="qcm-choices">
+              <label><input type="radio" name="q1-4" value="a" /> a- 1,2 point de %</label>
+              <label><input type="radio" name="q1-4" value="b" /> b- 0,8 point de %</label>
+              <label><input type="radio" name="q1-4" value="c" /> c- 0,6 point de %</label>
+              <label><input type="radio" name="q1-4" value="d" /> d- 0,4 point de %</label>
+            </div>
+            <button class="btn-verif-item" onclick="verifierItem('q1-4','b')">✓ Vérifier</button>
+            <div class="qcm-justif">
+              <p><strong>Justification :</strong> 60 % de 2 % provient de la PGF = 1,2 point de %. Le reste (40 % × 2 %) = <strong>0,8 point de %</strong> est expliqué par l'accumulation des facteurs de production.</p>
+              <div class="guided-text">
+                <p>Part PGF = 60 % × 2 % = <span class="trou-wrapper"><span class="trou-field" data-answer="1.2" data-choices="1.2,0.8,0.6,0.4" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> point.<br>
+                Part facteurs = 2 % – 1,2 % = <span class="trou-wrapper"><span class="trou-field" data-answer="0.8" data-choices="0.8,1.2,0.6,0.4" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> point.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q1')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q1')">Valider les justifications →</button>
+          </div>
+
+          <div class="correction-box" id="corr-q1">
+            <div class="correction-title">📋 Correction officielle — Q1 (4 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>Item 1 : Réponse d — Une amélioration du niveau de vie moyen de la population de 3,65 %.</strong><br>
+                CM du PIB réel = 1,043 ; TCA du PIB réel = (1,043 − 1) × 100 = 4,3 %. PIB réel/hab = 4,3 − 0,644 = 3,65 %.<br>
+                <strong>Item 2 : Réponse d — diminué de 3,23 %.</strong><br>
+                FBCF 2022 = (18 × 44 580) / 100 = 8 024,4 ; FBCF 2023 = (16 × 48 530) / 100 = 7 764,8 ; TCA = −3,23 %.<br>
+                <strong>Item 3 : Réponse a — K = 64 / L².</strong><br>
+                2 . L²/³ . K¹/³ = 8 → K¹/³ = 4 / L²/³ → K = 64 / L².<br>
+                <strong>Item 4 : Réponse b — 0,8 point de %.</strong><br>
+                60 % de 2 % = 1,2 point de % (PGF). Reste : 2 − 1,2 = 0,8 point de % (facteurs de production).
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème :</strong><br>
+                • Item 1 : 1 pt (0,5 choix + 0,5 justif)<br>
+                • Item 2 : 1 pt (0,5 choix + 0,5 justif)<br>
+                • Item 3 : 1 pt (0,5 choix + 0,5 justif)<br>
+                • Item 4 : 1 pt (0,5 choix + 0,5 justif)
+              </div>
+            </div>
+            <div style="padding:8px 12px; border-top:1px solid rgba(91,14,20,0.1);">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">🎯 Ma note :</div>
+              <div class="score-btn-group" data-qid="q1" data-theme="partie1" data-max="4">
+                <button class="score-btn" data-pts="0">0</button>
+                <button class="score-btn" data-pts="0.5">0,5</button>
+                <button class="score-btn" data-pts="1">1</button>
+                <button class="score-btn" data-pts="1.5">1,5</button>
+                <button class="score-btn" data-pts="2">2</button>
+                <button class="score-btn" data-pts="2.5">2,5</button>
+                <button class="score-btn" data-pts="3">3</button>
+                <button class="score-btn" data-pts="3.5">3,5</button>
+                <button class="score-btn" data-pts="4">4</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q1"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 2 – Q2 (1-2) -->
+      <div class="a4-page" id="pg2">
+        <div class="q-item" data-qid="q2-1">
+          <div class="q-num">Question 2 (6 points)</div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            « Youssef » désire consommer du poulet désigné par « X » et du poisson désigné par « Y ». La fonction de son <span class="tt-trigger" onclick="openTT('utilite')">utilité</span> est de la forme : U(x,y) = 10 . x¹/⁵ . y⁴/⁵. Le prix d'un kg de poulet est Px et celui d'un kg de poisson est Py. Chaque mois, « Youssef » consacre un budget « R » qu'il affecte totalement à l'achat de poulet et de poisson.
+          </div>
+          <div style="text-align:center; margin:8px 0;">
+            <img src="assets/courbes-demande.png" alt="Courbes de demande de poulet et de poisson" style="max-width:100%; border-radius:var(--radius); border:1px solid rgba(26,37,23,0.1);" />
+          </div>
+
+          <div class="guided-text">
+            <p><strong>1- Dégagez les prix des biens X et Y dans le cas où « Youssef » maximise sa satisfaction par l'achat de 4 kg de poulet et 8 kg de poisson et en déduire le budget mensuel nécessaire :</strong></p>
+            <p>Px = <span class="trou-wrapper"><span class="trou-field" data-answer="10" data-choices="10,12.5,20,15" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> DT ; Py = <span class="trou-wrapper"><span class="trou-field" data-answer="20" data-choices="20,10,15,25" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> DT ; R = <span class="trou-wrapper"><span class="trou-field" data-answer="200" data-choices="200,160,240,180" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> DT.</p>
+            <p><strong>2- Déterminez analytiquement le <span class="tt-trigger" onclick="openTT('panier-equilibre')">panier d'équilibre</span> de « Youssef » ainsi que la valeur de son utilité maximale, dans le cas où Px = 10 DT et Py = 20 DT :</strong></p>
+            <p><span class="tt-trigger" onclick="openTT('tms')">TMS</span> = y / 4x ; à l'équilibre TMS = Px/Py = <span class="trou-wrapper"><span class="trou-field" data-answer="1/2" data-choices="1/2,1/4,2,1" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> → y = 2x.<br>
+            R = 10x + 20(2x) = 50x → x* = <span class="trou-wrapper"><span class="trou-field" data-answer="4" data-choices="4,2,6,8" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> kg, y* = <span class="trou-wrapper"><span class="trou-field" data-answer="8" data-choices="8,4,12,16" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> kg.<br>
+            U* = <span class="trou-wrapper"><span class="trou-field" data-answer="80.2⁴/⁵" data-choices="80.2⁴/⁵,40.2⁴/⁵,160.2⁴/⁵,20.2⁴/⁵" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q2-1')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q2-1')">Valider →</button>
+          </div>
+          <div class="correction-box" id="corr-q2-1">
+            <div class="correction-title">📋 Correction officielle — Q2 (1-2) (3 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>1-</strong> En se référant à la courbe de demande de poulet, au point A, « Youssef » choisit de consommer 4 kg de poulet au prix de 10 DT le kg. En se référant à la courbe de demande de poisson, au point C, « Youssef » choisit de consommer 8 kg de poisson au prix de 20 DT le kg. Ainsi, R = (4 × 10) + (8 × 20) = 40 + 160 = <strong>200 DT</strong>.<br>
+                <strong>2-</strong> TMSxy = Umx / Umy = y / 4x. À l'équilibre, TMSxy = Px / Py = 10/20 = 1/2. Ainsi, y / 4x = 1/2, donc <strong>y = 2x</strong>. R = 10x + 20(2x) = 50x = 200 → <strong>x* = 4 kg</strong>, <strong>y* = 8 kg</strong>. U = 10 . (4)¹/⁵ . (8)⁴/⁵ = 10 . 4 . 2⁴/⁵ = <strong>80 . 2⁴/⁵</strong>.
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème :</strong><br>
+                • Q2-1 : 1,5 pt<br>
+                • Q2-2 : 1,5 pt
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q2-1"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 3 – Q2 (3-4) -->
+      <div class="a4-page" id="pg3">
+        <div class="q-item" data-qid="q2-2">
+          <div class="q-num">Question 2 (suite)</div>
+          <div class="guided-text">
+            <p><strong>3- Durant le mois de Ramadan, le prix d'un kg de poulet a augmenté de 25 %, calculez le nouveau panier d'équilibre sachant que le prix de poisson et le budget restent inchangés. Que constatez-vous ?</strong></p>
+            <p>P'x = 12,500 DT ; TMS = P'x/Py = <span class="trou-wrapper"><span class="trou-field" data-answer="12.500/20" data-choices="12.500/20,10/20,15/20,1/2" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> → y = <span class="trou-wrapper"><span class="trou-field" data-answer="2.5x" data-choices="2.5x,2x,3x,1.5x" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.<br>
+            R = 12,5x + 20(2,5x) = 62,5x → x'' = <span class="trou-wrapper"><span class="trou-field" data-answer="3.2" data-choices="3.2,4,2.5,3.5" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> kg, y'' = <span class="trou-wrapper"><span class="trou-field" data-answer="8" data-choices="8,6,10,7.5" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> kg.</p>
+            <p><strong>Constatation :</strong> l'augmentation du prix du poulet de 10 DT à 12,500 DT s'est accompagnée d'une baisse de la quantité achetée de poulet passant de 4 à <span class="trou-wrapper"><span class="trou-field" data-answer="3.2" data-choices="3.2,4,2.5,3.5" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> kg avec le maintien de la quantité achetée de poisson à <span class="trou-wrapper"><span class="trou-field" data-answer="8" data-choices="8,6,10,7.5" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> kg.</p>
+            <p><strong>4- Expliquez pourquoi cette hausse du prix de poulet n'est pas signe d'<span class="tt-trigger" onclick="openTT('inflation')">inflation</span> :</strong></p>
+            <p>La hausse du prix du poulet durant le mois de Ramadan n'est pas signe d'inflation car cette hausse est <span class="trou-wrapper"><span class="trou-field" data-answer="conjoncturelle" data-choices="conjoncturelle,structurelle,permanente,cyclique" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> (mois de Ramadan) et ne concerne que le prix du <span class="trou-wrapper"><span class="trou-field" data-answer="poulet" data-choices="poulet,poisson,tous les biens,la viande" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, sans toucher aux prix des autres <span class="trou-wrapper"><span class="trou-field" data-answer="biens de consommation" data-choices="biens de consommation,produits alimentaires,services,importations" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q2-2')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q2-2')">Valider →</button>
+          </div>
+          <div class="correction-box" id="corr-q2-2">
+            <div class="correction-title">📋 Correction officielle — Q2 (3-4) (3 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>3-</strong> P'x = 10 × 1,25 = 12,500 DT. À l'équilibre, TMSxy = P'x / Py → y/4x = 12,500/20 → <strong>y = 2,5x</strong>. R = 12,500x + 20(2,5x) = 62,5x = 200 → <strong>x'' = 3,2 kg</strong>, <strong>y'' = 8 kg</strong>.<br>
+                <strong>Constatation :</strong> Baisse de la quantité de poulet (4 → 3,2 kg) et maintien de la quantité de poisson (8 kg).<br>
+                <strong>4-</strong> Cette hausse n'est pas signe d'inflation car elle est conjoncturelle (mois de Ramadan) et ne concerne que le prix du poulet sans toucher aux prix des autres biens de consommation.
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème :</strong><br>
+                • Q2-3 : 2 pts (calcul 1,5 + constat 0,5)<br>
+                • Q2-4 : 1 pt
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q2-2"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 4 – Q3 Dissertation (Introduction + Partie 1) -->
+      <div class="a4-page" id="pg4">
+        <div class="titre-partie">☞ DEUXIEME PARTIE <span class="pts">(10 points)</span></div>
+        <div style="font-size:14px; font-weight:700; margin-bottom:8px; color:var(--dark);">Sujet : La croissance économique menace-t-elle toujours l'environnement naturel ? Prenez appui sur vos connaissances et sur les documents ci-joints.</div>
+
+        <div style="font-size:13px; line-height:1.6; margin-bottom:12px; background:var(--cream); padding:12px; border-radius:var(--radius); border:1px solid rgba(26,37,23,0.06);">
+          <strong>Document 1 :</strong><br>
+          On entend souvent dire que la croissance économique est en train de tuer notre planète. De fait, de multiples recherches menées depuis des décennies le confirment [...]. Depuis, la population mondiale a plus que doublé et la planète compte aujourd'hui huit milliards d'habitants. Les revenus, et par conséquent la consommation également, ont augmenté partout dans le monde. Cette croissance a eu pour conséquence malheureuse un recul de presque tous les indicateurs environnementaux.<br><br>
+          Rien que depuis l'an 2000, le monde a perdu plus de 10 % de son couvert forestier, soit une superficie équivalente à la moitié de celle des États-Unis. La qualité de l'eau baisse dans les pays riches comme dans les pays pauvres, ce qui menace la croissance et nuit à la santé publique. Actuellement, la pollution atmosphérique réduit la durée de vie de 2,2 ans et fait chaque année plus de victimes que l'ensemble des guerres et des diverses formes de violence. Enfin, 40 % des terres sont aujourd'hui considérées comme dégradées, ce qui aggrave la crise climatique, réduit la biodiversité et menace la sécurité alimentaire. Face au déclin de ces composantes vitales du capital naturel, une question cruciale s'impose à nous : pouvons-nous mieux faire ?<br><br>
+          <em>Source : Croissance économique pourrait rimer avec protection de la planète, Richard Damania et Jason Russ, Groupe de la Banque Mondiale, 27 Juin 2023</em><br><br>
+
+          <strong>Document 2 :</strong><br>
+          Notre système économique actuel peut être considéré comme une « économie linéaire », reposant sur un modèle d'extraction de matières premières de la nature, de transformation en produits, puis de rejet comme déchets [...]. Cet état de choses pèse lourdement sur l'environnement et contribue aux crises du climat, de la biodiversité et de la pollution.<br><br>
+          L'<span class="tt-trigger" onclick="openTT('economie-circulaire')">économie circulaire</span>, en revanche, vise à réduire autant que possible les déchets et à promouvoir une utilisation durable des ressources naturelles, grâce à une conception plus intelligente des produits, à leur plus longue utilisation, à leur recyclage et à d'autres mesures, ainsi qu'à régénérer la nature [...].<br><br>
+          Tout autour de nous, nous pouvons observer les approches de l'économie circulaire. Elles peuvent être adoptées dans différents secteurs, par exemple celui du textile ou celui du bâtiment et de la construction, ainsi qu'à diverses étapes du cycle de vie d'un produit, y compris sa conception, sa fabrication, sa distribution et son élimination.<br><br>
+          Dans le secteur du textile et de la mode, il existe des initiatives qui utilisent l'agriculture régénérative en vue de produire du coton biologique et d'autres fibres naturelles, en employant des colorants et des teintures naturelles, permettant ainsi la fabrication de vêtements qui sont de meilleure qualité et plus sûrs pour la santé des consommateurs et l'environnement.<br><br>
+          <em>Source : Qu'est-ce que l'économie circulaire et pourquoi est-ce important ? PNUD, 26 avril 2023</em>
+        </div>
+
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Introduction</div>
+          <div class="guided-text">
+            <p><strong>Amorce + définition :</strong><br>
+            Considérée souvent comme condition nécessaire pour l'amélioration du bien-être humain, la <span class="trou-wrapper"><span class="trou-field" data-answer="croissance économique" data-choices="croissance économique,développement durable,progrès technique,population" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> qui se traduit par l'accroissement durable des richesses créées a des effets mitigés sur l'<span class="trou-wrapper"><span class="trou-field" data-answer="environnement naturel" data-choices="environnement naturel,économie,société,politique" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+            <p><strong>Problématique :</strong><br>
+            Dans quelle mesure la croissance économique <span class="trou-wrapper"><span class="trou-field" data-answer="menace-t-elle" data-choices="menace-t-elle,favorise-t-elle,ignore-t-elle,protège-t-elle" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> l'environnement naturel ?</p>
+            <p><strong>Plan :</strong><br>
+            Nous montrerons d'abord que la croissance économique <span class="trou-wrapper"><span class="trou-field" data-answer="menace" data-choices="menace,protège,ignore,favorise" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> l'environnement naturel, puis qu'elle peut le <span class="trou-wrapper"><span class="trou-field" data-answer="préserver" data-choices="préserver,détruire,transformer,exploiter" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-intro')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Partie I — La croissance peut menacer l'environnement naturel</div>
+          <div class="guided-text">
+            <p>La croissance économique peut mettre en péril l'environnement naturel. En effet, la croissance économique cause :</p>
+            <p><strong>La dégradation de l'environnement naturel :</strong> Les activités de production (agricoles, industrielles...), sources de croissance, engendrent la pollution sous toutes ses formes (pollution du <span class="trou-wrapper"><span class="trou-field" data-answer="sol" data-choices="sol,climat,océan,espace" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, pollution de l'<span class="trou-wrapper"><span class="trou-field" data-answer="eau" data-choices="eau,air,sol,atmosphère" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, pollution de l'<span class="trou-wrapper"><span class="trou-field" data-answer="air" data-choices="air,eau,sol,terre" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>).</p>
+            <p><strong>L'épuisement des ressources naturelles :</strong> La surexploitation des richesses naturelles entraîne l'épuisement des ressources en eau, la <span class="trou-wrapper"><span class="trou-field" data-answer="désertification" data-choices="désertification,industrialisation,urbanisation,mondialisation" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, la déforestation, etc. En effet et depuis l'an 2000, le monde a perdu plus de <span class="trou-wrapper"><span class="trou-field" data-answer="10" data-choices="10,20,5,15" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> % des forêts.</p>
+            <p>C'est ainsi que la croissance économique, à travers les activités de production et de consommation, cause la dégradation de l'environnement et l'épuisement des ressources naturelles.</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-p1')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 5 – Q3 Dissertation (Partie 2 + Conclusion) -->
+      <div class="a4-page" id="pg5">
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Partie II — La croissance peut ne pas menacer l'environnement naturel</div>
+          <div class="guided-text">
+            <p>La croissance économique peut préserver l'environnement naturel. En effet, une croissance durable permet :</p>
+            <p><strong>La lutte contre la dégradation de l'environnement :</strong> En adoptant le modèle de l'<span class="trou-wrapper"><span class="trou-field" data-answer="économie circulaire" data-choices="économie circulaire,économie linéaire,économie de marché,économie planifiée" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, les activités de <span class="trou-wrapper"><span class="trou-field" data-answer="recyclage" data-choices="recyclage,extraction,production,consommation" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> des déchets permettent de réduire la pollution. De même, l'innovation dans le domaine énergétique (énergies <span class="trou-wrapper"><span class="trou-field" data-answer="renouvelables" data-choices="renouvelables,fossiles,nucléaires,thermiques" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>) limite l'émission des gaz à effet de serre.</p>
+            <p><strong>La lutte contre l'épuisement des ressources :</strong> Par les activités de la <span class="trou-wrapper"><span class="trou-field" data-answer="croissance verte" data-choices="croissance verte,croissance classique,développement,progrès" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, le recyclage et la <span class="trou-wrapper"><span class="trou-field" data-answer="réutilisation" data-choices="réutilisation,épuisement,gaspillage,exploitation" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> des matières préservent les ressources naturelles. Dans le textile, l'utilisation du <span class="trou-wrapper"><span class="trou-field" data-answer="coton biologique" data-choices="coton biologique,coton synthétique,lin,chanvre" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> permet la fabrication de vêtements de meilleure qualité.</p>
+            <p>En somme, une croissance économique plus durable, fondée sur des activités de production et de consommation responsables, permet de lutter contre la pollution, de préserver les ressources naturelles et de protéger l'environnement naturel.</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-p2')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Conclusion</div>
+          <div class="guided-text">
+            <p><strong>Synthèse :</strong> Certes, la croissance économique qui adopte un modèle <span class="trou-wrapper"><span class="trou-field" data-answer="traditionnel" data-choices="traditionnel,verte,circulaire,durable" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> visant uniquement l'intérêt économique est de nature à mettre en danger l'environnement naturel. Néanmoins, une croissance économique verte et <span class="trou-wrapper"><span class="trou-field" data-answer="durable" data-choices="durable,extensif,intensif,libéral" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> est respectueuse de l'environnement.</p>
+            <p><strong>Ouverture :</strong> Il importe de s'interroger sur les <span class="trou-wrapper"><span class="trou-field" data-answer="entraves" data-choices="entraves,avantages,bénéfices,opportunités" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> que peuvent rencontrer les économies pour réaliser une croissance économique verte.</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-concl')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q3')">📋 Voir le corrigé complet</button>
+          </div>
+        </div>
+
+        <div class="correction-box" id="corr-q3">
+          <div class="correction-title">📋 Corrigé modèle — Dissertation (10 pts)</div>
+          <div style="padding:12px; font-size:13px; line-height:1.6;">
+            <strong>Introduction (1,5 pt) :</strong><br>
+            Considérée souvent comme condition nécessaire pour l'amélioration du bien-être humain, la croissance économique qui se traduit par l'accroissement durable des richesses créées a des effets mitigés sur l'environnement naturel. Dans quelle mesure la croissance économique menace-t-elle l'environnement naturel ? Nous montrerons d'abord que la croissance économique menace l'environnement naturel, puis qu'elle peut le préserver.<br><br>
+
+            <strong>Partie I — La croissance peut menacer l'environnement naturel (3,5 pts) :</strong><br>
+            La croissance économique peut mettre en péril l'environnement naturel. En effet, la croissance économique cause :<br>
+            - La dégradation de l'environnement naturel : Les activités de production (agricoles, industrielles...), sources de croissance, engendrent la pollution sous toutes ses formes (pollution du sol, pollution de l'eau, pollution de l'air). Ainsi, les entreprises industrielles polluent l'environnement à travers l'émission de gaz ou le rejet des déchets. De même, la consommation, se traduisant par l'utilisation de certains biens et services, pollue l'atmosphère, l'eau et le sol. Le problème se pose à l'échelle mondiale dans la mesure où la qualité de l'eau a été affectée dans tous les pays du monde.<br>
+            - L'épuisement des ressources naturelles : La surexploitation des richesses naturelles dans le processus de production entraîne l'épuisement des ressources en eau, la désertification, la déforestation, etc. En effet et depuis l'an 2000, le monde a perdu plus de 10 % des forêts, soit une surface importante équivalente à la moitié de la superficie des États-Unis. De même, l'utilisation excessive des ressources minières, et énergétiques (pétrole, gaz, charbon...) menace ces ressources naturelles non renouvelables par l'épuisement.<br>
+            C'est ainsi que la croissance économique, à travers les activités de production et de consommation, cause la dégradation de l'environnement et l'épuisement des ressources naturelles.<br><br>
+
+            <strong>Partie II — La croissance peut ne pas menacer l'environnement naturel (3,5 pts) :</strong><br>
+            La croissance économique peut préserver l'environnement naturel. En effet, une croissance durable permet :<br>
+            - La lutte contre la dégradation de l'environnement naturel : En adoptant le modèle de l'économie circulaire, les activités de recyclage des déchets, qui consistent en la réparation pour réemployer des objets de seconde main et la réutilisation des matières premières et des déchets dans de nouveaux cycles de production, sont en mesure de réduire la pollution de l'eau et du sol. De même, dans le cadre de la croissance verte, la mise en place des installations anti-polluantes par les entreprises et l'innovation dans le domaine énergétique (énergies renouvelables, moins polluantes) permet de limiter l'émission des gaz toxiques à effet de serre, ce qui réduit le réchauffement climatique.<br>
+            - La lutte contre l'épuisement des ressources naturelles : Par les activités de la croissance verte (de consommation et de production), le recyclage de déchets et leur réutilisation permettent de préserver les ressources naturelles et de les utiliser le plus efficacement possible. Dans le secteur du textile, par exemple, l'utilisation du coton biologique et des fibres, des colorants et des teintures naturelles, permet la fabrication de vêtements de meilleure qualité et de durée de vie plus longue.<br>
+            En somme, une croissance économique plus durable, fondée sur des activités de production et de consommation responsables, permet de lutter contre la pollution, de préserver les ressources naturelles et de protéger, par conséquent, l'environnement naturel.<br><br>
+
+            <strong>Conclusion (1,5 pt) :</strong><br>
+            Certes, la croissance économique qui adopte un modèle traditionnel visant uniquement l'intérêt économique est de nature à mettre en danger l'environnement naturel. Néanmoins, une croissance économique verte et durable est respectueuse de l'environnement. Il importe de s'interroger sur les entraves que peuvent rencontrer les économies pour réaliser une croissance économique verte.
+          </div>
+          <div style="padding:8px 12px; border-top:1px solid rgba(91,14,20,0.1);">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">📊 Grille officielle /10 pts</div>
+            <div style="font-size:13px; line-height:1.8;">
+              • Introduction (1,5 pt) : Amorce + définition (0,5) — Problématique (0,5) — Plan (0,5)<br>
+              • Développement (7 pts) : Partie I (3,5 pts) — Partie II (3,5 pts)<br>
+              • Structuration du développement (1 pt)<br>
+              • Conclusion (1 pt) : Synthèse (0,5) — Ouverture (0,5)<br>
+              • Présentation (0,5 pt) : Copie aérée et écriture lisible
+            </div>
+            <div style="margin-top:8px;">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">🎯 Ma note :</div>
+              <div class="score-btn-group" data-qid="q3" data-theme="partie2" data-max="10" style="display:flex;flex-wrap:wrap;gap:6px;">
+                <button class="score-btn" data-pts="0">0</button>
+                <button class="score-btn" data-pts="0.5">0,5</button>
+                <button class="score-btn" data-pts="1">1</button>
+                <button class="score-btn" data-pts="1.5">1,5</button>
+                <button class="score-btn" data-pts="2">2</button>
+                <button class="score-btn" data-pts="2.5">2,5</button>
+                <button class="score-btn" data-pts="3">3</button>
+                <button class="score-btn" data-pts="3.5">3,5</button>
+                <button class="score-btn" data-pts="4">4</button>
+                <button class="score-btn" data-pts="4.5">4,5</button>
+                <button class="score-btn" data-pts="5">5</button>
+                <button class="score-btn" data-pts="5.5">5,5</button>
+                <button class="score-btn" data-pts="6">6</button>
+                <button class="score-btn" data-pts="6.5">6,5</button>
+                <button class="score-btn" data-pts="7">7</button>
+                <button class="score-btn" data-pts="7.5">7,5</button>
+                <button class="score-btn" data-pts="8">8</button>
+                <button class="score-btn" data-pts="8.5">8,5</button>
+                <button class="score-btn" data-pts="9">9</button>
+                <button class="score-btn" data-pts="9.5">9,5</button>
+                <button class="score-btn" data-pts="10">10</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="score-display" id="score-q3"></div>
+        <div style="margin-top:16px; text-align:center;">
+          <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:12px 28px;font-size:0.9rem;border:none;" onclick="calculerTotalPartie2()">📊 Enregistrer ma note</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMEN -->
+  <div class="screen-full" id="s3">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div class="examen-badge">🔒 Mode Examen</div><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ko);">Conditions réelles — Zéro aide</span></div>
+    <div class="examen-timer-container"><div class="examen-timer-box"><div class="label">Partie 1</div><div class="time" id="ex-timer-1">1:00:00</div></div><div class="examen-timer-box"><div class="label">Partie 2</div><div class="time" id="ex-timer-2">2:00:00</div></div></div>
+    <div class="examen-controls"><button onclick="startExamen()">▶ Lancer l'examen</button></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;background:var(--cream);border-radius:var(--radius);border:1px solid rgba(26,37,23,0.06);">
+      <button class="nav-a4-btn" onclick="examPagePrev()">← Précédent</button>
+      <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--dark);" id="epg-indicator">Page 1 / 4</span>
+      <button class="nav-a4-btn" onclick="examPageNext()">Suivant →</button>
+    </div>
+    <div class="exam-page active" id="epg1" style="background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+  <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(10 points)</span></div>
+  <div class="q-item">
+    <div class="q-num">Question 1 (4 points)</div>
+    <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">Pour chacun des items, choisissez la proposition correcte et justifiez votre réponse.</div>
+
+    <div class="qcm-item">
+      <p><strong>Item 1 :</strong> Selon le rapport annuel de la BCT 2022...</p>
+      <div class="qcm-choices">
+        <label><input type="radio" name="ex-q1-1" value="a" /> a- ...</label>
+        <label><input type="radio" name="ex-q1-1" value="b" /> b- ...</label>
+        <label><input type="radio" name="ex-q1-1" value="c" /> c- ...</label>
+        <label><input type="radio" name="ex-q1-1" value="d" /> d- ...</label>
+      </div>
+      <textarea class="lignes-reponse" rows="3" placeholder="Justification item 1..." style="width:100%; margin-top:8px;"></textarea>
+    </div>
+
+    <div class="qcm-item">
+      <p><strong>Item 2 :</strong> Le tableau suivant illustre l'évolution du PIB nominal...</p>
+      <div class="qcm-choices">
+        <label><input type="radio" name="ex-q1-2" value="a" /> a- ...</label>
+        <label><input type="radio" name="ex-q1-2" value="b" /> b- ...</label>
+        <label><input type="radio" name="ex-q1-2" value="c" /> c- ...</label>
+        <label><input type="radio" name="ex-q1-2" value="d" /> d- ...</label>
+      </div>
+      <textarea class="lignes-reponse" rows="3" placeholder="Justification item 2..." style="width:100%; margin-top:8px;"></textarea>
+    </div>
+
+    <div class="qcm-item">
+      <p><strong>Item 3 :</strong> Pour produire 8 articles sanitaires...</p>
+      <div class="qcm-choices">
+        <label><input type="radio" name="ex-q1-3" value="a" /> a- ...</label>
+        <label><input type="radio" name="ex-q1-3" value="b" /> b- ...</label>
+        <label><input type="radio" name="ex-q1-3" value="c" /> c- ...</label>
+        <label><input type="radio" name="ex-q1-3" value="d" /> d- ...</label>
+      </div>
+      <textarea class="lignes-reponse" rows="3" placeholder="Justification item 3..." style="width:100%; margin-top:8px;"></textarea>
+    </div>
+
+    <div class="qcm-item">
+      <p><strong>Item 4 :</strong> Selon les données de l'OCDE en Allemagne...</p>
+      <div class="qcm-choices">
+        <label><input type="radio" name="ex-q1-4" value="a" /> a- ...</label>
+        <label><input type="radio" name="ex-q1-4" value="b" /> b- ...</label>
+        <label><input type="radio" name="ex-q1-4" value="c" /> c- ...</label>
+        <label><input type="radio" name="ex-q1-4" value="d" /> d- ...</label>
+      </div>
+      <textarea class="lignes-reponse" rows="3" placeholder="Justification item 4..." style="width:100%; margin-top:8px;"></textarea>
+    </div>
+  </div>
+</div>
+    <div class="exam-page" id="epg2" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+  <div class="q-item">
+    <div class="q-num">Question 2 (6 points)</div>
+    <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+      « Youssef » désire consommer du poulet désigné par « X » et du poisson désigné par « Y ». La fonction de son utilité est de la forme : U(x,y) = 10 . x¹/⁵ . y⁴/⁵. Le prix d'un kg de poulet est Px et celui d'un kg de poisson est Py. Chaque mois, « Youssef » consacre un budget « R » qu'il affecte totalement à l'achat de poulet et de poisson.
+    </div>
+    <div style="text-align:center; margin:8px 0;">
+      <img src="assets/courbes-demande.png" alt="Courbes de demande de poulet et de poisson" style="max-width:100%; border-radius:var(--radius); border:1px solid rgba(26,37,23,0.1);" />
+    </div>
+    <div style="font-size:13px; margin-top:8px;">
+      <strong>Travail à faire :</strong>
+      <ol>
+        <li>Dégagez les prix des biens X et Y [...] et en déduire le budget mensuel.</li>
+        <li>Déterminez analytiquement le panier d'équilibre [...] utilité maximale.</li>
+        <li>Durant le mois de Ramadan [...] calculez le nouveau panier d'équilibre. Que constatez-vous ?</li>
+        <li>Expliquez pourquoi cette hausse n'est pas signe d'inflation.</li>
+      </ol>
+    </div>
+    <textarea class="lignes-reponse" rows="12" placeholder="Rédigez vos réponses complètes (calculs + justifications)..." style="width:100%; margin-top:12px;"></textarea>
+  </div>
+</div>
+
+  <!-- BILAN -->
+  <div class="screen-full" id="s4">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 5 — Bilan</div>
+    <div class="ui-card" style="text-align:center;padding:24px;background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-bottom:4px;">SCORE GUIDÉ</div>
+      <div class="score-big" id="final-score-guide">--</div>
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-top:2px;">/ 20 points</div>
+      <div id="mention-guide" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(26,37,23,0.08);color:var(--dark);">--</div>
+      <div class="conseil-box" id="conseil-guide" style="background:rgba(26,37,23,0.03);border-color:var(--dark);margin-top:8px;"></div>
+    </div>
+    <div class="ui-card" style="text-align:center;padding:24px;background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-bottom:4px;">SCORE EXAMEN</div>
+      <div class="score-big" id="final-score-examen">--</div>
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-top:2px;">/ 20 points</div>
+      <div id="mention-examen" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(26,37,23,0.08);color:var(--dark);">--</div>
+      <div class="conseil-box" id="conseil-examen" style="background:rgba(26,37,23,0.03);border-color:var(--dark);margin-top:8px;"></div>
+    </div>
+    <div class="ui-card" style="background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);padding:16px;">
+      <div class="ui-card-title" style="font-family:var(--font-ui);font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:8px;">📊 Bilan de points – Mode Guidé</div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📋 Partie 1 — QCM + Étude de cas</span><span class="comp-pct" id="p1">0%</span></div><div class="bar-track"><div class="bar-fill" id="b1"></div></div><div style="font-size:0.7rem;color:rgba(26,37,23,0.4);margin-top:2px;" id="pts1">0 / 10 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📖 Partie 2 — Dissertation</span><span class="comp-pct" id="p2">0%</span></div><div class="bar-track"><div class="bar-fill" id="b2"></div></div><div style="font-size:0.7rem;color:rgba(26,37,23,0.4);margin-top:2px;" id="pts2">0 / 10 pts</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,37,23,0.06);">
+      <button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="resetAll()">↺ Recommencer</button>
+    </div>
+  </div>
+</main>
+
+<!-- CALCULATRICE -->
+<div id="calc-wrapper">
+  <button id="calc-toggle-btn" onclick="toggleCalc()">🧮 Calculatrice</button>
+  <div id="calc-box">
+    <button class="calc-close" onclick="toggleCalc()">✕</button>
+    <input type="text" id="calc-display" readonly value="0" />
+    <div class="calc-grid">
+      <button class="fn" onclick="calcInput('MC')">MC</button>
+      <button class="fn" onclick="calcInput('MR')">MR</button>
+      <button class="fn" onclick="calcInput('M+')">M+</button>
+      <button class="fn" onclick="calcInput('M-')">M-</button>
+      <button onclick="calcInput('7')">7</button>
+      <button onclick="calcInput('8')">8</button>
+      <button onclick="calcInput('9')">9</button>
+      <button class="op" onclick="calcInput('/')">÷</button>
+      <button onclick="calcInput('4')">4</button>
+      <button onclick="calcInput('5')">5</button>
+      <button onclick="calcInput('6')">6</button>
+      <button class="op" onclick="calcInput('*')">×</button>
+      <button onclick="calcInput('1')">1</button>
+      <button onclick="calcInput('2')">2</button>
+      <button onclick="calcInput('3')">3</button>
+      <button class="op" onclick="calcInput('-')">−</button>
+      <button onclick="calcInput('0')">0</button>
+      <button onclick="calcInput('.')">.</button>
+      <button onclick="calcInput('sqrt')">√</button>
+      <button class="op" onclick="calcInput('+')">+</button>
+      <button onclick="calcInput('C')" style="background:var(--ko);color:white;">C</button>
+      <button onclick="calcInput('±')">±</button>
+      <button onclick="calcInput('%')">%</button>
+      <button onclick="calcInput('=')" style="background:var(--primary);color:var(--accent);">=</button>
+    </div>
+  </div>
+</div>
+
+<!-- COACH MODAL -->
+<div class="coach-modal" id="coach-modal">
+  <div class="coach-modal-content">
+    <button class="close-modal" onclick="closeCoach()">✕</button>
+    <div class="coach-title">🧑‍🏫 Coach Synapris</div>
+    <div id="coach-modal-body"></div>
+  </div>
+</div>
+
+<!-- TT MODAL -->
+<div class="tt-modal" id="tt-modal">
+  <div class="tt-modal-content">
+    <button class="close-tt" onclick="closeTT()">✕</button>
+    <div class="tt-img" id="tt-img">🧠</div>
+    <div class="tt-def" id="tt-def"><strong>Terme</strong> — Définition.</div>
+    <button class="tt-audio" id="tt-audio-btn" onclick="speak(document.getElementById('tt-def').textContent.split('—')[0].trim())">🔊 Écouter</button>
+    <div class="tt-rappel" id="tt-rappel"><strong>📖 Rappel cours :</strong></div>
+    <div class="tt-arabe" id="tt-arabe" dir="rtl"></div>
+  </div>
+</div>
+
+<!-- FIELD HELP MODAL -->
+<div class="field-modal" id="field-modal">
+  <div class="field-modal-content">
+    <button class="close-field-modal" onclick="closeFieldHelp()">✕</button>
+    <div class="field-modal-title">💡 Aide pour la réponse</div>
+    <div class="field-modal-body" id="field-modal-body"></div>
+    <div style="margin-top:12px;font-size:0.8rem;color:rgba(26,37,23,0.5);text-align:center;">Cliquez à l'extérieur pour fermer</div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span>Accueil</span></div>
+  <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span>Cours</span></div>
+  <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span>Guidé</span></div>
+  <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span>Examen</span></div>
+  <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span>Bilan</span></div>
+</nav>
+
+<script>
+  // ===== GLOBALES =====
+  let currentStep = 0, currentPage = 1, totalPages = 5, scoreGuide = 0, scoreExamen = 0;
+  let examenStarted = false, examPage = 1, examTotalPages = 3;
+  let examenSeconds = [3600, 7200];
+  let examenTimers = [];
+  let themeScores = { partie1: 0, partie2: 0 };
+  const themeMax = { partie1: 10, partie2: 10 };
+
+  // ===== TT DATA BILINGUE =====
+  const ttData = {
+    'croissance-economique': {
+      img: '📈',
+      def: '<strong>Croissance économique</strong> — Augmentation durable et soutenue de la production de biens et services d\'une économie, mesurée par le PIB réel.',
+      rappel: 'Formule : TCA = ((PIBn − PIBn-1) / PIBn-1) × 100',
+      arabe: '<strong>النمو الاقتصادي</strong> — الزيادة المستدامة في إنتاج السلع والخدمات وتُقاس بالناتج المحلي الإجمالي الحقيقي.'
+    },
+    'pib': {
+      img: '💰',
+      def: '<strong>PIB</strong> — Produit Intérieur Brut. Valeur totale des biens et services produits dans un pays en une année.',
+      rappel: 'PIB réel = PIB nominal / Indice des prix × 100',
+      arabe: '<strong>الناتج المحلي الإجمالي</strong> — القيمة الإجمالية للسلع والخدمات المنتجة في بلد ما خلال سنة.'
+    },
+    'fbcf': {
+      img: '🏗️',
+      def: '<strong>FBCF</strong> — Formation Brute de Capital Fixe. Mesure des investissements réalisés par les agents économiques.',
+      rappel: 'FBCF = (FBCF% × PIB nominal) / 100',
+      arabe: '<strong>التكوين الخشن لرأس المال الثابت</strong> — يقيس الاستثمارات التي يقوم بها الفاعلون الاقتصاديون.'
+    },
+    'pgf': {
+      img: '⚙️',
+      def: '<strong>PGF</strong> — Productivité Globale des Facteurs. Part de la croissance non expliquée par l\'accumulation des facteurs de production (progrès technique, organisation...).',
+      rappel: 'Croissance = PGF + Contribution des facteurs',
+      arabe: '<strong>الإنتاجية الكلية للعوامل</strong> — الجزء من النمو غير المفسَّر بتراكم عوامل الإنتاج (تقدم تقني...).'
+    },
+    'isoquant': {
+      img: '📉',
+      def: '<strong>Courbe d\'isoquant</strong> — Courbe représentant toutes les combinaisons de facteurs L et K permettant de produire une même quantité Q.',
+      rappel: 'Sur l\'isoquant : Q = constante. Ex : K = 64/L²',
+      arabe: '<strong>منحنى الإنتاج المتساوي</strong> — منحنى يمثل جميع تركيبات عوامل الإنتاج التي تنتج نفس الكمية.'
+    },
+    'utilite': {
+      img: '😊',
+      def: '<strong>Utilité</strong> — Satisfaction totale qu\'un consommateur retire de la consommation d\'un bien ou d\'un panier de biens.',
+      rappel: 'U(x,y) = f(x,y). Maximiser U sous contrainte budgétaire.',
+      arabe: '<strong>المنفعة</strong> — الإشباع الكلي الذي يحصل عليه المستهلك من استهلاك سلعة أو سلّة سلع.'
+    },
+    'tms': {
+      img: '🔄',
+      def: '<strong>TMS</strong> — Taux Marginal de Substitution. Quantité d\'un bien Y à laquelle on renonce pour obtenir une unité supplémentaire du bien X, à utilité constante.',
+      rappel: 'TMS = Umx / Umy = Px / Py à l\'équilibre',
+      arabe: '<strong>معدل الإحلال الحدي</strong> — كمية السلعة Y التي يتخلى عنها المستهلك للحصول على وحدة إضافية من السلعة X مع ثبات المنفعة.'
+    },
+    'panier-equilibre': {
+      img: '🛒',
+      def: '<strong>Panier d\'équilibre</strong> — Combinaison optimale de biens qui maximise l\'utilité du consommateur sous sa contrainte budgétaire.',
+      rappel: 'Condition : TMS = Px/Py ET R = x.Px + y.Py',
+      arabe: '<strong>سلّة التوازن</strong> — التركيبة المثلى من السلع التي تعظّم منفعة المستهلك مع احترام قيد الميزانية.'
+    },
+    'inflation': {
+      img: '💹',
+      def: '<strong>Inflation</strong> — Hausse généralisée et durable du niveau général des prix affectant l\'ensemble des biens et services.',
+      rappel: 'Hausse d\'un seul produit ≠ inflation. L\'inflation touche TOUS les prix.',
+      arabe: '<strong>التضخم</strong> — ارتفاع عام ومستمر في المستوى العام للأسعار لجميع السلع والخدمات.'
+    },
+    'concentration-verticale': {
+      img: '🏢',
+      def: '<strong>Concentration verticale</strong> — Regroupement d\'entreprises situées à des stades différents de la même filière (amont = fournisseurs, aval = clients).',
+      rappel: 'Amont : maîtriser approv. | Aval : maîtriser débouchés',
+      arabe: '<strong>التركز الرأسي</strong> — تجميع مؤسسات في مراحل مختلفة من سلسلة الإنتاج (صعوداً = موردون، نزولاً = عملاء).'
+    },
+    'dipp': {
+      img: '🌐',
+      def: '<strong>DIPP</strong> — Décomposition Internationale du Processus Productif. Fragmentation de la production d\'un bien entre plusieurs pays, chaque filiale étant spécialisée dans un composant.',
+      rappel: 'Génère des échanges intra-firmes entre firme mère et filiales.',
+      arabe: '<strong>التفكيك الدولي للعملية الإنتاجية</strong> — تجزئة إنتاج سلعة بين عدة دول، حيث تتخصص كل فرع في مكوّن من المنتج النهائي.'
+    },
+    'economie-circulaire': {
+      img: '♻️',
+      def: '<strong>Économie circulaire</strong> — Modèle économique visant à réduire les déchets et à maintenir les ressources en usage le plus longtemps possible (recyclage, réemploi...).',
+      rappel: 'S\'oppose à l\'économie linéaire (extraire → produire → jeter).',
+      arabe: '<strong>الاقتصاد الدائري</strong> — نموذج اقتصادي يهدف إلى تقليص النفايات والحفاظ على الموارد بأطول فترة ممكنة (تدوير، إعادة استخدام...).'
+    },
+    'croissance-verte': {
+      img: '🌱',
+      def: '<strong>Croissance verte</strong> — Modèle de croissance économique respectueux de l\'environnement, fondé sur les énergies renouvelables et les technologies propres.',
+      rappel: 'Objectif : croître sans détruire le capital naturel.',
+      arabe: '<strong>النمو الأخضر</strong> — نموذج نمو اقتصادي يحترم البيئة، مبني على الطاقات المتجددة والتقنيات النظيفة.'
+    },
+    'developpement-durable': {
+      img: '🌍',
+      def: '<strong>Développement durable</strong> — Développement qui répond aux besoins du présent sans compromettre la capacité des générations futures à répondre aux leurs.',
+      rappel: '3 piliers : économique + social + environnemental.',
+      arabe: '<strong>التنمية المستدامة</strong> — تنمية تلبي احتياجات الحاضر دون المساس بقدرة الأجيال القادمة على تلبية احتياجاتها.'
+    },
+    'solde-commercial': {
+      img: '⚖️',
+      def: '<strong>Solde commercial</strong> — Différence entre la valeur des exportations et celle des importations d\'un pays.',
+      rappel: 'Solde = Exports − Imports. Positif = excédent. Négatif = déficit.',
+      arabe: '<strong>الميزان التجاري</strong> — الفرق بين قيمة الصادرات وقيمة الواردات. موجب = فائض. سالب = عجز.'
+    }
+  };
+
+  // ===== LOGIN =====
+  function handleLogin() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('navbar').style.display = 'flex';
+    document.getElementById('main-wrap').style.display = 'block';
+    document.getElementById('bottom-nav').style.display = 'flex';
+    document.getElementById('avatar').textContent = '👤';
+    restaurerTout();
+    gsap.from('#navbar', { y: -50, duration: 0.4, ease: 'power2.out' });
+  }
+
+  // ===== NAVIGATION =====
+  function goTo(step) {
+    let screens = ['s0','s1','s2','s3','s4'];
+    document.querySelectorAll('.screen-full, .split-layout').forEach(el => el.classList.remove('active'));
+    document.getElementById(screens[step]).classList.add('active');
+    currentStep = step;
+    document.querySelectorAll('.navbar-steps .nav-step, .bottom-nav .nav-step').forEach((el, i) => el.classList.toggle('active', i === step));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (step === 4) setTimeout(showBilan, 400);
+  }
+
+  function showPage(n) {
+    for (let i = 1; i <= totalPages; i++) {
+      let p = document.getElementById('pg' + i);
+      if (p) p.classList.remove('active');
+    }
+    document.getElementById('pg' + n).classList.add('active');
+    document.getElementById('pg-indicator').textContent = 'Page ' + n + ' / ' + totalPages;
+    currentPage = n;
+  }
+  function pgNext() { if (currentPage < totalPages) showPage(currentPage + 1); }
+  function pgPrev() { if (currentPage > 1) showPage(currentPage - 1); }
+
+  function showExamPage(n) {
+    for (let i = 1; i <= examTotalPages; i++) {
+      let p = document.getElementById('epg' + i);
+      if (p) p.style.display = 'none';
+    }
+    document.getElementById('epg' + n).style.display = 'block';
+    examPage = n;
+    document.getElementById('epg-indicator').textContent = 'Page ' + n + ' / ' + examTotalPages;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function examPageNext() { if (examPage < examTotalPages) showExamPage(examPage + 1); }
+  function examPagePrev() { if (examPage > 1) showExamPage(examPage - 1); }
+
+  // ===== COURS =====
+  function toggleCours(el) {
+    let detail = el.closest('.cours-card').querySelector('.cours-detail');
+    if (detail.style.display === 'none' || detail.style.display === '') {
+      detail.style.display = 'block';
+      gsap.from(detail, { opacity: 0, y: 8, duration: 0.2, ease: 'power2.out' });
+    } else {
+      detail.style.display = 'none';
+    }
+  }
+
+  // ===== VERBES =====
+  function toggleVerbe(card, id) {
+    document.querySelectorAll('.verbe-card').forEach(c => c.classList.remove('on'));
+    document.querySelectorAll('.verbe-detail').forEach(d => d.classList.remove('show'));
+    card.classList.add('on');
+    document.getElementById(id).classList.add('show');
+    gsap.from('#' + id, { opacity: 0, y: 10, duration: 0.3, ease: 'power2.out' });
+  }
+
+  // ===== TT MODAL BILINGUE =====
+  function openTT(id) {
+    let d = ttData[id];
+    if (!d) return;
+    document.getElementById('tt-img').textContent = d.img;
+    document.getElementById('tt-def').innerHTML = d.def;
+    document.getElementById('tt-rappel').innerHTML = '<strong>📖 Rappel cours :</strong> ' + (d.rappel || '');
+    const arDiv = document.getElementById('tt-arabe');
+    if (arDiv && d.arabe) {
+      arDiv.innerHTML = d.arabe;
+      arDiv.style.display = 'block';
+    } else if (arDiv) {
+      arDiv.style.display = 'none';
+    }
+    document.getElementById('tt-modal').classList.add('open');
+  }
+  function closeTT() { document.getElementById('tt-modal').classList.remove('open'); }
+
+  // ===== SPEECH =====
+  function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    let u = new SpeechSynthesisUtterance(text);
+    u.lang = 'fr-FR';
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+
+  // ===== COACH =====
+  const coachData = {
+    'coach-eco-q1': {
+      title: 'Q1 — QCM et justifications',
+      msg: 'Pour chaque item, commence par lire attentivement les données. Pour la justification, utilise les formules vues en cours : TCA, CM, PIB/hab, etc.',
+      methode: [
+        'Étape 1 : Identifier la donnée clé (PIB, population, FBCF, fonction de production).',
+        'Étape 2 : Appliquer la formule appropriée (TCA = (Vn-Vn-1)/Vn-1 ×100).',
+        'Étape 3 : Comparer les résultats avec les propositions pour trouver la bonne réponse.',
+        'Étape 4 : Justifier par le calcul dans les trous.'
+      ],
+      piege: 'Ne pas confondre TCA (taux) et coefficient multiplicateur (CM).',
+      bareme: '4 pts (1 pt par item : 0,5 choix + 0,5 justification)',
+      arabe: 'استخدم الصيغ المناسبة لكل سؤال وتحقق من الوحدات.'
+    },
+    'coach-eco-q2-1': {
+      title: 'Q2 (1-2) — Équilibre du consommateur',
+      msg: 'Pour trouver l\'équilibre, égalise le TMS au rapport des prix. Utilise les courbes de demande pour lire les prix.',
+      methode: [
+        'Étape 1 : Lire Px et Py sur les courbes de demande aux points A et C.',
+        'Étape 2 : Calculer le budget R = xPx + yPy.',
+        'Étape 3 : Écrire la condition d\'équilibre : TMS = Px/Py.',
+        'Étape 4 : Résoudre le système pour trouver x* et y*.'
+      ],
+      piege: 'Ne pas oublier que le TMS = Umx / Umy.',
+      bareme: '3 pts (1,5 + 1,5)',
+      arabe: 'شرط التوازن هو TMS = Px/Py. احسب x* و y* ثم المنفعة.'
+    },
+    'coach-eco-q2-2': {
+      title: 'Q2 (3-4) — Variation et inflation',
+      msg: 'Une hausse de prix modifie l\'équilibre. Calcule le nouveau panier puis interprète.',
+      methode: [
+        'Étape 1 : Calculer le nouveau prix P\'x = Px × 1,25.',
+        'Étape 2 : Écrire la nouvelle condition d\'équilibre.',
+        'Étape 3 : Résoudre pour trouver x\'\' et y\'\'.',
+        'Étape 4 : Expliquer pourquoi ce n\'est pas de l\'inflation.'
+      ],
+      piege: 'Une hausse conjoncturelle d\'un seul bien n\'est pas une inflation.',
+      bareme: '3 pts (2 + 1)',
+      arabe: 'زيادة سعر الدجاج مؤقتة ولا تعني تضخماً.'
+    },
+    'coach-eco-diss-intro': {
+      title: 'Dissertation — Introduction',
+      msg: 'L\'introduction doit comporter trois éléments : amorce, problématique, plan.',
+      methode: [
+        'Étape 1 : Rédiger une amorce sur la croissance et l\'environnement.',
+        'Étape 2 : Définir un terme clé (croissance économique).',
+        'Étape 3 : Poser la problématique.',
+        'Étape 4 : Annoncer le plan (2 parties).'
+      ],
+      piege: 'Ne pas oublier la définition.',
+      bareme: '1,5 pt (amorce 0,5 + problématique 0,5 + plan 0,5)',
+      arabe: 'المقدمة يجب أن تحتوي على تمهيد وإشكالية وخطة.'
+    },
+    'coach-eco-diss-p1': {
+      title: 'Dissertation — Partie I (menace)',
+      msg: 'Montre comment la croissance peut dégrader l\'environnement.',
+      methode: [
+        'Étape 1 : La croissance cause la pollution (eau, air, sol).',
+        'Étape 2 : Elle épuise les ressources naturelles (déforestation, désertification).',
+        'Étape 3 : Utilise le document 1 pour illustrer (10 % de couvert forestier perdu).'
+      ],
+      piege: 'Ne pas se limiter à des généralités — utilise les documents.',
+      bareme: '3,5 pts',
+      arabe: 'بين كيف يؤدي النمو إلى تدهور البيئة.'
+    },
+    'coach-eco-diss-p2': {
+      title: 'Dissertation — Partie II (protection)',
+      msg: 'Montre que la croissance peut préserver l\'environnement.',
+      methode: [
+        'Étape 1 : La croissance verte et l\'économie circulaire réduisent la pollution.',
+        'Étape 2 : Elles préservent les ressources (recyclage, énergies renouvelables).',
+        'Étape 3 : Utilise le document 2 (coton biologique, textile).'
+      ],
+      piege: 'Ne pas nier les dégâts de la croissance — montrer les alternatives.',
+      bareme: '3,5 pts',
+      arabe: 'بين كيف يمكن للنمو أن يحمي البيئة.'
+    },
+    'coach-eco-diss-concl': {
+      title: 'Dissertation — Conclusion',
+      msg: 'La conclusion doit faire la synthèse et proposer une ouverture.',
+      methode: [
+        'Étape 1 : Répondre à la problématique (la croissance n\'est pas toujours menaçante).',
+        'Étape 2 : Synthétiser les deux parties.',
+        'Étape 3 : Proposer une ouverture (entraves à la croissance verte).'
+      ],
+      piege: 'Ne pas introduire de nouvelles idées.',
+      bareme: '1 pt (synthèse 0,5 + ouverture 0,5)',
+      arabe: 'الخاتمة تجمع الإجابات وتفتح آفاقاً جديدة.'
+    }
+  };
+
+  function openCoach(id) {
+    if (document.getElementById('s3').classList.contains('active')) return;
+    const data = coachData[id];
+    if (!data) return;
+    const body = document.getElementById('coach-modal-body');
+    let html = '<div class="coach-msg">' + data.msg + '</div>';
+    if (data.methode) {
+      html += '<div class="coach-schema-title">🎯 Méthodologie</div>';
+      data.methode.forEach((step, i) => {
+        html += '<div class="coach-step"><div class="coach-step-num">' + (i + 1) + '</div><div>' + step + '</div></div>';
+      });
+    }
+    if (data.piege) html += '<div class="coach-piege"><strong>⚠️ Piège classique :</strong> ' + data.piege + '</div>';
+    if (data.bareme) html += '<div class="coach-bareme">📊 Barème : ' + data.bareme + '</div>';
+    if (data.arabe) {
+      html += '<div class="coach-arabe" dir="rtl"><strong>🇹🇳 Conseil en arabe :</strong><br>' + data.arabe + '</div>';
+    }
+    body.innerHTML = html;
+    document.getElementById('coach-modal').classList.add('open');
+  }
+  function closeCoach() { document.getElementById('coach-modal').classList.remove('open'); }
+
+  // ===== OUVERTURE TROU DROPDOWN =====
+  function ouvrirChoix(el) {
+    document.querySelectorAll('.trou-dropdown').forEach(d => d.style.display = 'none');
+    const wrapper = el.closest('.trou-wrapper');
+    const dropdown = wrapper.querySelector('.trou-dropdown');
+    const choices = el.dataset.choices ? el.dataset.choices.split(',').map(c => c.trim()) : [];
+    dropdown.innerHTML = choices.map(choice =>
+      '<div class="trou-dropdown-item" onclick="choisirReponse(this,\'' + choice.replace(/'/g, "\\'") + '\')">' + choice + '</div>'
+    ).join('');
+    dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
+  }
+
+  function choisirReponse(item, valeur) {
+    const dropdown = item.closest('.trou-dropdown');
+    const wrapper = dropdown.closest('.trou-wrapper');
+    const field = wrapper.querySelector('.trou-field');
+    field.textContent = valeur;
+    field.dataset.value = valeur;
+    field.classList.add('filled');
+    field.classList.remove('correct', 'wrong');
+    dropdown.style.display = 'none';
+    sauvegarderTout();
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.trou-wrapper')) {
+      document.querySelectorAll('.trou-dropdown').forEach(d => d.style.display = 'none');
+    }
+  });
+
+  // ===== VERIFICATION QCM PAR ITEM =====
+  function verifierItem(name, bonneReponse) {
+    const labels = document.querySelectorAll('input[name="'+name+'"]');
+    const selected = document.querySelector('input[name="'+name+'"]:checked');
+    labels.forEach(inp => {
+      inp.closest('label').classList.remove('qcm-correct','qcm-wrong','qcm-show');
+    });
+    if (!selected) {
+      alert('Choisissez une réponse !');
+      return;
+    }
+    document.querySelector('input[name="'+name+'"][value="'+bonneReponse+'"]').closest('label').classList.add('qcm-correct');
+    if (selected.value !== bonneReponse) {
+      selected.closest('label').classList.add('qcm-wrong');
+    }
+    const justif = selected.closest('.qcm-item').querySelector('.qcm-justif');
+    if (justif) {
+      justif.classList.add('show');
+      gsap.from(justif, { opacity:0, y:8, duration:0.3, ease:'power2.out' });
+    }
+    sauvegarderTout();
+  }
+
+  // ===== VALIDATION TROUS =====
+  function validerTrous(qid) {
+    let container = document.querySelector('.q-item[data-qid="' + qid + '"]');
+    if (!container) {
+      const inner = document.querySelector('[data-qid="' + qid + '"]');
+      container = inner ? inner.closest('.q-item') || inner : null;
+    }
+    if (!container) return;
+    let correct = 0, total = 0;
+    container.querySelectorAll('.trou-field[data-answer]').forEach(field => {
+      total++;
+      const rep = (field.dataset.value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const answers = field.dataset.answer.split('|').map(a => a.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));
+      const ok = answers.some(ans => rep === ans || (rep.length > 3 && ans.includes(rep)) || (ans.length > 3 && rep.includes(ans)));
+      field.classList.toggle('correct', ok);
+      field.classList.toggle('wrong', !ok);
+      if (ok) correct++;
+    });
+    container.querySelectorAll('.trou[data-answer]').forEach(input => {
+      total++;
+      const rep = input.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const answers = input.dataset.answer.split('|').map(a => a.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));
+      const ok = answers.some(ans => rep === ans || (rep.length > 3 && ans.includes(rep)) || (ans.length > 3 && rep.includes(ans)));
+      input.classList.toggle('correct', ok);
+      input.classList.toggle('wrong', !ok);
+      if (ok) correct++;
+    });
+    container.querySelectorAll('.trou-select[data-answer]').forEach(sel => {
+      total++;
+      const ok = sel.value.toLowerCase() === sel.dataset.answer.toLowerCase();
+      sel.classList.toggle('correct', ok);
+      sel.classList.toggle('wrong', !ok);
+      if (ok) correct++;
+    });
+    const corrBox = document.getElementById('corr-' + qid);
+    if (corrBox) {
+      corrBox.classList.add('open');
+      gsap.from(corrBox, { opacity: 0, y: 10, duration: 0.3, ease: 'power2.out' });
+    }
+    const scoreEl = document.getElementById('score-' + qid);
+    if (scoreEl && total > 0) {
+      const pct = Math.round((correct / total) * 100);
+      scoreEl.textContent = '🎯 ' + correct + ' / ' + total + ' éléments corrects (' + pct + '%)';
+      scoreEl.classList.add('show');
+    }
+    sauvegarderTout();
+  }
+
+  // ===== SET SCORE =====
+  function setScore(qid, points, theme) {
+    const group = document.querySelector('.score-btn-group[data-qid="' + qid + '"]');
+    if (!group) return;
+    const oldBtn = group.querySelector('.score-btn.selected');
+    const oldPts = oldBtn ? parseFloat(oldBtn.dataset.pts) : 0;
+    themeScores[theme] = Math.max(0, (themeScores[theme] || 0) - oldPts + points);
+    let total = (themeScores.partie1 || 0) + (themeScores.partie2 || 0);
+    document.getElementById('hdr-score').textContent = Math.min(20, total).toFixed(1) + ' / 20';
+    group.querySelectorAll('.score-btn').forEach(b => b.classList.remove('selected'));
+    const newBtn = group.querySelector('.score-btn[data-pts="' + points + '"]');
+    if (newBtn) newBtn.classList.add('selected');
+    sauvegarderTout();
+  }
+
+  // ===== SAUVEGARDE =====
+  function sauvegarderTout() {
+    let data = { reponses: {}, scores: themeScores, scoreExamen: scoreExamen };
+    document.querySelectorAll('.lignes-reponse').forEach((el, idx) => {
+      data.reponses[el.id || 'input_' + idx] = el.value;
+    });
+    document.querySelectorAll('.trou').forEach((el, idx) => {
+      data.reponses['trou_' + idx] = el.value;
+    });
+    document.querySelectorAll('.trou-select').forEach((el, idx) => {
+      data.reponses['select_' + idx] = el.value;
+    });
+    document.querySelectorAll('.trou-field').forEach((el, idx) => {
+      data.reponses['trou_field_' + idx] = el.dataset.value || '';
+    });
+    document.querySelectorAll('.score-btn.selected').forEach(btn => {
+      data['selected_' + btn.dataset.qid] = btn.dataset.pts;
+    });
+    localStorage.setItem('synapris_economie_2025_principale', JSON.stringify(data));
+  }
+
+  function restaurerTout() {
+    let saved = localStorage.getItem('synapris_economie_2025_principale');
+    if (!saved) return;
+    try {
+      let data = JSON.parse(saved);
+      if (data.scores) Object.assign(themeScores, data.scores);
+      if (data.scoreExamen) scoreExamen = data.scoreExamen;
+      if (data.reponses) {
+        document.querySelectorAll('.lignes-reponse').forEach((el, idx) => {
+          let key = el.id || 'input_' + idx;
+          if (data.reponses[key]) el.value = data.reponses[key];
+        });
+        document.querySelectorAll('.trou').forEach((el, idx) => {
+          let key = 'trou_' + idx;
+          if (data.reponses[key]) el.value = data.reponses[key];
+        });
+        document.querySelectorAll('.trou-select').forEach((el, idx) => {
+          let key = 'select_' + idx;
+          if (data.reponses[key]) el.value = data.reponses[key];
+        });
+        document.querySelectorAll('.trou-field').forEach((el, idx) => {
+          let key = 'trou_field_' + idx;
+          if (data.reponses && data.reponses[key]) {
+            el.textContent = data.reponses[key];
+            el.dataset.value = data.reponses[key];
+            el.classList.add('filled');
+          }
+        });
+      }
+      Object.keys(data).forEach(key => {
+        if (key.startsWith('selected_')) {
+          let qid = key.replace('selected_', '');
+          let pts = data[key];
+          let group = document.querySelector('.score-btn-group[data-qid="'+qid+'"]');
+          let btn = group ? group.querySelector('.score-btn[data-pts="'+pts+'"]') : null;
+          if (btn) btn.classList.add('selected');
+        }
+      });
+      let total = (themeScores.partie1 || 0) + (themeScores.partie2 || 0);
+      document.getElementById('hdr-score').textContent = Math.min(20, total).toFixed(1) + ' / 20';
+    } catch (e) {}
+  }
+
+  // ===== EXAMEN =====
+  function startExamen() {
+    if (examenStarted) return;
+    examenStarted = true;
+    for (let i = 0; i < 2; i++) {
+      examenTimers[i] = setInterval(() => {
+        examenSeconds[i]--;
+        let el = document.getElementById('ex-timer-' + (i + 1));
+        if (examenSeconds[i] <= 0) {
+          clearInterval(examenTimers[i]);
+          el.textContent = '⏰ Terminé !';
+          return;
+        }
+        let h = Math.floor(examenSeconds[i] / 3600);
+        let m = Math.floor((examenSeconds[i] % 3600) / 60);
+        let s = examenSeconds[i] % 60;
+        el.textContent = h > 0 ? h + 'h' + (m < 10 ? '0' : '') + m : m + ':' + (s < 10 ? '0' : '') + s;
+      }, 1000);
+    }
+  }
+
+  function validerExamenComplet() {
+    scoreExamen = 0;
+    document.getElementById('hdr-score').textContent = scoreExamen.toFixed(1) + ' / 20';
+    sauvegarderTout();
+    goTo(4);
+  }
+
+  function calculerTotalPartie2() {
+    let total = themeScores.partie2 || 0;
+    if (total === 0) { alert('Veuillez noter la dissertation avant d\'enregistrer.'); return; }
+    let scoreFinal = (themeScores.partie1 || 0) + total;
+    document.getElementById('hdr-score').textContent = Math.min(20, scoreFinal).toFixed(1) + ' / 20';
+    sauvegarderTout();
+    alert('✅ Note enregistrée !');
+  }
+
+  // ===== BILAN =====
+  function showBilan() {
+    let totalScore = (themeScores.partie1 || 0) + (themeScores.partie2 || 0);
+    let scoreOn20 = Math.min(20, totalScore);
+    document.getElementById('final-score-guide').textContent = scoreOn20.toFixed(1) + ' / 20';
+    let mention = getMention(scoreOn20);
+    let badge = document.getElementById('mention-guide');
+    badge.textContent = mention.text;
+    badge.style.color = mention.color;
+    badge.style.background = mention.bg;
+    document.getElementById('conseil-guide').innerHTML = mention.conseil;
+    document.getElementById('final-score-examen').textContent = scoreExamen.toFixed(1) + ' / 20';
+    let mentionEx = getMention(scoreExamen);
+    let badgeEx = document.getElementById('mention-examen');
+    badgeEx.textContent = mentionEx.text;
+    badgeEx.style.color = mentionEx.color;
+    badgeEx.style.background = mentionEx.bg;
+    document.getElementById('conseil-examen').innerHTML = mentionEx.conseil;
+    let themeGroups = [
+      { label: 'Partie 1 — QCM + Étude de cas', pts: themeScores.partie1 || 0, max: 10 },
+      { label: 'Partie 2 — Dissertation', pts: themeScores.partie2 || 0, max: 10 }
+    ];
+    setTimeout(() => {
+      themeGroups.forEach((g, i) => {
+        let pct = Math.round((g.pts / g.max) * 100);
+        document.getElementById('p' + (i + 1)).textContent = pct + '%';
+        let bar = document.getElementById('b' + (i + 1));
+        bar.style.width = pct + '%';
+        bar.className = 'bar-fill ' + getBarColor(pct);
+        let ptsEl = document.getElementById('pts' + (i + 1));
+        if (ptsEl) ptsEl.textContent = g.pts.toFixed(1) + ' / ' + g.max + ' pts';
+      });
+    }, 300);
+  }
+
+  function getMention(score) {
+    if (score >= 16) return { text: 'Très Bien 🌟', color: '#2D5A27', bg: 'rgba(45,90,39,0.15)', conseil: 'Excellent travail ! Continue à approfondir les mécanismes économiques.' };
+    if (score >= 14) return { text: 'Bien 👍', color: '#2D5A27', bg: 'rgba(45,90,39,0.15)', conseil: 'Bon niveau. Révise bien la distinction amont/aval et la DIPP.' };
+    if (score >= 12) return { text: 'Assez Bien', color: '#C4860A', bg: 'rgba(196,134,10,0.15)', conseil: 'Tu es sur la bonne voie. Travaille davantage la dissertation.' };
+    if (score >= 10) return { text: 'Passable', color: '#888', bg: 'rgba(0,0,0,0.06)', conseil: 'Attention : améliore tes calculs et l\'utilisation des documents.' };
+    return { text: 'Insuffisant', color: '#8B1A1A', bg: 'rgba(139,26,26,0.1)', conseil: 'Reprends les fondamentaux : DIPP, concentration, croissance et développement.' };
+  }
+
+  function getBarColor(pct) {
+    if (pct >= 70) return 'green';
+    if (pct >= 40) return 'orange';
+    return 'red';
+  }
+
+  function resetAll() {
+    if (confirm('Recommencer ?')) {
+      localStorage.removeItem('synapris_economie_2025_principale');
+      location.reload();
+    }
+  }
+
+  // ===== CALCULATRICE =====
+  let calcDisplay = document.getElementById('calc-display');
+  let calcMemory = 0, hasMemory = false, calcExpr = '';
+
+  function toggleCalc() { document.getElementById('calc-box').classList.toggle('open'); }
+
+  function calcInput(val) {
+    if (val === 'C') { calcExpr = ''; calcDisplay.value = '0'; return; }
+    if (val === '=') {
+      try { const result = Function('"use strict"; return (' + calcExpr + ')')(); calcDisplay.value = result; calcExpr = String(result); }
+      catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === '±') { calcExpr = calcExpr.startsWith('-') ? calcExpr.slice(1) : '-' + calcExpr; calcDisplay.value = calcExpr || '0'; return; }
+    if (val === 'sqrt') {
+      try { const num = parseFloat(calcExpr) || 0; if (num < 0) { calcDisplay.value = 'Erreur'; return; } const res = Math.sqrt(num); calcDisplay.value = res; calcExpr = String(res); }
+      catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === '%') {
+      try { const num = parseFloat(calcExpr) || 0; const res = num / 100; calcDisplay.value = res; calcExpr = String(res); }
+      catch { calcDisplay.value = 'Erreur'; calcExpr = ''; }
+      return;
+    }
+    if (val === 'MC') { calcMemory = 0; hasMemory = false; return; }
+    if (val === 'MR') { calcDisplay.value = calcMemory; calcExpr = String(calcMemory); return; }
+    if (val === 'M+') { calcMemory += parseFloat(calcExpr) || 0; hasMemory = true; return; }
+    if (val === 'M-') { calcMemory -= parseFloat(calcExpr) || 0; hasMemory = true; return; }
+    calcExpr += val;
+    calcDisplay.value = calcExpr;
+  }
+
+  // ===== INIT =====
+  showPage(1);
+  document.querySelectorAll('.lignes-reponse, .trou, .trou-select, .trou-field').forEach(el => el.addEventListener('input', sauvegarderTout));
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.score-btn');
+    if (!btn) return;
+    const group = btn.closest('.score-btn-group');
+    if (!group) return;
+    setScore(group.dataset.qid, parseFloat(btn.dataset.pts), group.dataset.theme);
+  });
+</script>
+</body>
+</html>
