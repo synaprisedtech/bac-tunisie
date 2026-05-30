@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Synapris — Économie Bac 2023 | Session principale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
+  </script>
+  <style>
+    :root {
+      --dark: #1A2517;
+      --primary: #5B0E14;
+      --accent: #F1E194;
+      --cream: #F7F3E3;
+      --white: #FFFFFF;
+      --text-dark: #1A2517;
+      --text-light: rgba(241,225,148,0.90);
+      --text-muted: rgba(241,225,148,0.50);
+      --ok: #2D5A27;
+      --ko: #8B1A1A;
+      --mid: #C4860A;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.15);
+      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      --font-ui: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-arabic: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+      --font-a4: 'Times New Roman', Times, serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); font-size: 1.05rem; background: var(--cream); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+
+    #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, var(--cream), #f0ead6); padding: 20px; }
+    .login-header { text-align: center; max-width: 450px; margin-bottom: 24px; }
+    .logo-placeholder-img { width: 120px; height: 120px; background: var(--primary); border-radius: 20px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--accent); box-shadow: var(--shadow); }
+    .login-video { width: 100%; max-width: 400px; border-radius: 16px; background: var(--dark); margin: 0 auto 24px; box-shadow: var(--shadow); }
+    .login-video video { width: 100%; border-radius: 16px; display: block; }
+    .login-card { background: var(--cream); padding: 32px 28px; border-radius: var(--radius-lg); max-width: 380px; width: 100%; box-shadow: var(--shadow-lg); text-align: center; margin-bottom: 24px; border: 1px solid rgba(26,37,23,0.08); }
+    .login-card .logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.8rem; color: var(--dark); margin-bottom: 2px; }
+    .login-card .slogan { font-size: 0.85rem; color: var(--dark); font-style: italic; margin-bottom: 20px; }
+    .login-card input { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: var(--radius); font-family: var(--font-body); font-size: 0.9rem; margin-bottom: 12px; outline: none; transition: var(--transition); }
+    .login-card input:focus { border-color: var(--dark); box-shadow: 0 0 0 2px rgba(26,37,23,0.15); }
+    .login-card .btn-login { width: 100%; padding: 12px; background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+    .login-card .btn-login:hover { background: #0e1a13; transform: translateY(-2px); }
+    .login-card .links { display: flex; justify-content: center; gap: 16px; margin-top: 14px; font-size: 0.75rem; }
+    .login-card .links a { color: rgba(26,37,23,0.5); text-decoration: none; transition: var(--transition); }
+    .login-card .links a:hover { color: var(--dark); }
+    .login-blocks { max-width: 450px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .login-block { background: var(--cream); border-radius: var(--radius); padding: 14px 10px; text-align: center; box-shadow: var(--shadow); transition: var(--transition); border: 1px solid rgba(26,37,23,0.06); }
+    .login-block:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .login-block .icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .login-block .arabic { font-size: 0.8rem; font-weight: 600; color: var(--dark); margin-bottom: 4px; font-family: var(--font-arabic); }
+    .login-block .french { font-size: 0.7rem; color: rgba(26,37,23,0.6); }
+
+    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--dark); padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .navbar-logo { font-family: var(--font-ui); font-weight: 800; font-size: 1.2rem; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+    .navbar-steps { display: flex; align-items: center; gap: 16px; flex: 1; justify-content: center; max-width: 600px; }
+    .nav-step { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 10px 20px; border-radius: 50px; transition: var(--transition); font-size: 0.85rem; font-weight: 600; color: var(--text-muted); font-family: var(--font-body); }
+    .nav-step .icon { font-size: 1.6rem; }
+    .nav-step .label { font-size: 0.8rem; text-transform: none; letter-spacing: 0.04em; }
+    .nav-step.active { color: var(--accent); background: rgba(241,225,148,0.12); border: 1px solid var(--accent); box-shadow: 0 0 15px rgba(241,225,148,0.1); }
+    .nav-step:hover { color: var(--accent); transform: translateY(-2px); }
+    .navbar-score { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    .navbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--dark); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; margin-left: 8px; }
+
+    #calc-wrapper { position: fixed; bottom: 80px; right: 20px; z-index: 1500; }
+    #calc-toggle-btn { background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); padding: 10px 14px; font-size: 0.9rem; cursor: pointer; box-shadow: var(--shadow-lg); transition: var(--transition); display: flex; align-items: center; gap: 6px; animation: clignote 1.5s infinite; }
+    #calc-toggle-btn:hover { transform: scale(1.05); background: #0e1a13; }
+    @keyframes clignote { 0%, 100% { opacity: 1; background: var(--dark); } 50% { opacity: 0.6; background: var(--accent); color: var(--dark); } }
+    #calc-box { display: none; position: absolute; bottom: 60px; right: 0; background: var(--cream); border: 2px solid var(--dark); border-radius: var(--radius-lg); padding: 12px; width: 260px; box-shadow: var(--shadow-lg); }
+    #calc-box.open { display: block; }
+    #calc-display { width: 100%; padding: 6px; font-size: 1.2rem; text-align: right; border: 1px solid #ccc; border-radius: var(--radius); margin-bottom: 8px; font-family: var(--font-mono); }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .calc-grid button { padding: 8px 0; border: 1px solid #ccc; border-radius: var(--radius); background: #f9f9f9; font-size: 0.9rem; cursor: pointer; transition: var(--transition); font-weight: 600; min-height: 40px; }
+    .calc-grid button:hover { background: var(--dark); color: var(--accent); }
+    .calc-grid button.op { background: var(--primary); color: var(--accent); }
+    .calc-grid button.op:hover { background: #3a0a0d; }
+    .calc-grid button.fn { background: var(--cream); }
+    .calc-grid button.mem { background: var(--accent); }
+    .calc-close { position: absolute; top: -10px; right: -10px; background: var(--ko); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: 700; }
+
+    .main-wrap { display: none; max-width: 1100px; margin: 0 auto; padding: 20px 16px 80px; }
+    .screen-full { display: none; animation: fadeUp 0.4s ease-out; }
+    .screen-full.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .split-layout { display: none; flex-direction: column; min-height: calc(100vh - 60px); animation: fadeUp 0.4s ease-out; }
+    .split-layout.active { display: flex; }
+
+    #s0 .accueil-coach { background: var(--cream); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s0 .accueil-coach .coach-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; color: var(--accent); }
+    #s0 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    #s0 .grid-2 .item { background: var(--cream); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s0 .grid-2 .item .label { font-size: 0.6rem; text-transform: uppercase; color: var(--dark); font-weight: 700; }
+    #s0 .grid-2 .item .value { font-size: 1.2rem; font-weight: 700; color: var(--dark); }
+    #s0 .grid-2 .item .desc { font-size: 0.75rem; color: rgba(26,37,23,0.5); }
+    #s0 .verbes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin: 10px 0; }
+    #s0 .verbe-card { background: var(--cream); border: 1px solid rgba(26,37,23,0.08); border-radius: var(--radius); padding: 12px; text-align: center; cursor: pointer; transition: var(--transition); }
+    #s0 .verbe-card:hover { border-color: var(--dark); transform: translateY(-2px); }
+    #s0 .verbe-card.on { border-color: var(--primary); background: var(--primary); color: var(--accent); }
+    #s0 .verbe-card.on .name { color: var(--accent); }
+    #s0 .verbe-card .emoji { font-size: 1.3rem; margin-bottom: 4px; }
+    #s0 .verbe-card .name { font-family: var(--font-ui); font-weight: 700; font-size: 0.75rem; }
+    #s0 .verbe-detail { display: none; padding: 12px; background: rgba(26,37,23,0.03); border-radius: var(--radius); margin-top: 10px; font-size: 0.85rem; line-height: 1.6; border-left: 3px solid var(--dark); }
+    #s0 .verbe-detail.show { display: block; }
+    #s0 .recommandations { background: var(--cream); border-left: 5px solid var(--primary); padding: 16px 20px; border-radius: var(--radius); margin-top: 8px; border: 1px solid rgba(26,37,23,0.06); }
+
+    #s1 .cours-card { background: var(--cream); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 12px; box-shadow: var(--shadow); border: 1px solid rgba(26,37,23,0.06); }
+    #s1 .cours-header { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; cursor: pointer; }
+    #s1 .cours-header .icon-box { width: 40px; height: 40px; border-radius: 10px; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; color: var(--accent); }
+    #s1 .cours-header .title { font-family: var(--font-ui); font-weight: 700; color: var(--dark); }
+    #s1 .cours-header .sub { font-size: 0.8rem; color: rgba(26,37,23,0.5); }
+    #s1 .cours-header .arrow { color: var(--dark); font-size: 0.8rem; }
+    #s1 .cours-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(26,37,23,0.06); font-size: 0.88rem; line-height: 1.7; color: rgba(26,37,23,0.7); }
+    #s1 .cours-detail.open { display: block; }
+    #s1 .cours-detail .piege { background: rgba(139,26,26,0.06); border-left: 3px solid var(--ko); padding: 6px 10px; margin: 6px 0; font-size: 0.85rem; }
+    #s1 .cours-detail .arabe { font-family: var(--font-arabic); font-size: 0.95rem; line-height: 1.6; margin-top: 8px; }
+    #s1 .cours-detail .formules { margin: 6px 0; padding: 8px; background: rgba(26,37,23,0.03); border-radius: 4px; font-family: var(--font-mono); font-size: 0.85rem; }
+    #s1 .cours-detail .exemple { margin: 6px 0; padding: 8px; background: rgba(45,90,39,0.06); border-left: 3px solid var(--ok); border-radius: 4px; }
+    #s1 .cours-detail .def-block { margin-bottom: 8px; }
+    #s1 .cours-detail .retenir { margin: 6px 0; padding: 8px; background: rgba(91,14,20,0.04); border-left: 3px solid var(--primary); border-radius: 4px; }
+
+    .entete-officiel { background: var(--cream); border: 2px solid var(--primary); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-a4); font-size: 12px; flex-wrap: wrap; gap: 12px; box-shadow: 0 2px 8px rgba(26,37,23,0.08); }
+    .entete-gauche { font-weight: 700; line-height: 1.5; font-size: 11px; color: var(--dark); }
+    .entete-centre { text-align: center; flex: 1; }
+    .entete-centre h1 { font-size: 16px; font-weight: 800; margin-bottom: 2px; color: var(--primary); }
+    .entete-centre .sous-titre { font-size: 12px; font-weight: 700; color: var(--primary); }
+    .entete-centre .details { font-size: 11px; margin-top: 4px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .entete-droit { text-align: right; font-size: 11px; }
+    .a4-page { display: none; font-family: var(--font-a4); padding: 0 0 60px 0; }
+    .a4-page.active { display: block; }
+    .titre-partie { font-weight: 700; font-size: 15px; border-bottom: 2px solid var(--primary); padding-bottom: 4px; margin: 16px 0 10px; color: var(--primary); }
+    .titre-section { font-weight: 700; font-size: 14px; margin: 14px 0 6px; color: var(--dark); }
+    .pts { font-weight: 400; font-size: 13px; color: var(--primary); }
+    .tableau-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; }
+    .tableau-off { width: 100%; border-collapse: collapse; font-family: var(--font-a4); font-size: 13px; min-width: 500px; }
+    .tableau-off th, .tableau-off td { border: 1px solid var(--text-dark); padding: 6px 8px; text-align: center; vertical-align: top; }
+    .tableau-off th { background: var(--cream); font-weight: 700; color: var(--dark); }
+    .lignes-reponse { width: 100%; border: none; border-bottom: 1px dashed #999; padding: 6px 2px; font-family: var(--font-a4); font-size: 13px; background: transparent; resize: vertical; outline: none; min-height: 40px; margin: 6px 0 8px; color: var(--text-dark); }
+    .lignes-reponse.correct { border-bottom: 2px solid var(--ok); }
+    .lignes-reponse.wrong { border-bottom: 2px solid var(--ko); }
+    .q-item { margin-bottom: 16px; padding: 10px 14px; border: 1px solid rgba(26,37,23,0.1); border-radius: var(--radius); background: var(--cream); }
+    .q-item .q-num { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--dark); }
+    .nav-a4 { position: relative; top: 0; transform: none; background: var(--dark); border: 2px solid var(--accent); border-radius: 60px; padding: 8px 16px; display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 20px; width: 100%; min-width: 100%; z-index: 500; }
+    .nav-a4-btn { padding: 12px 28px; border: none; background: var(--primary); color: var(--accent); font-family: var(--font-ui); font-weight: 700; font-size: 1rem; border-radius: 50px; cursor: pointer; transition: var(--transition); }
+    .nav-a4-btn:hover { transform: scale(1.05); background: var(--dark); color: var(--accent); border: 1px solid var(--accent); }
+    .nav-a4-indicator { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--accent); min-width: 80px; text-align: center; }
+
+    .correction-box { display: none; margin-top: 12px; border: 2px solid var(--primary); border-radius: var(--radius); padding: 0; background: rgba(91,14,20,0.04); overflow: hidden; overflow-x: auto; max-width: 100%; }
+    .correction-box.open { display: block; }
+    .correction-row { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(91,14,20,0.1); padding: 6px 12px; }
+    .correction-row:last-child { border-bottom: none; }
+    .correction-contenu { width: 72%; font-size: 13px; line-height: 1.6; padding-right: 10px; }
+    .correction-bareme { width: 28%; font-size: 13px; font-weight: 700; color: var(--primary); padding-left: 10px; border-left: 1px solid rgba(91,14,20,0.1); text-align: right; }
+    .correction-title { font-weight: 700; font-size: 14px; color: var(--primary); margin-bottom: 6px; padding: 6px 12px; border-bottom: 1px solid rgba(91,14,20,0.1); background: rgba(91,14,20,0.08); }
+    .valider-btn { margin-top: 10px; padding: 6px 16px; background: var(--primary); color: var(--accent); border: none; border-radius: 6px; font-family: var(--font-ui); font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: var(--transition); display: none; }
+    .valider-btn.show { display: inline-flex; align-items: center; gap: 6px; }
+    .valider-btn:hover { background: #3a0a0d; transform: translateY(-1px); }
+    .score-display { display: none; margin-top: 8px; padding: 8px; background: rgba(241,225,148,0.12); border-left: 4px solid var(--accent); font-weight: 700; font-size: 0.9rem; }
+    .score-display.show { display: block; }
+
+    .score-btn-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .score-btn { padding: 6px 12px; border: 1px solid var(--primary); border-radius: 20px; background: transparent; color: var(--primary); font-family: var(--font-mono); font-size: 0.8rem; cursor: pointer; transition: var(--transition); min-height: 44px; min-width: 44px; }
+    .score-btn.selected { background: var(--primary); color: var(--accent); font-weight: 700; }
+    .score-btn:hover { background: var(--primary); color: var(--accent); }
+
+    .examen-mode .correction-box { display: none !important; }
+    .examen-mode .coach-btn { display: none !important; }
+    .examen-mode .valider-btn { display: none !important; }
+    .examen-mode .score-display { display: none !important; }
+    .examen-mode .field-modal { display: none !important; }
+    .examen-mode .tt-modal { display: none !important; }
+    .examen-mode .lignes-reponse { background: transparent; }
+    .examen-timer-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .examen-timer-box { flex: 1; min-width: 100px; background: var(--cream); border-radius: var(--radius); padding: 10px 14px; box-shadow: var(--shadow); text-align: center; border: 1px solid rgba(26,37,23,0.06); }
+    .examen-timer-box .label { font-size: 0.6rem; text-transform: uppercase; color: rgba(26,37,23,0.4); letter-spacing: 0.04em; }
+    .examen-timer-box .time { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 600; color: var(--dark); }
+    .examen-controls { text-align: center; margin-bottom: 16px; }
+    .examen-controls button { padding: 8px 24px; background: var(--dark); color: var(--accent); border: none; border-radius: var(--radius); font-family: var(--font-ui); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: var(--transition); }
+    .examen-controls button:hover { background: #0e1a13; }
+
+    .score-big { font-family: var(--font-ui); font-weight: 800; font-size: clamp(2.5rem, 5vw, 4rem); background: linear-gradient(135deg, var(--dark), #0e1a13); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+    .comp-bar { margin: 8px 0; }
+    .comp-head { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px; }
+    .comp-name { color: rgba(26,37,23,0.6); }
+    .comp-pct { font-family: var(--font-mono); color: var(--dark); }
+    .bar-track { height: 4px; background: rgba(26,37,23,0.08); border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--dark), var(--primary)); width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+    .bar-fill.green { background: linear-gradient(90deg, var(--dark), var(--ok)); }
+    .bar-fill.orange { background: linear-gradient(90deg, var(--dark), var(--mid)); }
+    .bar-fill.red { background: linear-gradient(90deg, var(--dark), var(--ko)); }
+    .conseil-box { padding: 12px; border-radius: var(--radius); margin-top: 8px; font-size: 0.85rem; line-height: 1.5; border-left: 4px solid var(--dark); background: rgba(26,37,23,0.03); }
+
+    .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: var(--dark); padding: 8px 0 env(safe-area-inset-bottom, 8px) 0; border-top: 1px solid rgba(241,225,148,0.2); justify-content: space-around; align-items: center; }
+    .bottom-nav .nav-step { flex: 1; padding: 6px 0; text-align: center; font-size: 0.6rem; color: rgba(241,225,148,0.5); cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bottom-nav .nav-step .icon { font-size: 1.3rem; }
+    .bottom-nav .nav-step span:not(.icon) { font-size: 0.65rem; }
+    .bottom-nav .nav-step.active { color: var(--accent); }
+
+    .tt-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .tt-modal.open { display: flex; }
+    .tt-modal-content { background: var(--cream); max-width: 400px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); position: relative; border: 1px solid rgba(26,37,23,0.06); }
+    .tt-modal-content .close-tt { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: rgba(26,37,23,0.3); }
+    .tt-modal-content .close-tt:hover { color: var(--dark); }
+    .tt-modal-content .tt-img { font-size: 2.5rem; text-align: center; margin-bottom: 8px; }
+    .tt-modal-content .tt-def { font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
+    .tt-modal-content .tt-def strong { color: var(--dark); }
+    .tt-modal-content .tt-audio { background: var(--dark); color: var(--accent); border: none; padding: 5px 14px; border-radius: 100px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: var(--transition); font-family: var(--font-body); }
+    .tt-modal-content .tt-audio:hover { background: #0e1a13; }
+    .tt-modal-content .tt-rappel { margin-top: 10px; padding: 8px 12px; background: rgba(26,37,23,0.05); border-radius: var(--radius); font-size: 0.85rem; color: rgba(26,37,23,0.7); }
+    .tt-modal-content .tt-rappel strong { color: var(--dark); }
+    .tt-modal-content .tt-arabe { font-family: var(--font-arabic); font-size: 0.9rem; line-height: 1.6; margin-top: 10px; padding: 8px 12px; background: rgba(26,37,23,0.04); border-radius: var(--radius); border-right: 3px solid var(--primary); text-align: right; display: none; }
+    .tt-trigger { display: inline; color: var(--dark); border-bottom: 1px dashed var(--dark); cursor: pointer; font-weight: 600; transition: var(--transition); }
+    .tt-trigger:hover { color: #0e1a13; border-color: #0e1a13; }
+
+    .field-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+    .field-modal.open { display: flex; }
+    .field-modal-content { background: var(--cream); max-width: 400px; width: 100%; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); position: relative; border: 1px solid rgba(26,37,23,0.06); }
+    .field-modal-content .close-field-modal { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: rgba(26,37,23,0.3); }
+    .field-modal-content .close-field-modal:hover { color: var(--dark); }
+    .field-modal-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; color: var(--dark); }
+    .field-modal-body { font-size: 0.9rem; line-height: 1.6; color: var(--text-dark); }
+
+    .coach-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+    .coach-modal.open { display: flex; }
+    .coach-modal-content { background: var(--dark); max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; border-radius: var(--radius-lg); color: var(--text-light); font-family: var(--font-body); box-shadow: var(--shadow-lg); border: 1px solid rgba(241,225,148,0.2); }
+    .coach-modal-content .close-modal { float: right; background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+    .coach-modal-content .close-modal:hover { color: var(--accent); }
+    .coach-modal-content .coach-title { font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; color: var(--accent); margin-bottom: 12px; }
+    .coach-modal-content .coach-msg { font-size: 0.88rem; line-height: 1.6; margin-bottom: 12px; }
+    .coach-modal-content .coach-msg strong { color: var(--accent); }
+    .coach-modal-content .coach-schema-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .coach-modal-content .coach-step { display: flex; gap: 10px; padding: 4px 0; font-size: 0.85rem; line-height: 1.5; }
+    .coach-modal-content .coach-step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(241,225,148,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .coach-modal-content .coach-piege { background: rgba(139,26,26,0.08); border-left: 3px solid var(--ko); padding: 8px 12px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; line-height: 1.5; margin: 10px 0; }
+    .coach-modal-content .coach-piege strong { color: var(--ko); }
+    .coach-modal-content .coach-bareme { padding: 8px 12px; background: rgba(241,225,148,0.1); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.85rem; font-weight: 600; color: var(--accent); margin-top: 10px; }
+    .coach-modal-content .coach-arabe { margin-top: 10px; padding: 8px; background: rgba(241,225,148,0.04); border-radius: 4px; text-align: right; font-family: var(--font-arabic); font-size: 0.85rem; line-height: 1.5; border-right: 3px solid var(--accent); }
+    .coach-btn { margin-top: 8px; padding: 4px 12px; background: transparent; border: 1px solid var(--dark); color: var(--dark); border-radius: 100px; font-family: var(--font-body); font-size: 0.7rem; cursor: pointer; transition: var(--transition); }
+    .coach-btn:hover { background: rgba(26,37,23,0.1); }
+
+    .guided-text { font-family: var(--font-a4); font-size: 13px; line-height: 2.2; margin: 8px 0; }
+    .trou { border: none; border-bottom: 2px solid var(--primary); background: transparent; font-family: var(--font-a4); font-size: 13px; width: 120px; text-align: center; padding: 2px 4px; outline: none; transition: var(--transition); color: var(--dark); }
+    .trou:focus { border-color: var(--dark); background: rgba(26,37,23,0.04); border-radius: 4px; }
+    .trou.correct { border-color: var(--ok); color: var(--ok); background: rgba(45,90,39,0.06); border-radius: 4px; }
+    .trou.wrong { border-color: var(--ko); color: var(--ko); background: rgba(139,26,26,0.06); border-radius: 4px; }
+    .trou-select { border: none; border-bottom: 2px solid var(--primary); background: transparent; font-family: var(--font-a4); font-size: 13px; padding: 2px 4px; color: var(--dark); cursor: pointer; outline: none; transition: var(--transition); }
+    .trou-select:focus { border-color: var(--dark); }
+    .trou-select.correct { border-color: var(--ok); color: var(--ok); }
+    .trou-select.wrong { border-color: var(--ko); color: var(--ko); }
+    .diss-bloc { background: var(--cream); border: 1px solid rgba(91,14,20,0.1); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; }
+    .diss-titre { font-family: var(--font-ui); font-weight: 700; font-size: 0.9rem; color: var(--primary); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(91,14,20,0.1); }
+
+    .trou-wrapper { position: relative; display: inline-block; }
+    .trou-field { display: inline-block; border-bottom: 2px solid var(--primary); min-width: 100px; padding: 2px 8px; cursor: pointer; font-family: var(--font-a4); font-size: 13px; color: var(--dark); text-align: center; transition: var(--transition); border-radius: 0; background: transparent; user-select: none; }
+    .trou-field:hover { background: rgba(91,14,20,0.04); border-radius: 4px 4px 0 0; }
+    .trou-field.filled { color: var(--dark); font-weight: 600; }
+    .trou-field.correct { border-color: var(--ok); color: var(--ok); background: rgba(45,90,39,0.06); border-radius: 4px; }
+    .trou-field.wrong { border-color: var(--ko); color: var(--ko); background: rgba(139,26,26,0.06); border-radius: 4px; }
+    .trou-dropdown { position: absolute; top: 100%; left: 0; min-width: 140px; background: var(--cream); border: 2px solid var(--primary); border-radius: 0 var(--radius) var(--radius) var(--radius); box-shadow: var(--shadow-lg); z-index: 9999; overflow: hidden; animation: fadeUp 0.15s ease-out; }
+    .trou-dropdown-item { padding: 8px 14px; font-family: var(--font-a4); font-size: 13px; cursor: pointer; color: var(--dark); transition: var(--transition); border-bottom: 1px solid rgba(26,37,23,0.06); }
+    .trou-dropdown-item:last-child { border-bottom: none; }
+    .trou-dropdown-item:hover { background: var(--primary); color: var(--accent); }
+
+    .qcm-item { margin-bottom: 16px; padding: 12px; background: rgba(26,37,23,0.02); border-radius: var(--radius); border-left: 3px solid var(--primary); }
+    .qcm-choices { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+    .qcm-choices label { display: flex; align-items: flex-start; gap: 8px; font-family: var(--font-a4); font-size: 13px; cursor: pointer; padding: 7px 10px; border-radius: 6px; border: 1px solid transparent; transition: var(--transition); line-height: 1.5; }
+    .qcm-choices label:hover { background: rgba(91,14,20,0.04); border-color: rgba(91,14,20,0.1); }
+    .qcm-choices input[type="radio"] { margin-top: 2px; accent-color: var(--primary); flex-shrink: 0; width: 16px; height: 16px; }
+    .qcm-choices label.qcm-correct { background: rgba(45,90,39,0.08); border-color: var(--ok); color: var(--ok); font-weight: 600; }
+    .qcm-choices label.qcm-wrong { background: rgba(139,26,26,0.08); border-color: var(--ko); color: var(--ko); text-decoration: line-through; }
+    .qcm-justif { display: none; margin-top: 8px; padding: 10px 12px; background: rgba(241,225,148,0.08); border-radius: var(--radius); border-top: 1px dashed rgba(91,14,20,0.15); }
+    .qcm-justif.show { display: block; }
+    .btn-verif-item { margin-top: 6px; padding: 5px 14px; background: var(--primary); color: var(--accent); border: none; border-radius: 20px; font-family: var(--font-ui); font-weight: 700; font-size: 0.75rem; cursor: pointer; transition: var(--transition); min-height: 36px; }
+    .btn-verif-item:hover { background: #3a0a0d; transform: translateY(-1px); }
+
+    @media (max-width: 900px) { .navbar-steps .nav-step .label { display: none; } .navbar-steps .nav-step { padding: 4px 6px; } .navbar-steps .nav-step .icon { font-size: 1.1rem; } .bottom-nav { display: flex; } .main-wrap { padding-bottom: 60px; } }
+    @media (max-width: 640px) {
+      .navbar { padding: 0 10px; height: 56px; }
+      .navbar-logo { font-size: 0.9rem; }
+      .navbar-score { font-size: 0.7rem; }
+      .navbar-avatar { width: 28px; height: 28px; font-size: 0.7rem; }
+      .navbar-steps { display: none; }
+      .nav-a4-btn { padding: 8px 16px; font-size: 0.8rem; }
+      .entete-officiel { flex-direction: column; align-items: center; text-align: center; padding: 12px; }
+      .correction-row { flex-direction: column; }
+      .correction-contenu { width: 100%; padding-right: 0; border-right: none; }
+      .correction-bareme { width: 100%; padding-left: 0; border-left: none; border-top: 1px solid rgba(91,14,20,0.1); padding-top: 6px; text-align: left; }
+      #calc-wrapper { bottom: 80px; right: 16px; left: auto; }
+      #calc-box { width: 240px; right: 0; left: auto; }
+      .q-item { overflow-x: auto; }
+      .tableau-wrapper { max-width: 100%; overflow-x: auto; }
+      .correction-box .tableau-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+      .correction-box .tableau-off { min-width: 500px; }
+      .score-btn { min-height: 44px; min-width: 44px; padding: 8px 14px; }
+      .qcm-choices { grid-template-columns: 1fr; }
+    }
+    @media print { .navbar, .bottom-nav, .nav-a4, .coach-btn, .valider-btn, .examen-controls, .login-screen, #login-screen, #calc-wrapper, .mode-toggle { display: none !important; } .split-layout { display: block !important; padding-bottom: 0 !important; } .correction-box { border: 1px solid #ccc !important; background: white !important; } }
+
+    #s0 .nav-a4, #s1 .nav-a4, #s4 .nav-a4 { display: none !important; }
+    #login-screen #calc-wrapper, #s0 #calc-wrapper { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-header">
+    <div class="logo-placeholder-img">🧠</div>
+    <div class="login-video"><video loop muted autoplay playsinline><source src="assets/intro.mp4" type="video/mp4"></video></div>
+  </div>
+  <div class="login-card">
+    <div class="logo">⚡ Synapris</div>
+    <div class="slogan">Éclairer l'intelligence</div>
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Mot de passe" />
+    <button class="btn-login" onclick="handleLogin()">Se connecter</button>
+    <div class="links">
+      <a href="#" onclick="alert('Inscription — bientôt disponible')">Créer un compte</a>
+      <a href="#" onclick="alert('Mot de passe oublié — bientôt disponible')">Mot de passe oublié</a>
+    </div>
+  </div>
+  <div class="login-blocks">
+    <div class="login-block"><div class="icon">🎯</div><div class="arabic">محاكاة الامتحان الرسمي</div><div class="french">Simulation officielle du bac – comme le jour J</div></div>
+    <div class="login-block"><div class="icon">🧑‍🏫</div><div class="arabic">الوضع الموجّه</div><div class="french">Mode guidé – correction officielle pas à pas</div></div>
+    <div class="login-block"><div class="icon">⏱️</div><div class="arabic">الوضع الامتحان</div><div class="french">Mode examen – chrono et conditions réelles</div></div>
+    <div class="login-block"><div class="icon">💾</div><div class="arabic">حفظ التقدّم</div><div class="french">Sauvegarde automatique – reprends où tu t'es arrêté</div></div>
+  </div>
+</div>
+
+<nav class="navbar" id="navbar" style="display:none;">
+  <div class="navbar-logo">🧠 Synapris</div>
+  <div class="navbar-steps">
+    <div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span class="label">Accueil</span></div>
+    <div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span class="label">Cours</span></div>
+    <div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span class="label">Guidé</span></div>
+    <div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span class="label">Examen</span></div>
+    <div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span class="label">Bilan</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="navbar-score" id="hdr-score">0 / 20</span>
+    <div class="navbar-avatar" id="avatar">👤</div>
+  </div>
+</nav>
+
+<main class="main-wrap" id="main-wrap" style="display:none;">
+
+  <div class="screen-full active" id="s0">
+    <div style="text-align:center;padding:4px 0 16px;">
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">📅 Jour 1 / 10</div>
+      <h1 style="font-family:var(--font-ui);font-weight:800;font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--dark);line-height:1.1;">Économie<br><span style="color:var(--primary);">Bac 2023 – Session Principale</span></h1>
+      <p style="font-size:0.85rem;color:rgba(26,37,23,0.5);margin-top:4px;">Épreuve officielle simulée — Section Économie &amp; Gestion</p>
+    </div>
+    <div class="accueil-coach">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div class="coach-avatar">🧑‍🏫</div>
+        <div>
+          <div style="font-family:var(--font-ui);font-weight:700;font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Ton Coach Synapris</div>
+          <div style="font-size:0.85rem;line-height:1.6;color:rgba(26,37,23,0.7);">Tu vas simuler l'épreuve officielle du baccalauréat 2023 (nouveau régime). Le layout est <strong style="color:var(--dark);">identique à l'épreuve réelle</strong>. Je suis là pour t'aider à <strong style="color:var(--dark);">construire ton raisonnement</strong> — jamais te donner la réponse.</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="item"><div class="label">Partie 1</div><div class="value">10 pts</div><div class="desc">4 items QCM + Étude de cas (producteur)</div></div>
+      <div class="item"><div class="label">Partie 2</div><div class="value">10 pts</div><div class="desc">Dissertation (Comportement citoyen &amp; DD)</div></div>
+      <div class="item"><div class="label">Durée</div><div class="value">3h</div><div class="desc">Coefficient 3</div></div>
+      <div class="item"><div class="label">Format</div><div class="value">5 pages</div><div class="desc">Navigation ← → par page</div></div>
+    </div>
+    <div style="background:var(--cream);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-family:var(--font-ui);font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:10px;">🎯 Verbes d'action — Économie</div>
+      <p style="font-size:0.8rem;color:rgba(26,37,23,0.5);margin-bottom:10px;">Clique sur chaque verbe pour comprendre ce qu'attend le correcteur.</p>
+      <div class="verbes-grid">
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-identifier')"><div class="emoji">🔍</div><div class="name">IDENTIFIER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-distinguer')"><div class="emoji">⚖️</div><div class="name">DISTINGUER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-caracteriser')"><div class="emoji">📝</div><div class="name">CARACTÉRISER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-analyser')"><div class="emoji">📊</div><div class="name">ANALYSER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-justifier')"><div class="emoji">✍️</div><div class="name">JUSTIFIER</div></div>
+        <div class="verbe-card" onclick="toggleVerbe(this,'v-disserter')"><div class="emoji">📖</div><div class="name">DISSERTER</div></div>
+      </div>
+      <div id="v-identifier" class="verbe-detail"><strong>IDENTIFIER</strong> = Nommer et définir précisément le concept ou le mécanisme.</div>
+      <div id="v-distinguer" class="verbe-detail"><strong>DISTINGUER</strong> = Montrer les différences entre deux notions (ex : désinflation vs déflation).</div>
+      <div id="v-caracteriser" class="verbe-detail"><strong>CARACTÉRISER</strong> = Décrire les traits essentiels d'un phénomène.</div>
+      <div id="v-analyser" class="verbe-detail"><strong>ANALYSER</strong> = Décomposer + interpréter les éléments d'un document.</div>
+      <div id="v-justifier" class="verbe-detail"><strong>JUSTIFIER</strong> = Prouver par des arguments + données chiffrées.</div>
+      <div id="v-disserter" class="verbe-detail"><strong>DISSERTER</strong> = Construire un raisonnement structuré : introduction, développement (2 parties), conclusion.</div>
+    </div>
+    <div class="recommandations">
+      <h3 style="color:var(--dark);font-weight:800;font-size:0.9rem;">📌 Recommandations officielles – Épreuve d'Économie</h3>
+      <ul style="list-style:none;padding:0;line-height:1.8;font-size:0.85rem;">
+        <li>✅ Lire attentivement chaque question.</li>
+        <li>✅ Commencer par la question la plus facile.</li>
+        <li>✅ Pour la dissertation : dégager la problématique.</li>
+        <li>✅ Rédiger introduction, développement (2 parties), conclusion.</li>
+        <li>✅ Utiliser les documents fournis.</li>
+        <li>✅ Présenter les calculs sur la copie.</li>
+        <li>✅ Soigner la présentation et l'écriture.</li>
+        <li>✅ Vérifier les unités (DT, UM, pourcentage, etc.).</li>
+      </ul>
+      <div style="margin-top:12px;text-align:right;font-style:italic;color:var(--dark);font-weight:600;">Bon courage ! 🍀</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+      <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:10px 28px;font-size:0.85rem;border:none;" onclick="goTo(1)">Commencer →</button>
+    </div>
+  </div>
+
+  <!-- COURS -->
+  <div class="screen-full" id="s1">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 2 — Rappel cours</div>
+    <h2 style="font-family:var(--font-ui);font-weight:800;font-size:1.4rem;color:var(--dark);margin-bottom:4px;">Ce que tu dois savoir</h2>
+    <p style="font-size:0.85rem;color:rgba(26,37,23,0.5);margin-bottom:16px;">Notions ciblées pour <em>cette</em> épreuve uniquement</p>
+
+    <!-- Fiche 1 : Contrainte budgétaire -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">💰</div>
+        <div><div class="title"><span class="tt-trigger" onclick="openTT('contrainte-budgetaire')">Contrainte budgétaire</span></div><div class="sub">R = xPx + yPy, droite de budget</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>La <span class="tt-trigger" onclick="openTT('contrainte-budgetaire')">contrainte budgétaire</span> limite les choix du consommateur : R = x.Px + y.Py où R est le revenu, Px et Py les prix des biens X et Y.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> قيد الميزانية يحد من خيارات المستهلك: R = x.Px + y.Py حيث R الدخل وPx وPy السعران.</div>
+        </div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • R = x.Px + y.Py<br>
+          • Si R augmente → droite de budget se déplace vers la droite<br>
+          • Si prix baisse → pivot de la droite</div>
+        <div class="exemple"><strong>Exemple (sujet 2023) :</strong><br>
+          Amel : R=20 DT, Px=0,500 DT, Py=1,200 DT. 16 yaourts + 10 laits = 8+12 = 20 DT.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Vérifier toujours l'égalité R = xPx + yPy pour chaque proposition.</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • R = xPx + yPy<br>
+          • Toute combinaison au-dessus de la droite est inatteignable</div>
+      </div>
+    </div>
+
+    <!-- Fiche 2 : Courbe d'indifférence -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📐</div>
+        <div><div class="title"><span class="tt-trigger" onclick="openTT('courbe-indifference')">Courbe d'indifférence</span></div><div class="sub">Utilité, TMS, équation</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>Une <span class="tt-trigger" onclick="openTT('courbe-indifference')">courbe d'indifférence</span> représente tous les paniers procurant la même utilité. Pour U donnée, on isole y en fonction de x.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> منحنى السواء يمثل جميع السلال التي تمنح نفس المنفعة.</div>
+        </div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • U(x,y) = constante → isoler y = f(x)<br>
+          • TMS = Umx / Umy<br>
+          • À l'équilibre : TMS = Px/Py</div>
+        <div class="exemple"><strong>Exemple (sujet 2023) :</strong><br>
+          U = 2 x^(1/4) y^(3/4) = 2 → x^(1/4) y^(3/4) = 1 → x y^3 = 1 → y = 1/x^(1/3).</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Bien manipuler les exposants : x^(1/4) × (y^(3/4)) = 1 → x y^3 = 1.</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • U constante sur une courbe d'indifférence<br>
+          • Plus on s'éloigne de l'origine, plus U est élevée</div>
+      </div>
+    </div>
+
+    <!-- Fiche 3 : Désinflation vs déflation vs inflation -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📊</div>
+        <div><div class="title"><span class="tt-trigger" onclick="openTT('inflation')">Inflation</span>, <span class="tt-trigger" onclick="openTT('deflation')">déflation</span>, <span class="tt-trigger" onclick="openTT('desinflation')">désinflation</span></div><div class="sub">Distinction des trois concepts</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>L'<span class="tt-trigger" onclick="openTT('inflation')">inflation</span> est une hausse généralisée des prix. La <span class="tt-trigger" onclick="openTT('deflation')">déflation</span> est une baisse (taux négatif). La <span class="tt-trigger" onclick="openTT('desinflation')">désinflation</span> est un ralentissement de l'inflation (taux positif mais en baisse).</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> التضخم = ارتفاع عام للأسعار. الانكماش = انخفاض (معدل سالب). تباطؤ التضخم = انخفاض المعدل مع بقائه موجباً.</div>
+        </div>
+        <div class="formules"><strong>Distinction :</strong><br>
+          • Inflation : taux > 0 et en hausse<br>
+          • Désinflation : taux > 0 mais en baisse<br>
+          • Déflation : taux < 0</div>
+        <div class="exemple"><strong>Exemple (sujet 2023) :</strong><br>
+          Maroc : 1998 = 2,80 %, 1999 = 0,70 % → taux positif mais en baisse = <strong>désinflation</strong>.<br>
+          Syrie : 1998 = −0,80 %, 1999 = −3,70 % → taux négatif = <strong>déflation</strong>.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Désinflation ≠ Déflation. La désinflation = l'inflation ralentit (reste > 0).</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • Taux > 0 = inflation<br>
+          • Taux < 0 = déflation<br>
+          • Taux > 0 mais en baisse = désinflation</div>
+      </div>
+    </div>
+
+    <!-- Fiche 4 : Producteur – isocoût/isoquant -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🏭</div>
+        <div><div class="title">Producteur : <span class="tt-trigger" onclick="openTT('isocout')">isocoût</span>, <span class="tt-trigger" onclick="openTT('isoquant')">isoquant</span>, <span class="tt-trigger" onclick="openTT('tmst')">TMST</span></div><div class="sub">Combinaison productive optimale</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>L'<span class="tt-trigger" onclick="openTT('isocout')">isocoût</span> = combinaisons de facteurs pour un même coût total. L'<span class="tt-trigger" onclick="openTT('isoquant')">isoquant</span> = même production. Le <span class="tt-trigger" onclick="openTT('tmst')">TMST</span> = taux de substitution technique.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> خط التكلفة المتساوية = نفس التكلفة. منحنى الإنتاج المتساوي = نفس الإنتاج. المعدل الحدي للإحلال التقني = معدل استبدال K بـ L.</div>
+        </div>
+        <div class="formules"><strong>Formules clés :</strong><br>
+          • CT = wL + rK → r = CT/K quand L=0<br>
+          • TMST = PmL/PmK<br>
+          • À l'équilibre : TMST = w/r</div>
+        <div class="exemple"><strong>Exemple (sujet 2023) :</strong><br>
+          E(0,3) → 60 = 3r → r = 20. F(12,0) → 60 = 12w → w = 5.<br>
+          TMST = K/2L = 5/20 = 1/4 → K = 0,5L. L*=4, K*=2, Q*=4.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> TMST = PmL/PmK, pas l'inverse. Bien lire les points sur le graphique.</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • Isocoût : CT constant<br>
+          • Isoquant : Q constante<br>
+          • TMST = w/r à l'équilibre</div>
+      </div>
+    </div>
+
+    <!-- Fiche 5 : Rendements d'échelle -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">📏</div>
+        <div><div class="title"><span class="tt-trigger" onclick="openTT('rendements-echelle')">Rendements d'échelle</span></div><div class="sub">Constants, croissants, décroissants</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>Les <span class="tt-trigger" onclick="openTT('rendements-echelle')">rendements d'échelle</span> mesurent comment la production varie quand on multiplie tous les inputs par un même facteur λ.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> عوائد الحجم تقيس تغير الإنتاج عند مضاعفة جميع عوامل الإنتاج بنفس النسبة.</div>
+        </div>
+        <div class="formules"><strong>Types :</strong><br>
+          • Q(λL, λK) = λ Q → rendements constants<br>
+          • Q(λL, λK) > λ Q → rendements croissants<br>
+          • Q(λL, λK) < λ Q → rendements décroissants<br>
+          • Si α+β=1 → rendements constants (Cobb-Douglas)</div>
+        <div class="exemple"><strong>Exemple (sujet 2023) :</strong><br>
+          Q(L,K) = 2^(2/3) L^(1/3) K^(2/3). α+β = 1/3+2/3 = 1.<br>
+          Q(2L,2K) = 2 × Q → rendements constants. CT' = 2 × CT = 120 UM.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Vérifier α+β pour savoir le type de rendements. α+β=1 → constants.</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • α+β = 1 → constants<br>
+          • α+β > 1 → croissants<br>
+          • α+β < 1 → décroissants</div>
+      </div>
+    </div>
+
+    <!-- Fiche 6 : Développement durable -->
+    <div class="cours-card">
+      <div class="cours-header" onclick="toggleCours(this)">
+        <div class="icon-box">🌍</div>
+        <div><div class="title"><span class="tt-trigger" onclick="openTT('developpement-durable')">Développement durable</span></div><div class="sub">3 piliers, RSE, comportement citoyen</div></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="cours-detail">
+        <div class="def-block">
+          <p>Le <span class="tt-trigger" onclick="openTT('developpement-durable')">développement durable</span> vise à satisfaire les besoins présents sans compromettre ceux des générations futures. Il repose sur 3 piliers : économique, social, environnemental. La <span class="tt-trigger" onclick="openTT('rse')">RSE</span> est l'intégration volontaire par les entreprises de préoccupations sociales et environnementales.</p>
+          <div class="arabe" dir="rtl"><strong>🇹🇳 تعريف :</strong> التنمية المستدامة تلبي احتياجات الحاضر دون المساس بقدرة الأجيال القادمة. تقوم على 3 ركائز: اقتصادية، اجتماعية، بيئية.</div>
+        </div>
+        <div class="formules"><strong>3 piliers :</strong><br>
+          • <strong>Économique</strong> : création de richesses, emplois<br>
+          • <strong>Social</strong> : bien-être, équité, non-discrimination<br>
+          • <strong>Environnemental</strong> : protection des ressources, recyclage</div>
+        <div class="exemple"><strong>Exemple (sujet 2023) :</strong><br>
+          Consommateur citoyen : boycott produits dangereux, choix produits bios et locaux.<br>
+          Producteur citoyen (RSE) : recyclage, énergies propres, diversité, bien-être au travail.</div>
+        <div class="piege"><strong>⚠️ Piège :</strong> Ne pas réduire le DD à l'environnement. Les 3 piliers sont indissociables.</div>
+        <div class="retenir"><strong>✅ À retenir :</strong><br>
+          • DD = 3 piliers (éco + social + env)<br>
+          • RSE = engagement volontaire des entreprises<br>
+          • Comportement citoyen = consommer et produire responsable</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,37,23,0.06);">
+      <button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="goTo(0)">← Accueil</button>
+      <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:10px 28px;font-size:0.85rem;border:none;" onclick="goTo(2)">Mode Guidé →</button>
+    </div>
+  </div>
+
+  <!-- GUIDÉ -->
+  <div class="split-layout" id="s2">
+    <div class="nav-a4">
+      <button class="nav-a4-btn" onclick="pgPrev()">← Précédent</button>
+      <span class="nav-a4-indicator" id="pg-indicator">Page 1 / 5</span>
+      <button class="nav-a4-btn" onclick="pgNext()">Suivant →</button>
+    </div>
+
+    <div style="padding:0 16px 20px; max-width:980px; margin:0 auto; width:100%;">
+      <div class="entete-officiel">
+        <div class="entete-gauche">République Tunisienne<br>Ministère de l'Éducation</div>
+        <div class="entete-centre">
+          <h1>EXAMEN DU BACCALAURÉAT</h1>
+          <div class="sous-titre">SESSION 2023 — Session principale</div>
+          <div class="details"><span>Épreuve : <strong>Économie</strong></span><span>Section : <strong>Économie &amp; Gestion</strong></span><span>Durée : <strong>3h</strong></span><span>Coefficient : <strong>3</strong></span></div>
+        </div>
+        <div class="entete-droit">N° d'inscription :<br><span style="font-family:var(--font-mono);">[ ][ ][ ][ ][ ][ ][ ][ ]</span></div>
+      </div>
+
+      <!-- PAGE 1 – Q1 QCM -->
+      <div class="a4-page active" id="pg1">
+        <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(10 points)</span></div>
+        <div class="q-item" data-qid="q1">
+          <div class="q-num">Question 1 (4 points)</div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            Choisissez puis justifiez, pour chaque item, la réponse correcte.
+            <strong>NB :</strong> Reportez sur votre copie le numéro de l'item et la lettre correspondant à la réponse correcte, puis justifiez votre choix.
+          </div>
+
+          <!-- Item 1 -->
+          <div class="qcm-item">
+            <p><strong>Item 1 :</strong> Amel détient un budget de 20 DT. Le prix d'un pot de yaourt est de 0,500 DT et le prix d'un paquet de lait est de 1,200 DT. En dépensant la totalité de son revenu, Amel peut acheter :</p>
+            <div class="qcm-choices">
+              <label><input type="radio" name="q1-1" value="a" /> a- 16 pots de yaourt et 10 paquets de lait</label>
+              <label><input type="radio" name="q1-1" value="b" /> b- 18 paquets de lait</label>
+              <label><input type="radio" name="q1-1" value="c" /> c- 45 pots de yaourt</label>
+              <label><input type="radio" name="q1-1" value="d" /> d- 16 paquets de lait et 10 pots de yaourt</label>
+            </div>
+            <button class="btn-verif-item" onclick="verifierItem('q1-1','a')">✓ Vérifier</button>
+            <div class="qcm-justif">
+              <p><strong>Justification :</strong> R = x.Px + y.Py. (16 × 0,500) + (10 × 1,200) = 8 + 12 = <strong>20 DT</strong>. Les autres propositions ne donnent pas exactement 20 DT.</p>
+              <div class="guided-text">
+                <p>16 yaourts + 10 laits = (16×<span class="trou-wrapper"><span class="trou-field" data-answer="0.500" data-choices="0.500,1.200,0.200,0.800" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>) + (10×<span class="trou-wrapper"><span class="trou-field" data-answer="1.200" data-choices="1.200,0.500,1.000,2.000" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>) = 8 + 12 = 20 DT.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="qcm-item">
+            <p><strong>Item 2 :</strong> Amira consacre la totalité de son budget à l'achat de tablettes de chocolat et de paquets de biscuit. Budget = 45 DT, 5 chocolats (5 DT l'unité), biscuits (1 DT le paquet). Budget augmente de 15 DT, prix constants, chocolat augmente, biscuit constant. Nouveau panier :</p>
+            <div class="qcm-choices">
+              <label><input type="radio" name="q1-2" value="a" /> a- (20 biscuits, 5 chocolats)</label>
+              <label><input type="radio" name="q1-2" value="b" /> b- (20 biscuits, 8 chocolats)</label>
+              <label><input type="radio" name="q1-2" value="c" /> c- (8 biscuits, 20 chocolats)</label>
+              <label><input type="radio" name="q1-2" value="d" /> d- (10 biscuits, 10 chocolats)</label>
+            </div>
+            <button class="btn-verif-item" onclick="verifierItem('q1-2','b')">✓ Vérifier</button>
+            <div class="qcm-justif">
+              <p><strong>Justification :</strong> Biscuits = (45 − 5×5)/1 = 20 paquets. R' = 45+15 = 60 DT. Chocolats = (60 − 20×1)/5 = 40/5 = <strong>8 tablettes</strong>. Panier : (20 biscuits, 8 chocolats).</p>
+              <div class="guided-text">
+                <p>Biscuits = (45 − <span class="trou-wrapper"><span class="trou-field" data-answer="25" data-choices="25,20,15,10" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>)/1 = 20. R' = 60. Chocolats = (60 − <span class="trou-wrapper"><span class="trou-field" data-answer="20" data-choices="20,25,40,60" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>)/5 = 8.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="qcm-item">
+            <p><strong>Item 3 :</strong> Évolution du taux d'inflation : Zambie (24,46%→26,79%), Syrie (−0,80%→−3,70%), Espagne (1,83%→2,31%), Maroc (2,80%→0,70%). Le pays qui a connu une <span class="tt-trigger" onclick="openTT('desinflation')">désinflation</span> en 1999 est :</p>
+            <div class="qcm-choices">
+              <label><input type="radio" name="q1-3" value="a" /> a- la Zambie</label>
+              <label><input type="radio" name="q1-3" value="b" /> b- la Syrie</label>
+              <label><input type="radio" name="q1-3" value="c" /> c- l'Espagne</label>
+              <label><input type="radio" name="q1-3" value="d" /> d- le Maroc</label>
+            </div>
+            <button class="btn-verif-item" onclick="verifierItem('q1-3','d')">✓ Vérifier</button>
+            <div class="qcm-justif">
+              <p><strong>Justification :</strong> Maroc : taux 1998 = 2,80 %, 1999 = 0,70 %. Le taux diminue mais reste <strong>positif</strong> → <strong>désinflation</strong>. Syrie = déflation (taux négatif). Zambie et Espagne = inflation (taux en hausse).</p>
+              <div class="guided-text">
+                <p>La <span class="tt-trigger" onclick="openTT('desinflation')">désinflation</span> se caractérise par un taux d'inflation <span class="trou-wrapper"><span class="trou-field" data-answer="positif mais en baisse" data-choices="positif mais en baisse,négatif,positif et en hausse,nul" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>. Le pays concerné est le <span class="trou-wrapper"><span class="trou-field" data-answer="Maroc" data-choices="Maroc,la Zambie,la Syrie,l'Espagne" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="qcm-item">
+            <p><strong>Item 4 :</strong> Pour une fonction d'utilité U(x,y) = 2 x^(1/4) y^(3/4) et un niveau d'utilité = 2, l'équation de la <span class="tt-trigger" onclick="openTT('courbe-indifference')">courbe d'indifférence</span> est :</p>
+            <div class="qcm-choices">
+              <label><input type="radio" name="q1-4" value="a" /> a- Y = 1 / x^(1/3)</label>
+              <label><input type="radio" name="q1-4" value="b" /> b- Y = 2 / x^(1/3)</label>
+              <label><input type="radio" name="q1-4" value="c" /> c- Y = 1 / x^(1/4)</label>
+              <label><input type="radio" name="q1-4" value="d" /> d- Y = 1 / x^(4/3)</label>
+            </div>
+            <button class="btn-verif-item" onclick="verifierItem('q1-4','a')">✓ Vérifier</button>
+            <div class="qcm-justif">
+              <p><strong>Justification :</strong> U = 2 x^(1/4) y^(3/4) = 2 → x^(1/4) y^(3/4) = 1 → x y^3 = 1 → <strong>y = 1/x^(1/3)</strong>.</p>
+              <div class="guided-text">
+                <p>x^(1/4) y^(3/4) = 1 → x y^<span class="trou-wrapper"><span class="trou-field" data-answer="3" data-choices="3,1,4,1/3" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> = 1 → y = 1/x^(<span class="trou-wrapper"><span class="trou-field" data-answer="1/3" data-choices="1/3,1/4,3,4/3" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>).</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q1')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q1')">Valider les justifications →</button>
+          </div>
+
+          <div class="correction-box" id="corr-q1">
+            <div class="correction-title">📋 Correction officielle — Q1 (4 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>Item 1 : Réponse a.</strong> (16×0,500)+(10×1,200)=8+12=20 DT.<br>
+                <strong>Item 2 : Réponse b.</strong> Biscuits=(45−25)/1=20. R'=60. Chocolats=(60−20)/5=8.<br>
+                <strong>Item 3 : Réponse d.</strong> Maroc : taux passe de 2,80% à 0,70% → désinflation.<br>
+                <strong>Item 4 : Réponse a.</strong> x^(1/4) y^(3/4)=1 → x y^3=1 → y=1/x^(1/3).
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème :</strong><br>
+                • Item 1 : 1 pt (0,5+0,5)<br>
+                • Item 2 : 1 pt (0,5+0,5)<br>
+                • Item 3 : 1 pt (0,5+0,5)<br>
+                • Item 4 : 1 pt (0,5+0,5)
+              </div>
+            </div>
+            <div style="padding:8px 12px; border-top:1px solid rgba(91,14,20,0.1);">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">🎯 Ma note :</div>
+              <div class="score-btn-group" data-qid="q1" data-theme="partie1" data-max="4">
+                <button class="score-btn" data-pts="0">0</button>
+                <button class="score-btn" data-pts="0.5">0,5</button>
+                <button class="score-btn" data-pts="1">1</button>
+                <button class="score-btn" data-pts="1.5">1,5</button>
+                <button class="score-btn" data-pts="2">2</button>
+                <button class="score-btn" data-pts="2.5">2,5</button>
+                <button class="score-btn" data-pts="3">3</button>
+                <button class="score-btn" data-pts="3.5">3,5</button>
+                <button class="score-btn" data-pts="4">4</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q1"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 2 – Q2 (1-2) -->
+      <div class="a4-page" id="pg2">
+        <div class="q-item" data-qid="q2-1">
+          <div class="q-num">Question 2 (6 points)</div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            À l'aide d'un panier d'input (L,K), l'entreprise "Ons" produit des plates-formes de jeux en ligne.
+            Le graphique ci-dessous illustre l'<span class="tt-trigger" onclick="openTT('isoquant')">isoquant</span> et l'<span class="tt-trigger" onclick="openTT('isocout')">isocoût</span> de l'entreprise.
+          </div>
+          <div style="text-align:center; margin:8px 0;">
+            <img src="assets/isoquant-isocout-2023.png" alt="Isoquant et Isocoût de l'entreprise Ons" style="max-width:100%; border-radius:var(--radius); border:1px solid rgba(26,37,23,0.1);" />
+          </div>
+          <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">
+            <strong>Document :</strong> « Dans le cas d'un doublement du panier d'input, le produit doit alors [...] doubler. » — Murat Yildizoglu, Introduction à la microéconomie (2014)
+          </div>
+
+          <div class="guided-text">
+            <p><strong>1- En exploitant le graphique :</strong></p>
+            <p>Au point E(0,3) : CT = rK → r = CT/K = 60/3 = <span class="trou-wrapper"><span class="trou-field" data-answer="20" data-choices="20,5,30,60" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> UM.<br>
+            Au point F(12,0) : CT = wL → w = CT/L = 60/12 = <span class="trou-wrapper"><span class="trou-field" data-answer="5" data-choices="5,20,10,60" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> UM.<br>
+            Le point C correspond à l'<span class="trou-wrapper"><span class="trou-field" data-answer="équilibre du producteur" data-choices="équilibre du producteur,optimum du consommateur,seuil de rentabilité,point mort" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> : combinaison optimale (L*,K*) qui maximise la production sous contrainte de coût.</p>
+            <p><strong>2- Exprimez le <span class="tt-trigger" onclick="openTT('tmst')">TMST</span> puis déterminez l'équilibre :</strong></p>
+            <p>Q = 2^(2/3) L^(1/3) K^(2/3). TMST = PmL/PmK = <span class="trou-wrapper"><span class="trou-field" data-answer="K/2L" data-choices="K/2L,2K/L,K/L,L/2K" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.<br>
+            À l'équilibre : TMST = w/r = 5/20 = 1/4 → K = <span class="trou-wrapper"><span class="trou-field" data-answer="0.5 L" data-choices="0.5 L,2 L,4 L,L" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.<br>
+            5L + 20K = 60 → L* = <span class="trou-wrapper"><span class="trou-field" data-answer="4" data-choices="4,2,6,8" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, K* = <span class="trou-wrapper"><span class="trou-field" data-answer="2" data-choices="2,4,1,3" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, Q* = <span class="trou-wrapper"><span class="trou-field" data-answer="4" data-choices="4,2,8,6" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> plates-formes.</p>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q2-1')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q2-1')">Valider →</button>
+          </div>
+          <div class="correction-box" id="corr-q2-1">
+            <div class="correction-title">📋 Correction officielle — Q2 (1-2) (3 pts)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>1-</strong> E(0,3) → r=60/3=20 UM. F(12,0) → w=60/12=5 UM. Point C = équilibre du producteur (L*=4, K*=2).<br>
+                <strong>2-</strong> TMST = PmL/PmK = K/2L. À l'équilibre : K/2L = 5/20 = 1/4 → K = 0,5L. 5L+20(0,5L)=15L=60 → L*=4, K*=2, Q* = 2^(2/3)×4^(1/3)×2^(2/3) = 4.
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème :</strong><br>
+                • Q2-1 : 1,5 pt<br>
+                • Q2-2 : 1,5 pt
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q2-1"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 3 – Q2 (3) -->
+      <div class="a4-page" id="pg3">
+        <div class="q-item" data-qid="q2-2">
+          <div class="q-num">Question 2 (suite)</div>
+          <div class="guided-text">
+            <p><strong>3- Vérifiez que la phrase soulignée dans le texte est vraie pour l'entreprise "Ons". Quel sera alors le nouveau coût total de production ?</strong></p>
+            <p>Doublement du panier : L' = 2L, K' = 2K.<br>
+            Q' = 2^(2/3) (2L)^(1/3) (2K)^(2/3) = 2^(2/3) × 2^(1/3) × L^(1/3) × 2^(2/3) × K^(2/3) = <span class="trou-wrapper"><span class="trou-field" data-answer="2" data-choices="2,1,4,8" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> × Q.<br>
+            Donc Q' = <span class="trou-wrapper"><span class="trou-field" data-answer="2Q" data-choices="2Q,Q,4Q,Q/2" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> → la production double → <span class="tt-trigger" onclick="openTT('rendements-echelle')">rendements d'échelle</span> <span class="trou-wrapper"><span class="trou-field" data-answer="constants" data-choices="constants,croissants,décroissants,nuls" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.<br>
+            Nouveau coût : CT' = (5×8) + (20×4) = <span class="trou-wrapper"><span class="trou-field" data-answer="120" data-choices="120,60,180,240" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> UM = 2 × CT.</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-q2-2')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q2-2')">Valider →</button>
+          </div>
+          <div class="correction-box" id="corr-q2-2">
+            <div class="correction-title">📋 Correction officielle — Q2-3 (1,5 pt)</div>
+            <div class="correction-row">
+              <div class="correction-contenu">
+                <strong>3-</strong> Q' = 2^(2/3) × (2L)^(1/3) × (2K)^(2/3) = 2 × Q. La production double → rendements constants. CT' = (5×8)+(20×4) = <strong>120 UM = 2 CT</strong>.
+              </div>
+              <div class="correction-bareme">
+                <strong>Barème :</strong><br>
+                • Vérification : 1 pt<br>
+                • Nouveau CT : 0,5 pt
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-q2-2"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 4 – Q3 Dissertation (Introduction + Partie 1) -->
+      <div class="a4-page" id="pg4">
+        <div class="titre-partie">☞ DEUXIEME PARTIE <span class="pts">(10 points)</span></div>
+        <div style="font-size:14px; font-weight:700; margin-bottom:8px; color:var(--dark);">Sujet : Montrez que le comportement citoyen des acteurs économiques favorise le développement durable. Prenez appui sur vos connaissances et sur les documents ci-joints.</div>
+
+        <div style="font-size:13px; line-height:1.6; margin-bottom:12px; background:var(--cream); padding:12px; border-radius:var(--radius); border:1px solid rgba(26,37,23,0.06);">
+          <strong>Document 1 :</strong><br>
+          Le concept de développement durable repose sur la conciliation des intérêts économiques, sociaux et environnementaux. C'est en prenant en compte ces trois dimensions que l'on appréciera le comportement citoyen du consommateur. On observe une sensibilisation croissante de chacun au respect de valeurs éthiques permettant de consommer des produits sains, de sauvegarder l'environnement, de ne pas exploiter les plus démunis. Le respect de ces valeurs par les entreprises ne peut que favoriser leur développement durable en s'inscrivant dans une nouvelle logique de production. [...] Or, la prospérité de l'entreprise repose parfois sur l'ignorance des intérêts de l'homme et de son environnement. [...]<br>
+          Les fermiers, qui s'étaient lancés dans la culture à grande échelle de plantes manipulées retournent aujourd'hui en masse aux variétés traditionnelles. [...] La pression d'un consommateur citoyen a porté ses fruits. [...] Par la manifestation, par le boycott des produits dangereux, le consommateur est un danger pour l'entreprise non soucieuse à l'éthique. [...]<br>
+          Les entreprises doivent désormais s'inscrire dans le cadre du développement durable, c'est-à-dire assumer une triple responsabilité environnementale, sociale et économique.<br>
+          <em>Source : Béatrice CANEL DEPITRE, Le Havre</em><br><br>
+
+          <strong>Document 2 :</strong><br>
+          La commission européenne définit le concept de <span class="tt-trigger" onclick="openTT('rse')">RSE</span> comme l'intégration volontaire par les entreprises de préoccupations sociales et environnementales à leurs activités commerciales et leurs relations avec leurs parties prenantes. [...]<br>
+          - <strong>Environnement et DD :</strong> actions en faveur des économies d'énergie, gestion des déchets, chaînes de production propres.<br>
+          - <strong>Diversité :</strong> lutter contre la discrimination (sexe, âge, handicap, race).<br>
+          - <strong>Économie locale :</strong> favoriser l'emploi local, se fournir auprès d'entreprises locales.<br>
+          - <strong>Bien-être au travail :</strong> respect, bienveillance, réduction du stress, harcèlement.<br>
+          <em>Source : Sévérine Dégaliaix, CADREMPLOI, Mai 2019</em>
+        </div>
+
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Introduction</div>
+          <div class="guided-text">
+            <p><strong>Amorce + définition :</strong><br>
+            Le <span class="trou-wrapper"><span class="trou-field" data-answer="développement durable" data-choices="développement durable,libéralisme,capitalisme,socialisme" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> constitue la préoccupation majeure de tous les pays ; il vise la satisfaction des besoins <span class="trou-wrapper"><span class="trou-field" data-answer="économiques, sociaux et environnementaux" data-choices="économiques, sociaux et environnementaux,économiques seulement,sociaux seulement,environnementaux seulement" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> des générations présentes sans compromettre la capacité des générations futures.</p>
+            <p><strong>Problématique :</strong><br>
+            Comment le comportement citoyen des <span class="trou-wrapper"><span class="trou-field" data-answer="acteurs économiques" data-choices="acteurs économiques,États,banques,associations" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> est-il favorable au DD ?</p>
+            <p><strong>Plan :</strong><br>
+            Nous montrerons que le comportement citoyen du <span class="trou-wrapper"><span class="trou-field" data-answer="consommateur" data-choices="consommateur,producteur,État,banquier" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> favorise le DD, puis celui du <span class="trou-wrapper"><span class="trou-field" data-answer="producteur" data-choices="producteur,consommateur,État,banquier" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-intro')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Partie I — Le comportement citoyen du consommateur favorise le DD</div>
+          <div class="guided-text">
+            <p>Le consommateur citoyen cherche une consommation à impacts <span class="trou-wrapper"><span class="trou-field" data-answer="sociaux positifs" data-choices="sociaux positifs,économiques négatifs,environnementaux négatifs,neutres" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> : boycott des produits <span class="trou-wrapper"><span class="trou-field" data-answer="dangereux" data-choices="dangereux,bios,locaux,équitables" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, choix de produits nationaux, respect des normes éthiques.</p>
+            <p>Il préfère des produits <span class="trou-wrapper"><span class="trou-field" data-answer="durables et écologiques" data-choices="durables et écologiques,jetables,importés,de luxe" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> : produits bios, saisonniers, préservant les ressources naturelles.</p>
+            <p><strong>Exploitation doc 1 :</strong> La pression d'un <span class="trou-wrapper"><span class="trou-field" data-answer="consommateur citoyen" data-choices="consommateur citoyen,producteur,actionnaire,dirigeant" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> a porté ses fruits (retour aux variétés traditionnelles).</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-p1')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 5 – Q3 Dissertation (Partie 2 + Conclusion) -->
+      <div class="a4-page" id="pg5">
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Partie II — Le comportement citoyen du producteur favorise le DD</div>
+          <div class="guided-text">
+            <p>L'entreprise citoyenne prend en compte l'impact <span class="trou-wrapper"><span class="trou-field" data-answer="social" data-choices="social,économique seulement,financier,boursier" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> de ses activités : création d'<span class="trou-wrapper"><span class="trou-field" data-answer="emplois" data-choices="emplois,dettes,profits,impôts" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>, amélioration des conditions de travail, respect des droits de l'Homme, refus du travail des enfants.</p>
+            <p>Le choix <span class="trou-wrapper"><span class="trou-field" data-answer="écologique" data-choices="écologique,financier,commercial,spéculatif" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> du producteur : <span class="trou-wrapper"><span class="trou-field" data-answer="recyclage" data-choices="recyclage,extraction,production intensive,exportation" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> des déchets, réduction des gaz à effet de serre, utilisation de ressources <span class="trou-wrapper"><span class="trou-field" data-answer="renouvelables" data-choices="renouvelables,fossiles,non renouvelables,minières" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+            <p><strong>Exploitation doc 2 :</strong> La <span class="tt-trigger" onclick="openTT('rse')">RSE</span> intègre des actions en faveur de l'environnement, de la diversité, de l'économie locale et du <span class="trou-wrapper"><span class="trou-field" data-answer="bien-être au travail" data-choices="bien-être au travail,profit,commerce international,marketing" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-p2')">🧑‍🏫 Coach</button>
+          </div>
+        </div>
+
+        <div class="diss-bloc">
+          <div class="diss-titre">📝 Conclusion</div>
+          <div class="guided-text">
+            <p><strong>Synthèse :</strong> Il est clair qu'en se comportant en <span class="trou-wrapper"><span class="trou-field" data-answer="citoyens" data-choices="citoyens,égoïstes,irresponsables,passifs" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> et responsables, les acteurs économiques garantissent le <span class="trou-wrapper"><span class="trou-field" data-answer="développement durable" data-choices="développement durable,profit,libéralisme,capitalisme" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span>.</p>
+            <p><strong>Ouverture :</strong> Quels sont les impacts de l'ignorance d'un tel comportement sur l'<span class="trou-wrapper"><span class="trou-field" data-answer="équité intra et intergénérationnelle" data-choices="équité intra et intergénérationnelle,profit,commerce,production" onclick="ouvrirChoix(this)">________</span><div class="trou-dropdown" style="display:none;"></div></span> ?</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="coach-btn" onclick="openCoach('coach-eco-diss-concl')">🧑‍🏫 Coach</button>
+            <button class="valider-btn show" onclick="validerTrous('q3')">📋 Voir le corrigé complet</button>
+          </div>
+        </div>
+
+        <div class="correction-box" id="corr-q3">
+          <div class="correction-title">📋 Corrigé modèle — Dissertation (10 pts)</div>
+          <div style="padding:12px; font-size:13px; line-height:1.6;">
+            <strong>Introduction (1,5 pt) :</strong> Le DD vise la satisfaction des besoins éco/sociaux/env. sans compromettre les générations futures. Comment le comportement citoyen des acteurs économiques est-il favorable au DD ? Plan : consommateur, puis producteur.<br><br>
+            <strong>Partie I — Le comportement citoyen du consommateur (3,5 pts) :</strong> Impacts sociaux : boycott produits dangereux, choix de produits nationaux/circuits courts → création d'emplois, satisfaction des besoins fondamentaux. Impacts environnementaux : choix de produits bios, saisonniers, réduction des déchets, préservation des ressources. Doc 1 : pression du consommateur citoyen a porté ses fruits.<br><br>
+            <strong>Partie II — Le comportement citoyen du producteur (3,5 pts) :</strong> Impact social : création d'emplois, amélioration conditions de travail, diversité, non-discrimination. Impact environnemental : recyclage, réduction GES, énergies renouvelables. Doc 2 : RSE = environnement, diversité, économie locale, bien-être au travail.<br><br>
+            <strong>Conclusion (1,5 pt) :</strong> Synthèse : en se comportant en citoyens responsables, les acteurs garantissent le DD. Ouverture : impacts de l'ignorance d'un tel comportement sur l'équité intra et intergénérationnelle ?
+          </div>
+          <div style="padding:8px 12px; border-top:1px solid rgba(91,14,20,0.1);">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">📊 Grille officielle /10 pts</div>
+            <div style="font-size:13px; line-height:1.8;">
+              • Introduction (1,5 pt) : Amorce+définition (0,5) — Problématique (0,5) — Plan (0,5)<br>
+              • Développement (7 pts) : Partie I (3,5 pts) — Partie II (3,5 pts)<br>
+              • Structuration du développement (1 pt)<br>
+              • Conclusion (1 pt) : Synthèse (0,5) — Ouverture (0,5)<br>
+              • Présentation (0,5 pt)
+            </div>
+            <div style="margin-top:8px;">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:4px;">🎯 Ma note :</div>
+              <div class="score-btn-group" data-qid="q3" data-theme="partie2" data-max="10" style="display:flex;flex-wrap:wrap;gap:6px;">
+                <button class="score-btn" data-pts="0">0</button><button class="score-btn" data-pts="0.5">0,5</button>
+                <button class="score-btn" data-pts="1">1</button><button class="score-btn" data-pts="1.5">1,5</button>
+                <button class="score-btn" data-pts="2">2</button><button class="score-btn" data-pts="2.5">2,5</button>
+                <button class="score-btn" data-pts="3">3</button><button class="score-btn" data-pts="3.5">3,5</button>
+                <button class="score-btn" data-pts="4">4</button><button class="score-btn" data-pts="4.5">4,5</button>
+                <button class="score-btn" data-pts="5">5</button><button class="score-btn" data-pts="5.5">5,5</button>
+                <button class="score-btn" data-pts="6">6</button><button class="score-btn" data-pts="6.5">6,5</button>
+                <button class="score-btn" data-pts="7">7</button><button class="score-btn" data-pts="7.5">7,5</button>
+                <button class="score-btn" data-pts="8">8</button><button class="score-btn" data-pts="8.5">8,5</button>
+                <button class="score-btn" data-pts="9">9</button><button class="score-btn" data-pts="9.5">9,5</button>
+                <button class="score-btn" data-pts="10">10</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="score-display" id="score-q3"></div>
+        <div style="margin-top:16px; text-align:center;">
+          <button class="valider-btn show" style="background:var(--primary);color:var(--accent);padding:12px 28px;font-size:0.9rem;border:none;" onclick="calculerTotalPartie2()">📊 Enregistrer ma note</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMEN -->
+  <div class="screen-full" id="s3">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div class="examen-badge">🔒 Mode Examen</div><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ko);">Conditions réelles — Zéro aide</span></div>
+    <div class="examen-timer-container"><div class="examen-timer-box"><div class="label">Partie 1</div><div class="time" id="ex-timer-1">1:00:00</div></div><div class="examen-timer-box"><div class="label">Partie 2</div><div class="time" id="ex-timer-2">2:00:00</div></div></div>
+    <div class="examen-controls"><button onclick="startExamen()">▶ Lancer l'examen</button></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;background:var(--cream);border-radius:var(--radius);border:1px solid rgba(26,37,23,0.06);">
+      <button class="nav-a4-btn" onclick="examPagePrev()">← Précédent</button>
+      <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--dark);" id="epg-indicator">Page 1 / 4</span>
+      <button class="nav-a4-btn" onclick="examPageNext()">Suivant →</button>
+    </div>
+
+    <!-- Examen Page 1 – Q1 -->
+    <div class="exam-page active" id="epg1" style="background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div class="titre-partie">☞ PREMIERE PARTIE <span class="pts">(10 points)</span></div>
+      <div class="q-item">
+        <div class="q-num">Question 1 (4 points)</div>
+        <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">Choisissez puis justifiez, pour chaque item, la réponse correcte.</div>
+        <div class="qcm-item"><p><strong>Item 1 :</strong> Amel, budget 20 DT, yaourt 0,500 DT, lait 1,200 DT. Peut acheter :</p><div class="qcm-choices"><label><input type="radio" name="ex-q1-1" value="a" /> a- 16 yaourts, 10 laits</label><label><input type="radio" name="ex-q1-1" value="b" /> b- 18 laits</label><label><input type="radio" name="ex-q1-1" value="c" /> c- 45 yaourts</label><label><input type="radio" name="ex-q1-1" value="d" /> d- 16 laits, 10 yaourts</label></div><textarea class="lignes-reponse" rows="2" placeholder="Justification..." style="width:100%; margin-top:8px;"></textarea></div>
+        <div class="qcm-item"><p><strong>Item 2 :</strong> Amira, chocolat/biscuit, budget 45→60...</p><div class="qcm-choices"><label><input type="radio" name="ex-q1-2" value="a" /> a- (20 bisc, 5 choc)</label><label><input type="radio" name="ex-q1-2" value="b" /> b- (20 bisc, 8 choc)</label><label><input type="radio" name="ex-q1-2" value="c" /> c- (8 bisc, 20 choc)</label><label><input type="radio" name="ex-q1-2" value="d" /> d- (10 bisc, 10 choc)</label></div><textarea class="lignes-reponse" rows="2" placeholder="Justification..." style="width:100%; margin-top:8px;"></textarea></div>
+        <div class="qcm-item"><p><strong>Item 3 :</strong> Inflation : Zambie, Syrie, Espagne, Maroc. Désinflation en 1999 :</p><div class="qcm-choices"><label><input type="radio" name="ex-q1-3" value="a" /> a- Zambie</label><label><input type="radio" name="ex-q1-3" value="b" /> b- Syrie</label><label><input type="radio" name="ex-q1-3" value="c" /> c- Espagne</label><label><input type="radio" name="ex-q1-3" value="d" /> d- Maroc</label></div><textarea class="lignes-reponse" rows="2" placeholder="Justification..." style="width:100%; margin-top:8px;"></textarea></div>
+        <div class="qcm-item"><p><strong>Item 4 :</strong> U(x,y)=2 x^(1/4) y^(3/4) = 2. Courbe d'indifférence :</p><div class="qcm-choices"><label><input type="radio" name="ex-q1-4" value="a" /> a- y=1/x^(1/3)</label><label><input type="radio" name="ex-q1-4" value="b" /> b- y=2/x^(1/3)</label><label><input type="radio" name="ex-q1-4" value="c" /> c- y=1/x^(1/4)</label><label><input type="radio" name="ex-q1-4" value="d" /> d- y=1/x^(4/3)</label></div><textarea class="lignes-reponse" rows="2" placeholder="Justification..." style="width:100%; margin-top:8px;"></textarea></div>
+      </div>
+    </div>
+
+    <!-- Examen Page 2 – Q2 -->
+    <div class="exam-page" id="epg2" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div class="q-item">
+        <div class="q-num">Question 2 (6 points)</div>
+        <div style="font-size:13px; line-height:1.6; margin-bottom:8px;">Entreprise "Ons" — plates-formes de jeux. Q(L,K) = 2^(2/3) L^(1/3) K^(2/3). Budget CT = 60 UM.</div>
+        <div style="text-align:center; margin:8px 0;">
+          <img src="assets/isoquant-isocout-2023.png" alt="Isoquant et Isocoût" style="max-width:100%; border-radius:var(--radius); border:1px solid rgba(26,37,23,0.1);" />
+        </div>
+        <textarea class="lignes-reponse" rows="14" placeholder="1- w, r et signification point C. 2- TMST et équilibre. 3- Vérifier doublement et nouveau CT." style="width:100%; margin-top:12px;"></textarea>
+      </div>
+    </div>
+
+    <!-- Examen Page 3 – Q3 -->
+    <div class="exam-page" id="epg3" style="display:none;background:var(--cream);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div class="q-item">
+        <div class="q-num">Question 3 — Dissertation (10 points)</div>
+        <div style="font-size:13px; line-height:1.6; margin-bottom:8px;"><strong>Sujet :</strong> Montrez que le comportement citoyen des acteurs économiques favorise le développement durable.</div>
+        <textarea class="lignes-reponse" rows="20" placeholder="Rédigez votre dissertation..." style="width:100%; margin-top:12px;"></textarea>
+      </div>
+      <div style="margin-top:16px;text-align:center;padding-top:16px;border-top:1px solid rgba(26,37,23,0.08);">
+        <button class="valider-btn show" style="background:var(--ko);color:var(--cream);padding:12px 28px;font-size:0.9rem;border:none;" onclick="validerExamenComplet()">📋 Remettre la copie</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BILAN -->
+  <div class="screen-full" id="s4">
+    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Étape 5 — Bilan</div>
+    <div class="ui-card" style="text-align:center;padding:24px;background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-bottom:4px;">SCORE GUIDÉ</div>
+      <div class="score-big" id="final-score-guide">--</div>
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-top:2px;">/ 20 points</div>
+      <div id="mention-guide" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(26,37,23,0.08);color:var(--dark);">--</div>
+      <div class="conseil-box" id="conseil-guide" style="background:rgba(26,37,23,0.03);border-color:var(--dark);margin-top:8px;"></div>
+    </div>
+    <div class="ui-card" style="text-align:center;padding:24px;background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);">
+      <div style="font-size:0.75rem;color:rgba(26,37,23,0.4);margin-bottom:4px;">SCORE EXAMEN</div>
+      <div class="score-big" id="final-score-examen">--</div>
+      <div id="mention-examen" style="display:inline-block;margin-top:10px;padding:4px 16px;border-radius:20px;font-family:var(--font-ui);font-weight:700;font-size:0.8rem;background:rgba(26,37,23,0.08);color:var(--dark);">--</div>
+      <div class="conseil-box" id="conseil-examen" style="background:rgba(26,37,23,0.03);border-color:var(--dark);margin-top:8px;"></div>
+    </div>
+    <div class="ui-card" style="background:var(--cream);border-radius:var(--radius-lg);box-shadow:var(--shadow);border:1px solid rgba(26,37,23,0.06);padding:16px;">
+      <div class="ui-card-title" style="font-family:var(--font-ui);font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:8px;">📊 Bilan de points – Mode Guidé</div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📋 Partie 1 — QCM + Étude de cas</span><span class="comp-pct" id="p1">0%</span></div><div class="bar-track"><div class="bar-fill" id="b1"></div></div><div style="font-size:0.7rem;color:rgba(26,37,23,0.4);margin-top:2px;" id="pts1">0 / 10 pts</div></div>
+      <div class="comp-bar"><div class="comp-head"><span class="comp-name">📖 Partie 2 — Dissertation</span><span class="comp-pct" id="p2">0%</span></div><div class="bar-track"><div class="bar-fill" id="b2"></div></div><div style="font-size:0.7rem;color:rgba(26,37,23,0.4);margin-top:2px;" id="pts2">0 / 10 pts</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,37,23,0.06);">
+      <button class="valider-btn show" style="background:transparent;color:var(--dark);border:1px solid var(--dark);padding:8px 20px;font-size:0.8rem;" onclick="resetAll()">↺ Recommencer</button>
+    </div>
+  </div>
+</main>
+
+<!-- CALCULATRICE -->
+<div id="calc-wrapper">
+  <button id="calc-toggle-btn" onclick="toggleCalc()">🧮 Calculatrice</button>
+  <div id="calc-box">
+    <button class="calc-close" onclick="toggleCalc()">✕</button>
+    <input type="text" id="calc-display" readonly value="0" />
+    <div class="calc-grid">
+      <button class="fn" onclick="calcInput('MC')">MC</button><button class="fn" onclick="calcInput('MR')">MR</button><button class="fn" onclick="calcInput('M+')">M+</button><button class="fn" onclick="calcInput('M-')">M-</button>
+      <button onclick="calcInput('7')">7</button><button onclick="calcInput('8')">8</button><button onclick="calcInput('9')">9</button><button class="op" onclick="calcInput('/')">÷</button>
+      <button onclick="calcInput('4')">4</button><button onclick="calcInput('5')">5</button><button onclick="calcInput('6')">6</button><button class="op" onclick="calcInput('*')">×</button>
+      <button onclick="calcInput('1')">1</button><button onclick="calcInput('2')">2</button><button onclick="calcInput('3')">3</button><button class="op" onclick="calcInput('-')">−</button>
+      <button onclick="calcInput('0')">0</button><button onclick="calcInput('.')">.</button><button onclick="calcInput('sqrt')">√</button><button class="op" onclick="calcInput('+')">+</button>
+      <button onclick="calcInput('C')" style="background:var(--ko);color:white;">C</button><button onclick="calcInput('±')">±</button><button onclick="calcInput('%')">%</button><button onclick="calcInput('=')" style="background:var(--primary);color:var(--accent);">=</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="coach-modal" id="coach-modal"><div class="coach-modal-content"><button class="close-modal" onclick="closeCoach()">✕</button><div class="coach-title">🧑‍🏫 Coach Synapris</div><div id="coach-modal-body"></div></div></div>
+<div class="tt-modal" id="tt-modal"><div class="tt-modal-content"><button class="close-tt" onclick="closeTT()">✕</button><div class="tt-img" id="tt-img">🧠</div><div class="tt-def" id="tt-def"><strong>Terme</strong> — Définition.</div><button class="tt-audio" onclick="speak(document.getElementById('tt-def').textContent.split('—')[0].trim())">🔊 Écouter</button><div class="tt-rappel" id="tt-rappel"></div><div class="tt-arabe" id="tt-arabe" dir="rtl"></div></div></div>
+<div class="field-modal" id="field-modal"><div class="field-modal-content"><button class="close-field-modal" onclick="closeFieldHelp()">✕</button><div class="field-modal-title">💡 Aide</div><div class="field-modal-body" id="field-modal-body"></div></div></div>
+<nav class="bottom-nav" id="bottom-nav"><div class="nav-step active" onclick="goTo(0)"><span class="icon">🏠</span><span>Accueil</span></div><div class="nav-step" onclick="goTo(1)"><span class="icon">📚</span><span>Cours</span></div><div class="nav-step" onclick="goTo(2)"><span class="icon">🎯</span><span>Guidé</span></div><div class="nav-step" onclick="goTo(3)"><span class="icon">⏱️</span><span>Examen</span></div><div class="nav-step" onclick="goTo(4)"><span class="icon">🏆</span><span>Bilan</span></div></nav>
+
+<script>
+  let currentStep=0,currentPage=1,totalPages=5,scoreExamen=0,examenStarted=false,examPage=1,examTotalPages=3;
+  let examenSeconds=[3600,7200],examenTimers=[],themeScores={partie1:0,partie2:0};
+
+  const ttData={
+    'contrainte-budgetaire':{img:'💰',def:'<strong>Contrainte budgétaire</strong> — R = x.Px + y.Py. Limite les choix du consommateur.',rappel:'Toute combinaison au-dessus est inatteignable.',arabe:'<strong>قيد الميزانية</strong> — يحد من خيارات المستهلك.'},
+    'courbe-indifference':{img:'📐',def:'<strong>Courbe d\'indifférence</strong> — Paniers procurant la même utilité.',rappel:'U constante. Plus loin de l\'origine = U plus élevée.',arabe:'<strong>منحنى السواء</strong> — سلال تمنح نفس المنفعة.'},
+    'inflation':{img:'💹',def:'<strong>Inflation</strong> — Hausse généralisée et durable des prix.',rappel:'Taux > 0.',arabe:'<strong>التضخم</strong> — ارتفاع عام ومستمر للأسعار.'},
+    'deflation':{img:'📊',def:'<strong>Déflation</strong> — Baisse généralisée des prix (taux négatif).',rappel:'Taux < 0.',arabe:'<strong>انكماش</strong> — انخفاض عام للأسعار.'},
+    'desinflation':{img:'📋',def:'<strong>Désinflation</strong> — Ralentissement de l\'inflation (taux positif mais en baisse).',rappel:'≠ déflation.',arabe:'<strong>تباطؤ التضخم</strong> — انخفاض معدل التضخم مع بقائه موجباً.'},
+    'isocout':{img:'💵',def:'<strong>Isocoût</strong> — Combinaisons de facteurs pour un même coût total.',rappel:'CT = wL + rK.',arabe:'<strong>خط التكلفة المتساوية</strong> — تركيبات لنفس التكلفة.'},
+    'isoquant':{img:'📉',def:'<strong>Isoquant</strong> — Combinaisons de facteurs pour une même production.',rappel:'Q constante.',arabe:'<strong>منحنى الناتج المتساوي</strong> — تركيبات لنفس الإنتاج.'},
+    'tmst':{img:'⚙️',def:'<strong>TMST</strong> — Taux Marginal de Substitution Technique.',rappel:'TMST = PmL/PmK = w/r.',arabe:'<strong>المعدل الحدي للإحلال التقني</strong> — معدل استبدال K بـ L.'},
+    'rendements-echelle':{img:'📏',def:'<strong>Rendements d\'échelle</strong> — Variation de la production quand tous les inputs varient.',rappel:'α+β=1 → constants.',arabe:'<strong>عوائد الحجم</strong> — تغير الإنتاج عند مضاعفة عوامل الإنتاج.'},
+    'developpement-durable':{img:'🌍',def:'<strong>Développement durable</strong> — Satisfaire les besoins présents sans compromettre le futur.',rappel:'3 piliers : éco, social, env.',arabe:'<strong>التنمية المستدامة</strong> — تلبي احتياجات الحاضر دون المساس بالمستقبل.'},
+    'rse':{img:'🏢',def:'<strong>RSE</strong> — Responsabilité Sociale des Entreprises. Intégration volontaire de préoccupations sociales/env.',rappel:'Environnement, diversité, bien-être au travail.',arabe:'<strong>المسؤولية الاجتماعية للمؤسسة</strong> — دمج طوعي للاهتمامات الاجتماعية والبيئية.'}
+  };
+
+  function handleLogin(){document.getElementById('login-screen').style.display='none';document.getElementById('navbar').style.display='flex';document.getElementById('main-wrap').style.display='block';document.getElementById('bottom-nav').style.display='flex';document.getElementById('avatar').textContent='👤';restaurerTout();gsap.from('#navbar',{y:-50,duration:0.4,ease:'power2.out'});}
+  function goTo(s){['s0','s1','s2','s3','s4'].forEach((id,i)=>{document.getElementById(id).classList.toggle('active',i===s);});currentStep=s;document.querySelectorAll('.navbar-steps .nav-step, .bottom-nav .nav-step').forEach((el,i)=>el.classList.toggle('active',i===s));window.scrollTo({top:0,behavior:'smooth'});if(s===4)setTimeout(showBilan,400);}
+  function showPage(n){for(let i=1;i<=totalPages;i++){let p=document.getElementById('pg'+i);if(p)p.classList.remove('active');}document.getElementById('pg'+n).classList.add('active');document.getElementById('pg-indicator').textContent='Page '+n+' / '+totalPages;currentPage=n;}
+  function pgNext(){if(currentPage<totalPages)showPage(currentPage+1);}
+  function pgPrev(){if(currentPage>1)showPage(currentPage-1);}
+  function showExamPage(n){for(let i=1;i<=examTotalPages;i++){let p=document.getElementById('epg'+i);if(p)p.style.display='none';}document.getElementById('epg'+n).style.display='block';examPage=n;document.getElementById('epg-indicator').textContent='Page '+n+' / '+examTotalPages;window.scrollTo({top:0,behavior:'smooth'});}
+  function examPageNext(){if(examPage<examTotalPages)showExamPage(examPage+1);}
+  function examPagePrev(){if(examPage>1)showExamPage(examPage-1);}
+  function toggleCours(el){let d=el.closest('.cours-card').querySelector('.cours-detail');if(d.style.display==='none'||d.style.display===''){d.style.display='block';gsap.from(d,{opacity:0,y:8,duration:0.2,ease:'power2.out'});}else{d.style.display='none';}}
+  function toggleVerbe(card,id){document.querySelectorAll('.verbe-card').forEach(c=>c.classList.remove('on'));document.querySelectorAll('.verbe-detail').forEach(d=>d.classList.remove('show'));card.classList.add('on');document.getElementById(id).classList.add('show');gsap.from('#'+id,{opacity:0,y:10,duration:0.3,ease:'power2.out'});}
+  function openTT(id){let d=ttData[id];if(!d)return;document.getElementById('tt-img').textContent=d.img;document.getElementById('tt-def').innerHTML=d.def;document.getElementById('tt-rappel').innerHTML='<strong>📖 Rappel :</strong> '+(d.rappel||'');let ar=document.getElementById('tt-arabe');if(ar&&d.arabe){ar.innerHTML=d.arabe;ar.style.display='block';}else if(ar)ar.style.display='none';document.getElementById('tt-modal').classList.add('open');}
+  function closeTT(){document.getElementById('tt-modal').classList.remove('open');}
+  function speak(text){if(!('speechSynthesis' in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';u.rate=0.85;window.speechSynthesis.speak(u);}
+
+  const coachData={
+    'coach-eco-q1':{title:'Q1',msg:'Applique la contrainte budgétaire R=xPx+yPy. Pour l\'inflation, repère le signe et la tendance.',methode:['Vérifier chaque proposition avec R.','Isoler les inconnues.','Regarder si le taux est positif/négatif et sa tendance.'],piege:'Ne pas confondre désinflation (taux>0 en baisse) et déflation (taux<0).',bareme:'4 pts',arabe:'طبق قيد الميزانية وانتبه لإشارة معدل التضخم.'},
+    'coach-eco-q2-1':{title:'Q2-1/2',msg:'Lis w et r sur les axes. Puis TMST = PmL/PmK = w/r.',methode:['CT=rK quand L=0.','CT=wL quand K=0.','Calcule les dérivées partielles.','Égalise TMST et w/r.'],piege:'TMST = PmL/PmK, pas l\'inverse.',bareme:'3 pts',arabe:'اقرأ w و r من الرسم. ساوِ المعدل الحدي للإحلال التقني بنسبة w/r.'},
+    'coach-eco-q2-2':{title:'Q2-3',msg:'Multiplie L et K par 2. Si Q double, rendements constants.',methode:['Calcule Q(2L,2K).','Compare à 2×Q.','Déduis le type de rendements.','Calcule CT\'.'],piege:'Vérifier α+β. Si =1, rendements constants.',bareme:'1,5 pt',arabe:'ضاعف L و K. إذا تضاعف Q، فالعوائد ثابتة.'},
+    'coach-eco-diss-intro':{title:'Intro',msg:'Définis le DD (3 piliers). Problématique : comment le comportement citoyen favorise-t-il le DD ? Plan : consommateur, puis producteur.',methode:['Définir DD.','Poser la problématique.','Annoncer les 2 parties.'],piege:'Ne pas oublier la définition.',bareme:'1,5 pt',arabe:'عرف التنمية المستدامة واطرح الإشكالية.'},
+    'coach-eco-diss-p1':{title:'Partie I',msg:'Consommateur citoyen : impacts sociaux (boycott, produits locaux) et environnementaux (bios, saisonniers).',methode:['Impact social.','Impact environnemental.','Exploiter doc 1.'],piege:'Ne pas oublier les deux dimensions.',bareme:'3,5 pts',arabe:'حلل سلوك المستهلك المواطن.'},
+    'coach-eco-diss-p2':{title:'Partie II',msg:'Producteur citoyen : RSE, emplois, conditions de travail, recyclage, énergies propres.',methode:['Impact social (emploi, diversité).','Impact environnemental (recyclage).','Exploiter doc 2.'],piege:'Ne pas réduire la RSE à l\'environnement.',bareme:'3,5 pts',arabe:'حلل سلوك المنتج المواطن والمسؤولية الاجتماعية.'},
+    'coach-eco-diss-concl':{title:'Conclusion',msg:'Synthèse : les deux acteurs garantissent le DD. Ouverture : équité intra et intergénérationnelle.',methode:['Synthèse.','Ouverture.'],piege:'Pas d\'idées nouvelles.',bareme:'1 pt',arabe:'لخص وافتح على الإنصاف بين الأجيال.'}
+  };
+
+  function openCoach(id){if(document.getElementById('s3').classList.contains('active'))return;let d=coachData[id];if(!d)return;let h='<div class="coach-msg">'+d.msg+'</div>';if(d.methode){h+='<div class="coach-schema-title">🎯 Méthodologie</div>';d.methode.forEach((s,i)=>{h+='<div class="coach-step"><div class="coach-step-num">'+(i+1)+'</div><div>'+s+'</div></div>';});}if(d.piege)h+='<div class="coach-piege"><strong>⚠️ Piège :</strong> '+d.piege+'</div>';if(d.bareme)h+='<div class="coach-bareme">📊 Barème : '+d.bareme+'</div>';if(d.arabe)h+='<div class="coach-arabe" dir="rtl"><strong>🇹🇳 Conseil :</strong><br>'+d.arabe+'</div>';document.getElementById('coach-modal-body').innerHTML=h;document.getElementById('coach-modal').classList.add('open');}
+  function closeCoach(){document.getElementById('coach-modal').classList.remove('open');}
+
+  function ouvrirChoix(el){document.querySelectorAll('.trou-dropdown').forEach(d=>d.style.display='none');let w=el.closest('.trou-wrapper');let dd=w.querySelector('.trou-dropdown');let choices=el.dataset.choices?el.dataset.choices.split(',').map(c=>c.trim()):[];dd.innerHTML=choices.map(c=>'<div class="trou-dropdown-item" onclick="choisirReponse(this,\''+c.replace(/'/g,"\\'")+'\')">'+c+'</div>').join('');dd.style.display=(dd.style.display==='none'||dd.style.display==='')?'block':'none';}
+  function choisirReponse(item,valeur){let dd=item.closest('.trou-dropdown');let w=dd.closest('.trou-wrapper');let f=w.querySelector('.trou-field');f.textContent=valeur;f.dataset.value=valeur;f.classList.add('filled');f.classList.remove('correct','wrong');dd.style.display='none';sauvegarderTout();}
+  document.addEventListener('click',function(e){if(!e.target.closest('.trou-wrapper')){document.querySelectorAll('.trou-dropdown').forEach(d=>d.style.display='none');}});
+
+  function verifierItem(name,bonneReponse){let labels=document.querySelectorAll('input[name="'+name+'"]');let selected=document.querySelector('input[name="'+name+'"]:checked');labels.forEach(inp=>{inp.closest('label').classList.remove('qcm-correct','qcm-wrong');});if(!selected){alert('Choisissez une réponse !');return;}document.querySelector('input[name="'+name+'"][value="'+bonneReponse+'"]').closest('label').classList.add('qcm-correct');if(selected.value!==bonneReponse){selected.closest('label').classList.add('qcm-wrong');}let justif=selected.closest('.qcm-item').querySelector('.qcm-justif');if(justif){justif.classList.add('show');gsap.from(justif,{opacity:0,y:8,duration:0.3,ease:'power2.out'});}sauvegarderTout();}
+
+  function validerTrous(qid){let container=document.querySelector('.q-item[data-qid="'+qid+'"]');if(!container){let inner=document.querySelector('[data-qid="'+qid+'"]');container=inner?inner.closest('.q-item')||inner:null;}if(!container)return;let correct=0,total=0;container.querySelectorAll('.trou-field[data-answer]').forEach(field=>{total++;let rep=(field.dataset.value||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');let answers=field.dataset.answer.split('|').map(a=>a.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));let ok=answers.some(ans=>rep===ans||(rep.length>3&&ans.includes(rep))||(ans.length>3&&rep.includes(ans)));field.classList.toggle('correct',ok);field.classList.toggle('wrong',!ok);if(ok)correct++;});let corrBox=document.getElementById('corr-'+qid);if(corrBox){corrBox.classList.add('open');gsap.from(corrBox,{opacity:0,y:10,duration:0.3,ease:'power2.out'});}let scoreEl=document.getElementById('score-'+qid);if(scoreEl&&total>0){scoreEl.textContent='🎯 '+correct+' / '+total+' éléments corrects ('+Math.round((correct/total)*100)+'%)';scoreEl.classList.add('show');}sauvegarderTout();}
+
+  function setScore(qid,points,theme){let group=document.querySelector('.score-btn-group[data-qid="'+qid+'"]');if(!group)return;let oldBtn=group.querySelector('.score-btn.selected');let oldPts=oldBtn?parseFloat(oldBtn.dataset.pts):0;themeScores[theme]=Math.max(0,(themeScores[theme]||0)-oldPts+points);let total=(themeScores.partie1||0)+(themeScores.partie2||0);document.getElementById('hdr-score').textContent=Math.min(20,total).toFixed(1)+' / 20';group.querySelectorAll('.score-btn').forEach(b=>b.classList.remove('selected'));let newBtn=group.querySelector('.score-btn[data-pts="'+points+'"]');if(newBtn)newBtn.classList.add('selected');sauvegarderTout();}
+
+  function sauvegarderTout(){let data={reponses:{},scores:themeScores,scoreExamen:scoreExamen};document.querySelectorAll('.lignes-reponse').forEach((el,idx)=>{data.reponses[el.id||'input_'+idx]=el.value;});document.querySelectorAll('.trou-field').forEach((el,idx)=>{data.reponses['tf_'+idx]=el.dataset.value||'';});document.querySelectorAll('.score-btn.selected').forEach(btn=>{data['sel_'+btn.dataset.qid]=btn.dataset.pts;});localStorage.setItem('synapris_eco_2023_principale',JSON.stringify(data));}
+  function restaurerTout(){let saved=localStorage.getItem('synapris_eco_2023_principale');if(!saved)return;try{let data=JSON.parse(saved);if(data.scores)Object.assign(themeScores,data.scores);if(data.scoreExamen)scoreExamen=data.scoreExamen;if(data.reponses){document.querySelectorAll('.lignes-reponse').forEach((el,idx)=>{let k=el.id||'input_'+idx;if(data.reponses[k])el.value=data.reponses[k];});document.querySelectorAll('.trou-field').forEach((el,idx)=>{let k='tf_'+idx;if(data.reponses&&data.reponses[k]){el.textContent=data.reponses[k];el.dataset.value=data.reponses[k];el.classList.add('filled');}});}Object.keys(data).forEach(key=>{if(key.startsWith('sel_')){let qid=key.replace('sel_','');let pts=data[key];let group=document.querySelector('.score-btn-group[data-qid="'+qid+'"]');let btn=group?group.querySelector('.score-btn[data-pts="'+pts+'"]'):null;if(btn)btn.classList.add('selected');}});let total=(themeScores.partie1||0)+(themeScores.partie2||0);document.getElementById('hdr-score').textContent=Math.min(20,total).toFixed(1)+' / 20';}catch(e){}}
+
+  function startExamen(){if(examenStarted)return;examenStarted=true;for(let i=0;i<2;i++){examenTimers[i]=setInterval(()=>{examenSeconds[i]--;let el=document.getElementById('ex-timer-'+(i+1));if(examenSeconds[i]<=0){clearInterval(examenTimers[i]);el.textContent='⏰ Terminé !';return;}let h=Math.floor(examenSeconds[i]/3600);let m=Math.floor((examenSeconds[i]%3600)/60);let s=examenSeconds[i]%60;el.textContent=h>0?h+'h'+(m<10?'0':'')+m:m+':'+(s<10?'0':'')+s;},1000);}}
+  function validerExamenComplet(){scoreExamen=0;document.getElementById('hdr-score').textContent=scoreExamen.toFixed(1)+' / 20';sauvegarderTout();goTo(4);}
+  function calculerTotalPartie2(){let total=themeScores.partie2||0;if(total===0){alert('Veuillez noter la dissertation.');return;}let sf=(themeScores.partie1||0)+total;document.getElementById('hdr-score').textContent=Math.min(20,sf).toFixed(1)+' / 20';sauvegarderTout();alert('✅ Note enregistrée !');}
+
+  function showBilan(){let ts=(themeScores.partie1||0)+(themeScores.partie2||0);let s20=Math.min(20,ts);document.getElementById('final-score-guide').textContent=s20.toFixed(1)+' / 20';let m=getMention(s20);let b=document.getElementById('mention-guide');b.textContent=m.text;b.style.color=m.color;b.style.background=m.bg;document.getElementById('conseil-guide').innerHTML=m.conseil;document.getElementById('final-score-examen').textContent=scoreExamen.toFixed(1)+' / 20';let me=getMention(scoreExamen);let be=document.getElementById('mention-examen');be.textContent=me.text;be.style.color=me.color;be.style.background=me.bg;document.getElementById('conseil-examen').innerHTML=me.conseil;setTimeout(()=>{[{p:themeScores.partie1||0},{p:themeScores.partie2||0}].forEach((g,i)=>{let pct=Math.round((g.p/10)*100);document.getElementById('p'+(i+1)).textContent=pct+'%';let bar=document.getElementById('b'+(i+1));bar.style.width=pct+'%';bar.className='bar-fill '+(pct>=70?'green':pct>=40?'orange':'red');let pe=document.getElementById('pts'+(i+1));if(pe)pe.textContent=g.p.toFixed(1)+' / 10 pts';});},300);}
+  function getMention(s){if(s>=16)return{text:'Très Bien 🌟',color:'#2D5A27',bg:'rgba(45,90,39,0.15)',conseil:'Excellent !'};if(s>=14)return{text:'Bien 👍',color:'#2D5A27',bg:'rgba(45,90,39,0.15)',conseil:'Bon niveau.'};if(s>=12)return{text:'Assez Bien',color:'#C4860A',bg:'rgba(196,134,10,0.15)',conseil:'Sur la bonne voie.'};if(s>=10)return{text:'Passable',color:'#888',bg:'rgba(0,0,0,0.06)',conseil:'Attention aux calculs.'};return{text:'Insuffisant',color:'#8B1A1A',bg:'rgba(139,26,26,0.1)',conseil:'Reprends les fondamentaux.'};}
+  function resetAll(){if(confirm('Recommencer ?')){localStorage.removeItem('synapris_eco_2023_principale');location.reload();}}
+
+  let calcExpr='',calcMemory=0;
+  function toggleCalc(){document.getElementById('calc-box').classList.toggle('open');}
+  function calcInput(val){
+    if(val==='C'){calcExpr='';document.getElementById('calc-display').value='0';return;}
+    if(val==='='){try{let r=Function('"use strict";return ('+calcExpr+')')();document.getElementById('calc-display').value=r;calcExpr=String(r);}catch{document.getElementById('calc-display').value='Erreur';calcExpr='';}return;}
+    if(val==='±'){calcExpr=calcExpr.startsWith('-')?calcExpr.slice(1):'-'+calcExpr;document.getElementById('calc-display').value=calcExpr||'0';return;}
+    if(val==='sqrt'){try{let n=parseFloat(calcExpr)||0;if(n<0){document.getElementById('calc-display').value='Erreur';return;}let r=Math.sqrt(n);document.getElementById('calc-display').value=r;calcExpr=String(r);}catch{document.getElementById('calc-display').value='Erreur';calcExpr='';}return;}
+    if(val==='%'){try{let n=parseFloat(calcExpr)||0;let r=n/100;document.getElementById('calc-display').value=r;calcExpr=String(r);}catch{document.getElementById('calc-display').value='Erreur';calcExpr='';}return;}
+    if(val==='MC'){calcMemory=0;return;}
+    if(val==='MR'){document.getElementById('calc-display').value=calcMemory;calcExpr=String(calcMemory);return;}
+    if(val==='M+'){calcMemory+=parseFloat(calcExpr)||0;return;}
+    if(val==='M-'){calcMemory-=parseFloat(calcExpr)||0;return;}
+    calcExpr+=val;document.getElementById('calc-display').value=calcExpr;
+  }
+
+  showPage(1);
+  document.querySelectorAll('.lignes-reponse,.trou,.trou-select,.trou-field').forEach(el=>el.addEventListener('input',sauvegarderTout));
+  document.addEventListener('click',function(e){let btn=e.target.closest('.score-btn');if(!btn)return;let group=btn.closest('.score-btn-group');if(!group)return;setScore(group.dataset.qid,parseFloat(btn.dataset.pts),group.dataset.theme);});
+</script>
+</body>
+</html>
